@@ -44,6 +44,15 @@
 			<label class="form-label">To Date:</label>
 			<input  autofocus type="date" class="form-control" name='to_dt'>
 		</div>
+		<div class="col-md-12">
+			<label class="form-label">Work Type:</label>
+			<select class="form-control" name='work'>
+				<option value="all">All</option>
+				<option value="engineering">Engineering</option>
+				<option value="automobile">Automobile</option>
+				<option value="intercompany">Intercompany</option>
+			</select>
+		</div>
 		<div class="col-12">
 			<button class="btn btn-success" type="submit" name="register" value="register">
 			<i class="lni lni-files"></i> Generate Report</button>

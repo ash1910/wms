@@ -29,7 +29,7 @@
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-6">
-                      <h5 class="mb-0">Receive Reports [From Date: {{$from_dt}} To: {{$to_dt}}]</h5>
+                      <h5 class="mb-0">Receive Reports [From Date: {{$from_dt}} To: {{$to_dt}}] , Work Type: {{$work}}</h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>
@@ -54,6 +54,7 @@
 					</thead>
 					<tbody>				
 <?php
+$workCond = $work == 'all' ? "" : "AND b.work = '$work'";
 
 $result = DB::select("
 SELECT `bill` bill_no, a.`job_no`, b.customer_nm, a.`bill_dt`, a.`net_bill`, `received`, `bonus`, `due`,`pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt, b.bill_dt,
@@ -64,6 +65,7 @@ WHERE
 a.bill = b.bill_no
 AND a.dt between '$from_dt' and '$to_dt'
 AND a.vat_wav > 0 
+$workCond 
 and a.user_id = c.user_id and a.pay_type<>'SYS'
 order by bill, a.bill_dt desc
 ;

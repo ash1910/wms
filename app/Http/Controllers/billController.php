@@ -742,9 +742,11 @@ if($register=='register01')
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
+		$work=$r->input('work');//post input
 		return view ('report08',[
 		'from_dt'=>$from_dt,
-		'to_dt'=>$to_dt
+		'to_dt'=>$to_dt,
+		'work'=>$work
 		]);	
 	}
 	public function report09(Request $r)

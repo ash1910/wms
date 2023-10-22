@@ -54,7 +54,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>            
  
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")){ ?>
 	<li>
 	  <a href="/bill"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Billing</div>

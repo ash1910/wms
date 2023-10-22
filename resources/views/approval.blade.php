@@ -5,7 +5,7 @@
 @section("content")
 
 <?php 
-if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts"))
+if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts")||(session('role')=="PRO"))
 {
 //return redirect ('home')->with('alert', 'Wrong URL!!!');	
 echo session('role');
@@ -103,7 +103,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">
 						
 <?php 
-if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
+if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="PRO"))
 {
 ?>					
 					<form style="display: inline;" action="approval01" method="post">{{ csrf_field() }}

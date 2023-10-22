@@ -224,7 +224,7 @@ if($num!="0")
 ///////////////// Gate pass print/////////////////////
 if (
 (session('role')=="Super Administrator")||(session('role')=="Administrator")||
-(session('role')=="Accounts")||(session('role')=="Service Engineer")
+(session('role')=="Accounts")||(session('role')=="Service Engineer")||(session('role')=="PRO")
 ){
 ?> 			  
 			  <li class="nav-item dropdown dropdown-large">
@@ -257,7 +257,7 @@ if($num!="0")
 
 ///////////////// APPROVAL /////////////////////
 
-if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts")){
+if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts")||(session('role')=="PRO")){
 //if (session('user')=="Nishan"){
 ?> 			  
 			  <li class="nav-item dropdown dropdown-large">

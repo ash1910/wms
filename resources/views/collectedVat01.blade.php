@@ -75,7 +75,7 @@ $(document).ready(function () {
             <div class="card-body">
               <div class="table-responsive">
                 
-				<table id="example3" class="table table-bordered mb-0" style="width: 50%;">
+				<table id="example3" class="table table-bordered mb-0" style="width: 80%;">
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>

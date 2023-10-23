@@ -61,12 +61,21 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due Ref</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Payment Status</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Bill Created By</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Engineer</th>
 
 						</tr>
 					</thead>
 					<tbody>				
 <?php
+
+$user_list = array();
+	$users_db = DB::select("
+	SELECT user_id, user_name FROM `user`");
+	foreach($users_db as $user_db)
+		{ 					
+				$user_list[$user_db->user_id] = $user_db->user_name;	
+		}  
 
 $result = DB::select("
 
@@ -185,6 +194,7 @@ echo 'Received';
 }
 	?>						
 						</td>
+						<td style="border: 1px solid black;text-align: center;">{{@$user_list[$item->user_id]}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->engineer}}</td>
 					</tr>
 		<?php

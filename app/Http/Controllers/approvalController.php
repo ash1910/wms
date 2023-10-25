@@ -281,7 +281,7 @@ if($job_no=='X')
 			"received" => $amount,
 			"due" => -$amount,
 			"pay_type" => $pay_row->pay_type,
-			"ref" => "Distribute",
+			"ref" => "Advance",
 			"note" => "distribute from pay id ".$id,
 			"distributed_from_pay_id" => $id,
 			"dt" => $today,

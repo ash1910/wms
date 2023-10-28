@@ -300,7 +300,7 @@ from
 WHEN work='intercompany' THEN 'Inter-Company' 
 WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
 sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
-FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' GROUP by work) a
+FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' and a.`flag` <> '0' GROUP by work) a
 left JOIN
 (SELECT CASE WHEN work='engineering' THEN 'Engineering' 
 WHEN work='intercompany' THEN 'Inter-Company' 
@@ -320,7 +320,7 @@ from
 WHEN work='intercompany' THEN 'Inter-Company' 
 WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
 sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
-FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' GROUP by work) a
+FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' and a.`flag` <> '0' GROUP by work) a
 right JOIN
 (SELECT CASE WHEN work='engineering' THEN 'Engineering' 
 WHEN work='intercompany' THEN 'Inter-Company' 

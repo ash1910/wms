@@ -63,7 +63,7 @@ bill_dt,
 (`service`) service, (`parts`) parts, (`net_bill`) sale_amount,(`job_no`) job_no, bill_no
 FROM `bill_mas` 
 WHERE `bill_dt` BETWEEN '$from_dt' and '$to_dt'
-and work='$segment'
+and work='$segment' and flag <> '0'
 
 ");
 	$sl = '1';$service = '0';$parts = '0';$sale_amount = '0';		

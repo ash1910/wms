@@ -56,6 +56,7 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Total</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Vat</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Net Bill</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Work Type</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Engineer</th>
 						</tr>
 					</thead>
@@ -63,7 +64,7 @@
 <?php
 
 $result = DB::select("
-SELECT `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, 
+SELECT `job_dt`,`bill_no`, a.work, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, 
 `user_id`, `net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service, engineer
 FROM `bill_mas` a, customer_info b
 WHERE `job_dt` between '$from_dt' and '$to_dt'
@@ -89,6 +90,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->net_bill}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$vat}}</td>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{number_format(intval($item->total), 2, '.', ',')}}</a></td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->work}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->engineer}}</td>
 					</tr>
 		<?php

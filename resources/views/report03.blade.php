@@ -61,6 +61,7 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due Ref</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Payment Status</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Work Type</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill Created By</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Engineer</th>
 
@@ -79,7 +80,7 @@ $user_list = array();
 
 $result = DB::select("
 
-SELECT `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, a.`job_no`, 
+SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
 sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due,
 sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer
@@ -194,6 +195,7 @@ echo 'Received';
 }
 	?>						
 						</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->work}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{@$user_list[$item->user_id]}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->engineer}}</td>
 					</tr>

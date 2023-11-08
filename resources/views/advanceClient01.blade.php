@@ -203,6 +203,7 @@ foreach($result as $item)
 			<option value='BRAC Bank Limited'>BRAC Bank Limited</option>
 			<option value='Citibank N.A (United States of America)'>Citibank N.A (United States of America)</option>
 			<option value='City Bank Limited'>City Bank Limited</option>
+			<option value='Commercial Bank Of Ceylon PLC'>Commercial Bank Of Ceylon PLC</option>
 			<option value='Community Bank Bangladesh Limited'>Community Bank Bangladesh Limited</option>
 			<option value='Dhaka Bank Limited'>Dhaka Bank Limited</option>
 			<option value='Dutch-Bangla Bank Limited'>Dutch-Bangla Bank Limited</option>
@@ -282,6 +283,7 @@ foreach($result as $item)
 			<option value='BRAC Bank Limited'>BRAC Bank Limited</option>
 			<option value='Citibank N.A (United States of America)'>Citibank N.A (United States of America)</option>
 			<option value='City Bank Limited'>City Bank Limited</option>
+			<option value='Commercial Bank Of Ceylon PLC'>Commercial Bank Of Ceylon PLC</option>
 			<option value='Community Bank Bangladesh Limited'>Community Bank Bangladesh Limited</option>
 			<option value='Dhaka Bank Limited'>Dhaka Bank Limited</option>
 			<option value='Dutch-Bangla Bank Limited'>Dutch-Bangla Bank Limited</option>

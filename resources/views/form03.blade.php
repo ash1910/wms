@@ -33,7 +33,24 @@
 			<label class="form-label">To Date:</label>
 			<input  autofocus type="date" class="form-control" name='to_dt'>
 		</div>
-		<div class="col-12">
+		<div class="row">
+			<div class="col-md-4">
+				<br>
+				<label class="form-label">Bill Type:</label>
+				<select class="form-control" name='billtype'>
+					<option value="all">All Bills</option>
+					<option value="all_dues">All Dues</option>
+					<option value="engineering_dues">Engineering Dues</option>
+					<option value="automobile_dues">Automobile Dues</option>
+					<option value="intercompany_dues">Intercompany Dues</option>
+					<option value="all_received">All Received Bills</option>
+					<option value="engineering_received">Engineering Received Bills</option>
+					<option value="automobile_received">Automobile Received Bills</option>
+					<option value="intercompany_received">Intercompany Received Bills</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-12"> 
 			<button class="btn btn-success" type="submit" name="register" value="register">
 			<i class="lni lni-files"></i> Generate Report</button>
 		</div>

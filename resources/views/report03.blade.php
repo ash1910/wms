@@ -69,6 +69,20 @@
 					</thead>
 					<tbody>				
 <?php
+$where_billtype = "";
+if( $billtype == "all_dues"){
+	$where_billtype = "AND due_sum > 0";
+}
+elseif( $billtype == "engineering_dues"){
+	$where_billtype = "AND due > 0 AND work = 'engineering'";
+}
+elseif( $billtype == "automobile_dues"){
+	$where_billtype = "AND due > 0 AND work = 'automobile'";
+}
+elseif( $billtype == "intercompany_dues"){
+	$where_billtype = "AND due > 0 AND work = 'intercompany'";
+}
+ 
 
 $user_list = array();
 	$users_db = DB::select("
@@ -82,13 +96,14 @@ $result = DB::select("
 
 SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
-sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due,
+sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due_sum,
 sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer
 FROM `bill_mas` a, customer_info b, `pay` c
 WHERE a.`bill_dt` between '$from_dt' and '$to_dt'
 and a.customer_id = b.customer_id
 AND a.`job_no` = c.job_no
-and a.bill_dt is not null
+and a.bill_dt is not null 
+$where_billtype 
 group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer
 ;

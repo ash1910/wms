@@ -4,7 +4,42 @@
 
 @section("content")
 
-
+<?php
+$where_billtype = "";
+$filter_header = "";
+if( $billtype == "all_dues"){
+	$where_billtype = "HAVING due > 0";
+	$filter_header = ", All Dues";
+}
+elseif( $billtype == "engineering_dues"){
+	$where_billtype = "HAVING due > 0 AND work = 'engineering'";
+	$filter_header = ", Engineering Dues";
+}
+elseif( $billtype == "automobile_dues"){
+	$where_billtype = "HAVING due > 0 AND work = 'automobile'";
+	$filter_header = ", Automobile Dues";
+}
+elseif( $billtype == "intercompany_dues"){
+	$where_billtype = "HAVING due > 0 AND work = 'intercompany'";
+	$filter_header = ", Intercompany Dues";
+}
+elseif( $billtype == "all_received"){
+	$where_billtype = "HAVING received > 0";
+	$filter_header = ", All Received Bills";
+}
+elseif( $billtype == "engineering_received"){
+	$where_billtype = "HAVING received > 0 AND work = 'engineering'";
+	$filter_header = ", Engineering Received Bills";
+}
+elseif( $billtype == "automobile_received"){
+	$where_billtype = "HAVING received > 0 AND work = 'automobile'";
+	$filter_header = ", Automobile Received Bills";
+}
+elseif( $billtype == "intercompany_received"){
+	$where_billtype = "HAVING received > 0 AND work = 'intercompany'";
+	$filter_header = ", Intercompany Received Bills";
+}
+?>
 
 <main class="page-content">
             <!--breadcrumb-->
@@ -27,7 +62,7 @@
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-6">
-                      <h5 class="mb-0">Main Bill Report [From Date: {{date('d-M-Y',strtotime($from_dt))}} To: {{date('d-M-Y',strtotime($to_dt))}}]</h5>
+                      <h5 class="mb-0">Main Bill Report [From Date: {{date('d-M-Y',strtotime($from_dt))}} To: {{date('d-M-Y',strtotime($to_dt))}}] <?php echo $filter_header;?></h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>
@@ -67,22 +102,8 @@
 
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
-$where_billtype = "";
-if( $billtype == "all_dues"){
-	$where_billtype = "AND due_sum > 0";
-}
-elseif( $billtype == "engineering_dues"){
-	$where_billtype = "AND due > 0 AND work = 'engineering'";
-}
-elseif( $billtype == "automobile_dues"){
-	$where_billtype = "AND due > 0 AND work = 'automobile'";
-}
-elseif( $billtype == "intercompany_dues"){
-	$where_billtype = "AND due > 0 AND work = 'intercompany'";
-}
- 
 
 $user_list = array();
 	$users_db = DB::select("
@@ -96,16 +117,16 @@ $result = DB::select("
 
 SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
-sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) AS due_sum,
+sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due,
 sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer
 FROM `bill_mas` a, customer_info b, `pay` c
 WHERE a.`bill_dt` between '$from_dt' and '$to_dt'
 and a.customer_id = b.customer_id
 AND a.`job_no` = c.job_no
 and a.bill_dt is not null 
-$where_billtype 
+ 
 group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, a.`job_no`, 
-a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer
+a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer $where_billtype
 ;
 ");
 	$sl = '1'; 	$total02 = '0'; $total03 = '0';

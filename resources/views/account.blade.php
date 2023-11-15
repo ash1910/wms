@@ -33,7 +33,7 @@
 
 
  <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Executive")){
 ?>
 	  <a href="/form05">
 	  <div class="col">
@@ -66,7 +66,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")){
 	  </a>
  <?php } ?>
   <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Executive")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
 ?>
 	  <a href="/allDueReport">
 	  <div class="col">

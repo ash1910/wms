@@ -1,5 +1,5 @@
 <?php 
-if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
+if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Executive"))
 {
 //return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');
@@ -66,7 +66,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
 <?php } ?>
 
 <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Executive")){
 ?>	  
 	  <a href="/report05">
 	  <div class="col">

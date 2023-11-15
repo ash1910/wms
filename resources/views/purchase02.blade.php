@@ -1,4 +1,21 @@
 
+<?php 
+if ((session('role')=="Super Administrator")||(session('role')=="Accounts")
+	||(session('role')=="Store")||(session('role')=="Administrator"))
+{
+//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//echo session('role');
+}
+else {
+?>
+  <script>
+    window.location = "/logout";
+  </script>
+<?php  
+}
+?>
+
+
 @extends("layouts.master")
 
 @section("content")

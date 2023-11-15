@@ -2,7 +2,7 @@
 
 <?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")
-	||(session('role')=="Store")||(session('role')=="Administrator"))
+	||(session('role')=="Store")||(session('role')=="Executive")||(session('role')=="Administrator"))
 {
 //return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');

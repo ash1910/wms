@@ -8,7 +8,7 @@ $parts_info = DB::select("SELECT distinct(`customer_nm`) FROM `customer_info`");
 ?>
 
 <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")){}else { ?>
+	||(session('role')=="Administrator")||(session('role')=="Executive")){}else { ?>
 <script>window.location = "/home";</script>
 <?php  }   ?>
 

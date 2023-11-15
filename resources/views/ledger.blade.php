@@ -29,7 +29,7 @@
 
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")||(session('role')=="Store")
+	||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Executive")
 ){
 ?>	  
 	  <a href="/productLedger">
@@ -68,7 +68,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Store")
+	||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Executive")||(session('role')=="Store")
 ||(session('role')=="Service Engineer")
 ){
 ?>	  
@@ -88,7 +88,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Store")
+	||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Executive")||(session('role')=="Store")
 ||(session('role')=="Service Engineer")
 ){
 ?>	  

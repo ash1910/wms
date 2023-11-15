@@ -34,7 +34,7 @@
 
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Store")
-	||(session('role')=="Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")){
+	||(session('role')=="Administrator")||(session('role')=="Service Engineer")||(session('role')=="Executive")||(session('role')=="PRO")){
 ?>	  
 	  <a href="/form01">
 	  <div class="col">
@@ -53,7 +53,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
 
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Store")
-	||(session('role')=="Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")){
+	||(session('role')=="Administrator")||(session('role')=="Service Engineer")||(session('role')=="Executive")||(session('role')=="PRO")){
 ?>	  
 	  <a href="/form03">
 	  <div class="col">
@@ -230,7 +230,7 @@ if ((session('role')=="Accounts")||(session('role')=="Inventory Incharge")||(ses
 <?php } ?>
 
 <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Executive")){
 ?>	  
 	  <a href="/accounting">
 	  <div class="col">

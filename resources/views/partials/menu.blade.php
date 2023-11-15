@@ -46,7 +46,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>            
  
-<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/account"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Accounts</div>
@@ -54,7 +54,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>            
  
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/bill"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Billing</div>
@@ -69,14 +69,14 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </a>
 	</li>			
 <?php } ?> 
-<?php if ((session('role')=="Accounts")||(session('role')=="Service Engineer")||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Super Administrator")||(session('role')=="Store")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Service Engineer")||(session('role')=="Administrator")||(session('role')=="PRO")||(session('role')=="Executive")||(session('role')=="Super Administrator")||(session('role')=="Store")){ ?>
 	<li>
 	  <a href="/ledger"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Ledger</div>
 	  </a>
 	</li>			
 <?php } ?>            
-<?php if ((session('role')=="Accounts")||(session('role')=="Service Engineer")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Store")||(session('role')=="PRO")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Service Engineer")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Store")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/reports"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Reports</div>

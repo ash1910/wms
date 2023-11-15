@@ -58,16 +58,21 @@ if(session('role')!="Service Engineer")
 {
 if(session('role')!="PRO")
     {
-    	if($flag=='0')
-    		{
-    	?>
-    		<a href="/billMemo?bill={{$bill_no}}" class="btn btn-sm btn-success me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
-    	<?php } 
-    	if($flag!='0')
-    		{
-    	?>
-    		<a href="" class="btn btn-sm btn-secondary me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
-    	<?php } 
+
+		if(session('role')!="Executive")
+		{
+			if($flag=='0')
+				{
+			?>
+				<a href="/billMemo?bill={{$bill_no}}" class="btn btn-sm btn-success me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
+			<?php } 
+			if($flag!='0')
+				{
+			?>
+				<a href="" class="btn btn-sm btn-secondary me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
+			<?php } 
+
+		}
 
     }    
 }	

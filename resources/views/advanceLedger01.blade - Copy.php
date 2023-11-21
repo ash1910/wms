@@ -105,24 +105,18 @@ $(document).ready(function () {
 <?php
 
 $result = DB::select("
-SELECT a.`dt`, a.`job_no`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send,received_org,id 
+SELECT a.`dt`, a.`job_no`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send
 FROM `pay` a
 WHERE a.`customer_id` = '$id' 
-AND a.`ref`='Advance' AND a.distributed_from_pay_id IS NULL;
+AND a.`ref`='Advance';
 
 ");
 //AND a.`ref`='Advance' AND a.pay_type<>'A/C Refund';
 	$sl = '1'; 	$balance='0';	$done='';	
 foreach($result as $item)
 		{
-			if( (float)$item->received_org > 0 ){
-				$credit = $item->received_org;
-			}
-			else{
-				$credit = $item->Credit;
-			}
-
-			$balance=$balance+$credit;
+			
+			$balance=$balance+$item->Credit;
 			$job_no=$item->job_no;
 ?>				
 			<tr>
@@ -136,58 +130,68 @@ foreach($result as $item)
 
                 </td>			
 				<td style="border: 1px solid black;text-align: center;"></td>
+				<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
 				<td style="border: 1px solid black;text-align: center;"></td>
-				<td style="border: 1px solid black;text-align: center;"></td>
-				<td style="border: 1px solid black;text-align: center;">{{number_format(($credit), 2, '.', ',');}}</td>
+				<td style="border: 1px solid black;text-align: center;">{{number_format(($item->Credit), 2, '.', ',');}}</td>
 				<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
 				<td style="border: 1px solid black;text-align: center;">{{$item->note}}</td>
 			</tr>
-
-			@if($job_no != 'Advance')  <?php $balance=$balance-$credit; ?>
-				<tr>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: left;"></td>			
-					<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
-					<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
-					
-					<td style="border: 1px solid black;text-align: center;">{{number_format(($credit), 2, '.', ',');}}</td>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{$item->note}}</td>
-				</tr>
-
-			@endif
-
-			<?php if( (float)$item->received_org > 0 ){  
-
-				$result01 = DB::select("
-				SELECT `dt`, -`due` Credit, `job_no`, `note` FROM `pay` 
-				WHERE `distributed_from_pay_id` = '$item->id'
-				");
-				foreach($result01 as $item01){
-
-				$credit = $item01->Credit;
-				$balance=$balance-$credit; 
-				$job_no=$item01->job_no;
-			?>
-				<tr>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: left;"></td>			
-					<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item01->dt))}}</td>
-					<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
-					
-					<td style="border: 1px solid black;text-align: center;">{{number_format(($credit), 2, '.', ',');}}</td>
-					<td style="border: 1px solid black;text-align: center;"></td>
-					<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{$item01->note}}</td>
-				</tr>
-
-			<?php } }?>
 		<?php
 
+if($job_no==$done){$job_no='1';}
 
+		if($job_no!='Advance')
+			{
+				$result01 = DB::select("
+				SELECT `dt`, sum(`due`) Debit FROM `pay` 
+				WHERE `job_no` = '$job_no' AND `due`>0
+				group by dt
+				");
+				//AND a.`ref`='Advance' AND a.pay_type<>'A/C Refund';
+				foreach($result01 as $item01)
+				{
+					$balance=$balance-$item01->Debit;
+				?>
+					<tr>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item01->dt))}}</td>
+						<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item01->Debit), 2, '.', ',');}}</td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+					</tr>
+			<?php	
+				}
+				
+				$result03 = DB::select("
+				SELECT `dt`, sum(-`due`) Credit FROM `pay` 
+				WHERE `job_no` = '$job_no' AND `due`<0 AND (`ref` <> 'Advance' OR `ref` IS NULL)
+				group by dt
+				");
+				//WHERE `job_no` = '$job_no' AND `pay_type` <> 'A/C Refund' AND `due`<0 AND (`ref` <> 'Advance' OR `ref` IS NULL)
+				foreach($result03 as $item03)
+				{
+					$balance=$balance+$item03->Credit;
+				?>
+					<tr>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item03->dt))}}</td>
+						<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item03->Credit), 2, '.', ',');}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
+						<td style="border: 1px solid black;text-align: center;"></td>
+					</tr>
+			<?php	
+				}
+
+
+            $done=$job_no;
+				
+			}
 
 
 

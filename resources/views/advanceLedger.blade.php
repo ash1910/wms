@@ -93,71 +93,23 @@ $(document).ready(function () {
 // ");
 
 $result = DB::select("
-SELECT b.customer_nm,b.customer_reg,b.customer_chas,b.customer_vehicle,b.customer_id, sum(-a.`due`) Credit 
+SELECT b.customer_nm,b.customer_reg,b.customer_chas,b.customer_vehicle,b.customer_id 
 FROM `pay` a, customer_info b 
-WHERE a.customer_id = b.customer_id AND a.customer_id in (SELECT DISTINCT `customer_id` FROM `pay` WHERE `ref` = 'Advance') and a.ref='Advance'
-group by b.customer_nm,b.customer_reg,b.customer_vehicle,b.customer_id,b.customer_chas
-order by Credit desc;
+WHERE a.customer_id = b.customer_id AND a.customer_id in (SELECT DISTINCT `customer_id` FROM `pay` WHERE `ref` = 'Advance')  
+group by b.customer_nm,b.customer_reg,b.customer_vehicle,b.customer_id,b.customer_chas;
 ");
 	$sl = '1'; 	$amount='0'; $credit='0';		
 foreach($result as $item)
-		{		
-
-
-// Get last balace as like from advaceLedger01.blade
-$id_cust_id = $item->customer_id;
-$result00 = DB::select("
-SELECT a.`dt`, a.`job_no`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send
-FROM `pay` a
-WHERE a.`customer_id` = '$id_cust_id' 
-AND a.`ref`='Advance';
-");
-$balance='0'; $done01='';
-foreach($result00 as $item00)
 		{
-			
-			$balance=$balance+$item00->Credit;
-			$job_no00=$item00->job_no;
 
-
-      if($job_no00==$done01){$job_no00='1';}
-
-		if($job_no00!='Advance')
-			{
-				$result01 = DB::select("
-				SELECT `dt`, sum(`due`) Debit FROM `pay` 
-				WHERE `job_no` = '$job_no00' AND `due`>0
-				group by dt
-				");
-				//AND a.`ref`='Advance' AND a.pay_type<>'A/C Refund';
-				foreach($result01 as $item01)
-				{
-					$balance=$balance-$item01->Debit;
-
-        }
-
-        $result03 = DB::select("
-				SELECT `dt`, sum(-`due`) Credit FROM `pay` 
-				WHERE `job_no` = '$job_no00' AND `due`<0 AND (`ref` <> 'Advance' OR `ref` IS NULL)
-				group by dt
-				");
-				//WHERE `job_no` = '$job_no' AND `pay_type` <> 'A/C Refund' AND `due`<0 AND (`ref` <> 'Advance' OR `ref` IS NULL)
-				foreach($result03 as $item03)
-				{
-					$balance=$balance+$item03->Credit;
-        }
-
-        $done01=$job_no00;
-
-      }
-
-
-
-    }
-
-
-
-
+$result01 = DB::select("
+SELECT sum(-`due`) Credit 
+FROM `pay` WHERE job_no='Advance' AND customer_id='$item->customer_id';
+");
+foreach($result01 as $item01)
+		{
+			$credit = $item01->Credit;
+		}
 ?>				
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
@@ -169,12 +121,10 @@ foreach($result00 as $item00)
 						<td style="border: 1px solid black;text-align: center;">
 						<a href="/advanceLedger01?id={{$item->customer_id}}">
 						    <?php
-						    if($item->Credit>0)
+						    if($credit>0)
 						    {
-						    //echo number_format(($item->Credit), 2, '.', ',');
-						    //$credit=$item->Credit;
-                echo number_format(($balance), 2, '.', ',');
-						    $credit=$balance;
+						    echo number_format(($credit), 2, '.', ',');
+						    $credit=$credit;
 						    }
 						    else
 						    {

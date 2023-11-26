@@ -448,7 +448,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 					</tr>
 <?php
 					$data = DB::select("SELECT a.id,`received`,`pay_type`,`dt`,
-					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`
+					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`
 					FROM `pay` a, bill_mas b
 					WHERE a.job_no = b.job_no AND a.`job_no` = '$job_no' and a.pay_type<>'SYS'
 					and a.pay_type<>'due'
@@ -535,11 +535,19 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 						<td style="text-align: left;"><b>TRIX:</b>{{$item->trix}}<br>
 							<b>Send:</b>{{$item->send}}</td>
 <?php } else { echo "<td></td>";}?>
-<?php if($item->pay_type=='cheque'){?>
+<?php if($item->pay_type=='cheque'){
+
+		if( (int)$item->distributed_from_pay_id > 0){
+			$item_distributed_from_pay = DB::table('pay')->where('id', (int)$item->distributed_from_pay_id)->first();
+			?>
+						<td style="text-align: left;"><b>Bank:</b>{{$item_distributed_from_pay->bank}}<br>
+						<b>Cheque:</b>{{$item_distributed_from_pay->chequeNo}}<br><b>Date:</b>{{$item_distributed_from_pay->chequeDt}}
+						<br><b>Posting Date: </b>{{date('d-M-Y', strtotime($item_distributed_from_pay->post_dt))}}</td>
+<?php } else { ?>
 						<td style="text-align: left;"><b>Bank:</b>{{$item->bank}}<br>
 						<b>Cheque:</b>{{$item->chequeNo}}<br><b>Date:</b>{{$item->chequeDt}}
 						<br><b>Posting Date: </b>{{date('d-M-Y', strtotime($item->post_dt))}}</td>
-<?php } 
+<?php } }
 
 if(($item->pay_type=='cash')&&($item->bank!='')){?>
 						<td style="text-align: left;"><b>Bank:</b>{{$item->bank}}<br>

@@ -109,7 +109,6 @@ SELECT a.`dt`, a.`job_no`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_typ
 FROM `pay` a
 WHERE a.`customer_id` = '$id' 
 AND a.`ref`='Advance' AND a.distributed_from_pay_id IS NULL;
-
 ");
 //AND a.`ref`='Advance' AND a.pay_type<>'A/C Refund';
 	$sl = '1'; 	$balance='0';	$done='';	
@@ -133,7 +132,7 @@ foreach($result as $item)
 <?php if($item->pay_type=='cheque'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Bank:</b>{{$item->bank}}<br><b>Cheque No:</b>{{$item->chequeNo}}<br><b>Cheque Date:</b>{{$item->chequeDt}}<br> <?php } ?>	    
 <?php if($item->pay_type=='bkash'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Trix:</b>{{$item->trix}}<br><b>Send:</b>{{$item->send}}<br> <?php } ?>	    
 <?php if($item->pay_type=='card'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Card Bank:</b>{{@$item->card_bank}}<br><b>Card No:</b>{{@$item->card_no}}<br><b>Card Type:</b>{{@$item->card_type}}<br> <?php } ?>	    
-
+<?php if($item->pay_type=='cash'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br> <?php } ?>	  
                 </td>			
 				<td style="border: 1px solid black;text-align: center;"></td>
 				<td style="border: 1px solid black;text-align: center;"></td>

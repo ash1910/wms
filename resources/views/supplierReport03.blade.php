@@ -50,19 +50,33 @@ foreach($result as $item)
             <div class="card-body">
               <div class="table-responsive">
 			  
-				<table id="example2" class="table table-bordered mb-0" style="width: 50%;">
+				<table id="example2" class="table table-bordered mb-0" style="width: 70%;">
 					<thead>
 						<tr>
 							<th scope="col" style="text-align: center;border: 1px solid black;">#</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Date</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Ref</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Total Buy</th>
+              <th scope="col" style="text-align: center;border: 1px solid black;">Payment Status</th>
 						</tr>
 					</thead>
 					<tbody>	
 <?php
-$result = DB::select("
+$result_suppliers_payments = DB::table('suppliers_payment')->where('supplier_id', $supplier_id)->get();
+$bill_numbers = array();
+foreach($result_suppliers_payments as $item){	
+  $bill_numbers_s = explode(",", $item->bill_numbers);
+  foreach( @$bill_numbers_s as $b_n) {
+    if( !empty($b_n) ){
+      $bill_numbers[] = $b_n;
+    }
+  }
+  
+}
+//echo "<pre>";print_r($bill_numbers);exit;
 
+
+$result = DB::select("
 SELECT  distinct purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name, sum(a.amount) buypp
 FROM `purchase_mas` a, suppliers b
 WHERE a.`purchase_dt` between '$dt01' and '$dt02'
@@ -72,21 +86,23 @@ group BY  purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name
 order by purchase_dt
 ");
 	$sl = '1'; $tbuy = '';
-	$buy = '';	
+	$buy = '';	$payment_status = "Due";
 foreach($result as $item)
 		{		
-
-		 
+    
+		 if( in_array($item->supplier_ref, $bill_numbers) ){
+      $payment_status = "Paid";
+     }
+     else{
+      $payment_status = "Due";
+     }
 ?>		
-				
-
-
-
 				<tr>
 						<th scope="row" style="border: 1px solid black;">{{$sl}}</th>
 						<td style="border: 1px solid black;">{{date('d-M-Y', strtotime($item->purchase_dt))}}</td>
 						<td style="border: 1px solid black;">{{$item->supplier_ref}}</td>
 						<td style="border: 1px solid black;">{{number_format(intval(($item->buypp)), 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; text-align: center;">{{$payment_status}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;

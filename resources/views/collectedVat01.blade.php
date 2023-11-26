@@ -79,9 +79,11 @@ $(document).ready(function () {
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
+              <th scope="col" style="border: 1px solid black;text-align: center;">Bill Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Basic Amount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Receive Amount</th>
+              <th scope="col" style="border: 1px solid black;text-align: center;">VAT Collection Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Collected VAT</th>
 						</tr>
 					</thead>
@@ -89,10 +91,10 @@ $(document).ready(function () {
 <?php
 
 $result = DB::select("
-SELECT a.job_no, round(a.basic,2) basic, round(a.receive,2) receive, round(a.collected_vat,2) collected_vat
+SELECT a.job_no, round(a.basic,2) basic, round(a.receive,2) receive, round(a.collected_vat,2) collected_vat, a.last_dt dt, a.bill_no bill_no 
 FROM
 (
-SELECT job_no,SUM(`received`+IFNULL(`charge`, 0)) receive,SUM(`net_bill`/110*100) basic,(SUM(`received`+IFNULL(`charge`, 0))-SUM(`net_bill`/110*100)) collected_vat FROM `pay` 
+SELECT job_no,SUM(`received`+IFNULL(`charge`, 0)) receive,SUM(`net_bill`/110*100) basic,(SUM(`received`+IFNULL(`charge`, 0))-SUM(`net_bill`/110*100)) collected_vat, MAX(dt) last_dt, MAX(bill) bill_no FROM `pay` 
 WHERE `job_no`in(SELECT `job_no` FROM `pay` WHERE `dt` BETWEEN '$from_dt' AND '$to_dt' AND `pay_type`<>'SYS') GROUP by job_no
 ) a
 WHERE a.collected_vat >0
@@ -100,14 +102,17 @@ WHERE a.collected_vat >0
 	$sl = '1'; 	$amount='0';		
 foreach($result as $item)
 		{		
+
+      $item_bill_mas = DB::table('bill_mas')->where('bill_no', $item->bill_no)->first();
 ?>				
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
+            <td style="border: 1px solid black;text-align: center;">{{$item_bill_mas->bill_dt}}</td>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$item->job_no}}">{{$item->job_no}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->basic}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->receive}}</td>
+            <td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->collected_vat}}</td>
-
 					</tr>
 		<?php
 		$sl = $sl+1;

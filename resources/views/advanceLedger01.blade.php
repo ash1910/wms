@@ -105,7 +105,7 @@ $(document).ready(function () {
 <?php
 
 $result = DB::select("
-SELECT a.`dt`, a.`job_no`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send,received_org,id 
+SELECT a.`dt`, a.`job_no`, a.`bill`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send,received_org,id 
 FROM `pay` a
 WHERE a.`customer_id` = '$id' 
 AND a.`ref`='Advance' AND a.distributed_from_pay_id IS NULL;
@@ -123,6 +123,7 @@ foreach($result as $item)
 
 			$balance=$balance+$credit;
 			$job_no=$item->job_no;
+			$bill=$item->bill;
 ?>				
 			<tr>
 				<td style="border: 1px solid black;text-align: center;"></td>
@@ -142,7 +143,7 @@ foreach($result as $item)
 				<td style="border: 1px solid black;text-align: center;">{{$item->note}}</td>
 			</tr>
 
-			@if($job_no != 'Advance')  <?php $balance=$balance-$credit; ?>
+			@if($job_no != 'Advance' && $bill != 'Advance')  <?php $balance=$balance-$credit; ?>
 				<tr>
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: center;"></td>

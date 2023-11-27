@@ -104,7 +104,7 @@ foreach($result as $item)
 
 $result01 = DB::select("
 SELECT sum(-`due`) Credit 
-FROM `pay` WHERE job_no='Advance' AND customer_id='$item->customer_id';
+FROM `pay` WHERE (job_no='Advance' OR bill='Advance') AND customer_id='$item->customer_id';
 ");
 foreach($result01 as $item01)
 		{

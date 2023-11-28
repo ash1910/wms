@@ -304,11 +304,11 @@ if($vat_pro!='0')
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 				`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `bank`, `chequeNo`, `chequeDt`) 
 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
-			,"", -round($received,2),$dt,$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$bank,$chequeNo,$chequeDt]);
+			,"", '0',$dt,$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$bank,$chequeNo,$chequeDt]);
 
 				DB::insert('INSERT INTO `cheque_pending`(`bank`, `chequeNo`, `chequeDt`,`received`, `due`, 
 				`job_no`, `customer_id`, `flag`) VALUES (?,?,?,?,?,?,?,?)',[$bank, $chequeNo, $chequeDt,
-				round($received,2), '', $job_no, $customer_id, '0']);
+				round($received,2), -round($received,2), $job_no, $customer_id, '0']);
 		}
 		if($pay_type=="bkash")
 		{

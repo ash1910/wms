@@ -703,8 +703,11 @@ if($vat_pro!='0')
 		$result = DB::table('cheque_pending')->where('id', $id)->where('confirm', '0')
 		->update(['flag' => '0','confirm' => '','denyImage' => $imageName,'confirmBy' => $user_id]);
 		
+		$pay_row = DB::table('pay')->where('job_no', $job_no)->where('chequeNo', $chequeNo)
+		->first();
+
 		$result = DB::table('pay')->where('job_no', $job_no)->where('chequeNo', $chequeNo)
-		->update(['received' => '0','due' => '0']);
+		->update(['received' => '0','due' =>  (float)$pay_row->received + (float)$pay_row->due ]);
 
 		DB::insert('INSERT INTO `cheque_disorder`(`job_no`, `chequeNo`, `dt`, `user_id`) VALUES (?,?,?,?)',[$job_no,$chequeNo,$dt,$user_id]);	
 

@@ -709,13 +709,10 @@ if($vat_pro!='0')
 		$result = DB::table('pay')->where('job_no', $job_no)->where('chequeNo', $chequeNo)
 		->update(['received' => '0','due' =>  (float)$pay_row->received + (float)$pay_row->due ]);
 
-		DB::insert('INSERT INTO `cheque_disorder`(`job_no`, `chequeNo`, `dt`, `user_id`) VALUES (?,?,?,?)',[$job_no,$chequeNo,$dt,$user_id]);	
-
+		DB::insert('INSERT INTO `cheque_disorder`(`job_no`, `chequeNo`, `dt`, `user_id`) VALUES (?,?,?,?)',[$job_no,$chequeNo,$dt,$user_id]);
 
 		return redirect ('/chequeConfirm')->with('alert', 'Deny Image Upload Sucessfully!!!');
 	}
-	
-	
 	
 	
 	public function advanceReceipt()

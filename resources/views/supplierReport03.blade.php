@@ -86,7 +86,7 @@ FROM `purchase_mas` a, suppliers b
 WHERE a.`purchase_dt` between '$dt01' and '$dt02'
 and a.`supplier_id` = '$supplier_id'
 and a.supplier_id = b.supplier_id 
-group BY  purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name
+group BY purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name
 order by purchase_dt
 ");
 	$sl = '1'; $tbuy = '';
@@ -106,6 +106,9 @@ foreach($result as $item)
      }
      elseif( $item->paid == '2' ){
       $payment_status = "Partial";
+     }
+     else{
+      $payment_status = "Due";
      }
 ?>		
 				<tr>

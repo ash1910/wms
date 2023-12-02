@@ -63,12 +63,16 @@ foreach($result as $item)
 					<tbody>	
 <?php
 $result_suppliers_payments = DB::table('suppliers_payment')->where('supplier_id', $supplier_id)->get();
-$bill_numbers = array();
+$bill_numbers = $pay_statuses = array();
 foreach($result_suppliers_payments as $item){	
+  $paid_full = 1;
+  if( ($item->discount + $item->paid_amount) < $item->due ) $paid_full = 0;
+
   $bill_numbers_s = explode(",", $item->bill_numbers);
   foreach( @$bill_numbers_s as $b_n) {
     if( !empty($b_n) ){
       $bill_numbers[] = $b_n;
+      $pay_statuses[$b_n] = $b_n;
     }
   }
   
@@ -77,7 +81,7 @@ foreach($result_suppliers_payments as $item){
 
 
 $result = DB::select("
-SELECT  distinct purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name, sum(a.amount) buypp
+SELECT  distinct purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name, sum(a.amount) buypp, Min(a.paid) paid 
 FROM `purchase_mas` a, suppliers b
 WHERE a.`purchase_dt` between '$dt01' and '$dt02'
 and a.`supplier_id` = '$supplier_id'
@@ -90,11 +94,18 @@ order by purchase_dt
 foreach($result as $item)
 		{		
     
-		 if( in_array($item->supplier_ref, $bill_numbers) ){
+		//  if( in_array($item->supplier_ref, $bill_numbers) ){
+    //   $payment_status = "Paid";
+    //  }
+    //  else{
+    //   $payment_status = "Due";
+    //  }
+
+     if( $item->paid == '1' ){
       $payment_status = "Paid";
      }
-     else{
-      $payment_status = "Due";
+     elseif( $item->paid == '2' ){
+      $payment_status = "Partial";
      }
 ?>		
 				<tr>

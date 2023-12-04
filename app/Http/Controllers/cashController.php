@@ -582,7 +582,7 @@ if($vat_pro!='0')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
 			->where('pay_type', 'cheque')
-			->where('due', '0')
+			//->where('due', '0')
 			->update(['received' => $received,'due' => $due,'dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);
@@ -616,7 +616,7 @@ if($vat_pro!='0')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
 			->where('pay_type', 'cheque')
-			->where('due', '0')
+			//->where('due', '0')
 			->update(['received' => $received,'due' => $due,'pay_type' => 'cash','dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);

@@ -112,11 +112,10 @@ p.paid_amount as `Paid`,
 (p.due-(p.discount+p.paid_amount)) as `Remaining`,
 p.note
 FROM `suppliers_payment` p 
-INNER JOIN `suppliers` s  ON p.supplier_id=s.supplier_id
+INNER JOIN `suppliers` s ON p.supplier_id=s.supplier_id
 WHERE STR_TO_DATE(created_date, '%Y-%m-%d')
 BETWEEN STR_TO_DATE('$from_dt', '%Y-%m-%d')
 AND STR_TO_DATE('$to_dt', '%Y-%m-%d');
-
 ");
 	$sl = '1'; 	$amount='0';		
 foreach($result as $item)
@@ -130,7 +129,7 @@ foreach($result as $item)
 <?php						
 $result01 = DB::select("
 SELECT (DATE_FORMAT(purchase_dt, '%d-%m-%Y')) bill_dt FROM purchase_mas 
-WHERE supplier_id='$item->supplier_id' AND supplier_ref IN($item->Suppliers_Ref);
+WHERE supplier_id='$item->supplier_id' AND supplier_ref IN('$item->Suppliers_Ref');
 
 ");
 foreach($result01 as $item01)

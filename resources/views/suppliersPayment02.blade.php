@@ -184,6 +184,7 @@ $('input:checkbox').change(function ()
 			<option value='AB Bank Limited'>AB Bank Limited</option>
 			<option value='Agrani Bank Ltd'>Agrani Bank Ltd</option>
 			<option value='Al-Arafah Islami Bank Limited'>Al-Arafah Islami Bank Limited</option>
+			<option value='Bangladesh Bank'>Bangladesh Bank</option>
 			<option value='Bangladesh Commerce Bank Limited'>Bangladesh Commerce Bank Limited</option>
 			<option value='Bank Al-Falah Limited (Pakistan)'>Bank Al-Falah Limited (Pakistan)</option>
 			<option value='Bank Asia Limited'>Bank Asia Limited</option>

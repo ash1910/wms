@@ -130,9 +130,48 @@ foreach($result as $item)
 				<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 				<td style="border: 1px solid black;text-align: left;">
 				    
-<?php if($item->pay_type=='cheque'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Bank:</b>{{$item->bank}}<br><b>Cheque No:</b>{{$item->chequeNo}}<br><b>Cheque Date:</b>{{$item->chequeDt}}<br> <?php } ?>	    
+<?php if($item->pay_type=='cheque'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Bank:</b>{{$item->bank}}<br><b>Cheque No:</b>{{$item->chequeNo}}<br><b>Cheque Date:</b>{{$item->chequeDt}}<br> 
+
+		<?php $pay_type='';
+			$stock04 = DB::select("
+			SELECT `dt`, job_no, chequeNo FROM `cheque_disorder` WHERE `job_no`='$job_no' AND `chequeNo`='$item->chequeNo'
+			");
+			foreach($stock04 as $item04)
+			{ 
+				$date = $item04->dt;
+		
+			$stock05 = DB::select("
+			SELECT job_no, chequeNo, denyImage, received, flag, denyDt FROM `cheque_pending` WHERE `job_no`='$job_no' AND `chequeNo`='$item->chequeNo'
+			");
+			foreach($stock05 as $item05)
+			{
+				$received = $item05->received;
+				$denyImage = $item05->denyImage;
+				$flag = $item05->flag;
+				$denyDt = $item05->denyDt;
+			}
+			$imageUrl = asset('upload/deny/'.$denyImage);   
+		    ?>
+			<br><b>Bank :</b> <a href="{{ $imageUrl }}" target="_blank">[{{$flag == 2 ? 'Deny' : 'Dishonor'}}]</a>
+			<br><b>Amount:</b> {{$received}}
+			<br><b>Date:</b> {{date('Y-m-d', strtotime($flag == 2 ? $denyDt : $date))}}
+		<?php    
+		}
+		?>
+<?php } ?>	    
 <?php if($item->pay_type=='bkash'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Trix:</b>{{$item->trix}}<br><b>Send:</b>{{$item->send}}<br> <?php } ?>	    
-<?php if($item->pay_type=='card'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Card Bank:</b>{{@$item->card_bank}}<br><b>Card No:</b>{{@$item->card_no}}<br><b>Card Type:</b>{{@$item->card_type}}<br> <?php } ?>	    
+<?php if($item->pay_type=='card'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br><b>Card Bank:</b>{{@$item->card_bank}}<br><b>Card No:</b>{{@$item->card_no}}<br><b>Card Type:</b>{{@$item->card_type}}<br> 
+
+	<?php 
+	$row_bdp = DB::table('bank_decline_payments')->where('pay_id', $item->id)->first();
+	if(!empty($row_bdp)){ $imageUrl = asset('upload/deny/'.$row_bdp->image);?>
+		<br><b>Bank Decline(POS):</b> <a href="{{ $imageUrl }}" target="_blank">[Decline]</a>
+		<br><b>Return Amount:</b>{{$row_bdp->received}}
+		<br><b>Charge:</b>{{$row_bdp->charge}}
+		<br><b>Date:</b>{{$row_bdp->dt}}
+	<?php } ?>
+
+<?php } ?>	    
 <?php if($item->pay_type=='cash'){ ?> <b>Payment Type:</b> {{$item->pay_type}}<br> 
 
 <?php if($item->bank !='' && $item->chequeNo !=''){ ?>

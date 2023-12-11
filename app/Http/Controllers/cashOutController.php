@@ -69,36 +69,34 @@ class cashOutController extends Controller
 		 $tamount=$r->input('tamount');//post input
 		
 
-	DB::insert('INSERT INTO `suppliers_payment`(`supplier_id`, `bill_numbers`, `due`, 
-		`discount`, `paid_amount`, `created_date`, `note`, `mode_of_payment`,
-		`bank_name`, `cheque_number`,`cheque_date`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?)',
-		[$supplier_id,$ref,$tamount,
-		$discount,$pAmount,$pDt,$note,$pay_type,
-		$bank, $chequeNo,$chequeDt]);
-		
-if($tamount==($pAmount+$discount))
-{	
+		DB::insert('INSERT INTO `suppliers_payment`(`supplier_id`, `bill_numbers`, `due`, 
+			`discount`, `paid_amount`, `created_date`, `note`, `mode_of_payment`,
+			`bank_name`, `cheque_number`,`cheque_date`) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+			[$supplier_id,$ref,$tamount,
+			$discount,$pAmount,$pDt,$note,$pay_type,
+			$bank, $chequeNo,$chequeDt]);
+			
+		if($tamount==($pAmount+$discount))
+		{	
 
-$ids = explode(',',$ref);
-		$result = DB::table('purchase_mas')
-		->where('supplier_id', $supplier_id)
-		->whereIn('supplier_ref', $ids)
-		->update(['paid' => '1']);
-}
-if($tamount!=($pAmount+$discount))
-{	
-$ids = explode(',',$ref);
-		$result = DB::table('purchase_mas')
-		->where('supplier_id', $supplier_id)
-		->whereIn('supplier_ref', $ids)
-		->update(['paid' => '2']);
-}
+		$ids = explode(',',$ref);
+				$result = DB::table('purchase_mas')
+				->where('supplier_id', $supplier_id)
+				->whereIn('supplier_ref', $ids)
+				->update(['paid' => '1']);
+		}
+		if($tamount!=($pAmount+$discount))
+		{	
+		$ids = explode(',',$ref);
+				$result = DB::table('purchase_mas')
+				->where('supplier_id', $supplier_id)
+				->whereIn('supplier_ref', $ids)
+				->update(['paid' => '2']);
+		}
 		return redirect ('suppliersPayment')->with('alert', 'Suppliers Payment Successfully!');
 
-
 	}
-	
 	
 	public function payments()
 	{

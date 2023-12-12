@@ -212,7 +212,7 @@ if($job_no=='X')
 		}
 
 		$result = DB::table('pay')->where('id', $id)
-		->update(['job_no' => $job_no,'bill' => $bill_no]);
+		->update(['job_no' => $job_no,'bill' => $bill_no,'adjustment_dt' => date('Y-m-d')]);
 
 	$result01 = DB::select("
 	SELECT `bank`,`chequeNo`,`chequeDt` FROM `pay` WHERE `id` = '$id'");
@@ -285,7 +285,8 @@ if($job_no=='X')
 			"note" => "distribute from pay id ".$id,
 			"distributed_from_pay_id" => $id,
 			"dt" => $today,
-			"user_id" => $user_id
+			"user_id" => $user_id,
+			"adjustment_dt" => $today
 		);
 
 		DB::table('pay')->insert($pay_row_dis);

@@ -105,7 +105,7 @@ $(document).ready(function () {
 <?php
 
 $result = DB::select("
-SELECT a.`dt`, a.`job_no`, a.`bill`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send,received_org,id,card_bank,card_no,card_type  
+SELECT a.`dt`, a.`job_no`, a.`bill`,-a.`due` Credit , note, bank,chequeNo,chequeDt,pay_type,trix,send,received_org,id,card_bank,card_no,card_type,adjustment_dt   
 FROM `pay` a
 WHERE a.`customer_id` = '$id' 
 AND a.`ref`='Advance' AND a.distributed_from_pay_id IS NULL;
@@ -191,7 +191,7 @@ foreach($result as $item)
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: left;"></td>			
-					<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
+					<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->adjustment_dt ? $item->adjustment_dt : $item->dt))}}</td>
 					<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$job_no}}">{{$job_no}}</a></td>
 					
 					<td style="border: 1px solid black;text-align: center;">{{number_format(($credit), 2, '.', ',');}}</td>

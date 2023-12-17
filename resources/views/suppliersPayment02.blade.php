@@ -68,7 +68,7 @@ $data = DB::select("
 		$paid = $item->paid;
 		if($paid=='0')
 		{?>
-        <input type="checkbox" id="basic_single" name="Ref 301-40000" value="{{$supplier_ref}}-{{$amount}}"> {{$supplier_ref}} <font style="color: blue;">[TK.{{$amount}}]</font>
+        <input type="checkbox" id="basic_single" name="Ref 301-40000" value="{{$supplier_ref}}---{{$amount}}"> {{$supplier_ref}} <font style="color: blue;">[TK.{{$amount}}]</font>
 <?php	}
 
 		if($paid=='2')
@@ -86,7 +86,7 @@ $data = DB::select("
 				}	
 			 $count = '1';
 ?>
-        <input type="checkbox" id="basic_single" name="Ref 301-40000" value="{{$supplier_ref}}-{{$amount}}"> {{$supplier_ref}} <font style="color: blue;">[TK.{{$amount}}]</font>
+        <input type="checkbox" id="basic_single" name="Ref 301-40000" value="{{$supplier_ref}}---{{$amount}}"> {{$supplier_ref}} <font style="color: blue;">[TK.{{$amount}}]</font>
 <?php
 			}
 		}
@@ -113,7 +113,7 @@ $('input:checkbox').change(function ()
       $('input:checkbox:checked').each(function(){
 	  
 		var string = $(this).val();
-		var parts = string.split("-");
+		var parts = string.split("---");
 		var lastPart = parts[parts.length - 1]; //lastPart is now the final index string split
 		var firstPart = parts[0]+",";
         total += isNaN(parseInt(lastPart)) ? 0 : parseInt(lastPart);

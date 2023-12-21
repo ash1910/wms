@@ -67,6 +67,11 @@ class cashOutController extends Controller
 		 $note=$r->input('note');//post input
 		 $pay_type=$r->input('pay_type');//post input
 		 $tamount=$r->input('tamount');//post input
+
+		 if( (float)$tamount <= 0 ){
+			return redirect ('suppliersPayment')->with('alert', 'Failed');
+		 }
+		 
 		
 
 		DB::insert('INSERT INTO `suppliers_payment`(`supplier_id`, `bill_numbers`, `due`, 

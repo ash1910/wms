@@ -54,7 +54,7 @@ function toggle(source) {
 }
 </script>
 
-<input type="checkbox" onClick="toggle(this)" value='0' /> Toggle All<br/>
+<input type="checkbox" onClick="toggle(this)" value='' /> Toggle All<br/>
 <?php 
 $data = DB::select("
 		SELECT supplier_ref,`amount`,paid
@@ -113,12 +113,14 @@ $('input:checkbox').change(function ()
       $('input:checkbox:checked').each(function(){
 	  
 		var string = $(this).val();
-		var parts = string.split("---");
-		var lastPart = parts[parts.length - 1]; //lastPart is now the final index string split
-		var firstPart = parts[0]+",";
-        total += isNaN(parseInt(lastPart)) ? 0 : parseInt(lastPart);
-        total01 += isNaN(parseInt(lastPart)) ? 0 : parseInt(lastPart);
-		selectedref +=firstPart;
+		if(string){
+			var parts = string.split("---");
+			var lastPart = parts[parts.length - 1]; //lastPart is now the final index string split
+			var firstPart = parts[0]+",";
+			total += isNaN(parseFloat(lastPart)) ? 0 : parseFloat(lastPart);
+			total01 += isNaN(parseFloat(lastPart)) ? 0 : parseFloat(lastPart);
+			selectedref +=firstPart;
+		}
       });   
   
       $("#total").val(total);

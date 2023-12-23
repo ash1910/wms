@@ -228,6 +228,7 @@ $('input:checkbox').change(function ()
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
 			<option value='Social Islami Bank Limited'>Social Islami Bank Limited</option>
+			<option value='Sonali Bank Ltd'>Sonali Bank Ltd</option>
 			<option value='Southeast Bank Limited'>Southeast Bank Limited</option>
 			<option value='Standard Bank Limited'>Standard Bank Limited</option>
 			<option value='Standard Chartered Bank'>Standard Chartered Bank</option>

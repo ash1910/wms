@@ -224,7 +224,12 @@ foreach($result as $item)
 					<td style="border: 1px solid black;text-align: center;">{{number_format(($credit), 2, '.', ',');}}</td>
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: center;">{{number_format(($balance), 2, '.', ',');}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{$item01->note}}</td>
+					<td style="border: 1px solid black;text-align: center;">
+						<b>Payment Type:</b> {{$item->pay_type}}<br> 
+						<?php if($item->bank !='' && $item->chequeNo !=''){ ?>
+							<b>Bank:</b>{{$item->bank}}<br><b>Cheque No:</b>{{$item->chequeNo}}<br><b>Cheque Date:</b>{{$item->chequeDt}}<br>
+						<?php } ?>
+					</td>
 				</tr>
 
 			<?php } }?>

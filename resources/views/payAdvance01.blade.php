@@ -126,6 +126,7 @@ order by id;
 		foreach($result01 as $post01)
 			{
 				$id = $post01->id;
+				$t_date = $post01->dt;
 				$received = $post01->received;
 				$ac_received = $post01->received;
 				$job_no = $post01->job_no;
@@ -173,7 +174,7 @@ if($pay_type=="cheque")
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<b>Date </b>: {{$today}}</td>
+	<b>Date </b>: {{date('d-M-Y', strtotime($t_date))}}</td>
 </tr>
 
 <tr>

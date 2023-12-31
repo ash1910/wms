@@ -28,7 +28,7 @@
 	</li>			
 
 <?php 
-if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
 ?>	<li>
 	  <a href="/setup"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Setup</div>
@@ -54,7 +54,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>            
  
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/bill"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Billing</div>
@@ -62,7 +62,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>    
         
-<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")){ ?>
 	<li>
 	  <a href="/customerEdit"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">CRM</div>

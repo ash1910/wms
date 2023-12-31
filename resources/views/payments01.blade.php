@@ -1,5 +1,5 @@
 <?php 
-if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
+if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
 //return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');

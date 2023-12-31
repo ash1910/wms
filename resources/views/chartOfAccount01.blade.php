@@ -167,7 +167,7 @@ foreach($result as $item)
 $data = DB::select("SELECT `name`,ledge FROM `coa` WHERE `id` = '$id'");
 foreach($data as $item){ $name=$item->name ;$ledge=$item->ledge ;}					
 					
-					if($id!= '')
+					if(($id!= '') && (session('role')=="Super Administrator"))
 					{?>
 						
 						

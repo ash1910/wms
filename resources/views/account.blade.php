@@ -100,7 +100,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
  <?php } ?>
  
   <?php 
-if ((session('role')=="Super Administrator")||(session('role')=="Administrator")){
+if ((session('role')=="Super Administrator")){
 ?>
 	  <a href="/bankDeclineForm">
 	  <div class="col">

@@ -33,8 +33,7 @@
 
 
 <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")){
 ?>	  
 	  <a href="/payment">
 	  <div class="col">

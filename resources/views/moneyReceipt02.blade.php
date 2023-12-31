@@ -112,7 +112,7 @@ AND a.customer_id = b.customer_id;
 ");
 $result01 = DB::select("
 SELECT `id`,`bill`, `job_no`, `customer_id`, `bill_dt`, `net_bill`, `received`, `pay_type`, due,
-`dt`, `user_id`,  `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`
+`dt`, `user_id`,  `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, `post_dt` 
 FROM `pay` WHERE id='$id'
 order by id
 ");
@@ -138,6 +138,7 @@ SELECT sum(due) due, sum(bonus) bonus, sum(vat_wav) vat_wav FROM `pay` WHERE `jo
 			{
 				$id = $post01->id;
 				$dt = $post01->dt;
+				$post_dt = $post01->post_dt;
 				$received = $post01->received;
 				$ac_received = $post01->received;
 				$pay_type = $post01->pay_type;
@@ -157,6 +158,7 @@ if($pay_type=="cheque")
 	$bank = $post01->bank;
 	$chequeNo = $post01->chequeNo;
 	$chequeDt = $post01->chequeDt;
+	$dt = $post_dt;
 
 $result04 = DB::select("
 SELECT `received` FROM `cheque_pending` WHERE `job_no`='$job_no' and `flag` = '0' and `bank` = '$bank'

@@ -82,7 +82,7 @@ foreach($result as $item)
 		{		$total01 = '0';$total03 = '0';
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;">{{$item->date}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->date))}}</td>
 						<td style="border: 1px solid black;text-align: center;"><a href="purchase02?id={{$item->pch}}">{{$item->particulars}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->debit), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->credit), 2, '.', ',')}}</td>

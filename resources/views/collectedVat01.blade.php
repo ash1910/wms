@@ -107,11 +107,11 @@ foreach($result as $item)
 ?>				
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-            <td style="border: 1px solid black;text-align: center;">{{$item_bill_mas->bill_dt}}</td>
+            <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item_bill_mas->bill_dt))}}</td>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$item->job_no}}">{{$item->job_no}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->basic}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->receive}}</td>
-            <td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
+            <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->collected_vat}}</td>
 					</tr>
 		<?php

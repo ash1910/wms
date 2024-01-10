@@ -91,6 +91,10 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Total</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Vat</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Net Bill</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Card Charge</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">MFS Charge</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">AIT</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">VAT Wave</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Received</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Discount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due</th>
@@ -118,7 +122,7 @@ $result = DB::select("
 SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
 sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due,
-sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer
+sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer, MIN(c.pay_type) pay_type 
 FROM `bill_mas` a, customer_info b, `pay` c
 WHERE a.`bill_dt` between '$from_dt' and '$to_dt'
 and a.customer_id = b.customer_id
@@ -148,6 +152,10 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->net_bill}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$vat}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->total), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type === 'card' ? number_format(($item->charge), 2, '.', ',') : '0.00'}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type === 'bkash' ? number_format(($item->charge), 2, '.', ',') : '0.00'}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->ait), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->vat_wav), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->bonus), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->due), 2, '.', ',')}}</td>

@@ -148,6 +148,7 @@ $supplier_ref = $item->supplier_ref;$supplier_id = $item->supplier_id;}
 							<th scope="col">Qty</th>
 							<th scope="col">Buy (Per Unit)</th>
 							<th scope="col">Total</th>
+              <th scope="col">Note</th>
 							<th scope="col"></th>
 						</tr>
 					</thead>
@@ -166,6 +167,7 @@ $supplier_ref = $item->supplier_ref;$supplier_id = $item->supplier_id;}
 						<td>{{$item->qty}}</td>
 						<td>{{$item->rate}}</td>
 						<td>{{$item->amount}}</td>
+            <td>{{$item->note}}</td>
 <?php if($flag=='0'){ ?>						
 						<td><center>
 							<form style="display: inline;" action="purchaseDel" method="post">{{ csrf_field() }}

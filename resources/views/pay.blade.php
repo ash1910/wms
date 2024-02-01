@@ -451,8 +451,10 @@ foreach($result01 as $item01)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master">Master Card</option>
-			<option value="Visa">Visa Card</option>
+			<option value="Master" class="MTBL">Master Card</option>
+			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Amex" disabled class="CBL">City-AMEX</option>
+			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
 		
 	  </div>
@@ -463,7 +465,8 @@ foreach($result01 as $item01)
 	  </div>
 	  <div style="width: 70%;">
 		<select name="merchant" class="form-select">
-			<option value='MTBL'>Mutual Trust Bank Limited</option>
+			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
 		</select>		
 		
 	  </div>
@@ -543,6 +546,8 @@ foreach($result01 as $item01)
                                  <h6 class="mb-2">Settlement Amount</h6>
                                  <p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p>
                                  <p class="mb-1"><b>Card: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p>
+								 <p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p>
+								 <p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p>
 							  </div>
                            </div>
                            </div>
@@ -607,7 +612,19 @@ $(function () {
 $(function () {
   $("#id-1, #id-2, #id-3, #id-8").keyup(function () {
     $("#id-7").val((+$("#id-1").val()*.987 ));
+	$("#id-11").val((+$("#id-1").val()*.980 ));
+	$("#id-12").val((+$("#id-1").val()*.983 ));
   });
+
+  
+ 
+  $("select[name='merchant']").on('change', function() {
+		//alert( this.value );
+		$("select[name='card_type']").val('');
+		$("select[name='card_type'] option").attr('disabled', 'disabled');
+		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+	});
+
 });
 </script>
 

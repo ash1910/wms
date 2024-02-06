@@ -118,7 +118,6 @@ $user_list = array();
 		}  
 
 $result = DB::select("
-
 SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
 sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due,
@@ -137,6 +136,22 @@ a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, p
 foreach($result as $item)
 		{		$total01 = '0';
 				$net_bill = $item->net_bill; $vat= (int)$net_bill*.1;
+
+						// charge calculate
+						$result_charge = DB::select("
+						SELECT sum(`charge`) charge, pay_type 
+						FROM `pay` 
+						WHERE customer_id = '$item->customer_id' 
+						AND job_no = '$item->job_no' 
+						AND bill = '$item->bill_no' 
+						group by `pay_type`;
+						");
+						$card_charge = 0; $bkash_charge = 0;
+						foreach($result_charge as $item_charge)
+						{	
+							if( $item_charge->pay_type == 'card' ) $card_charge = $item_charge->charge;
+							elseif( $item_charge->pay_type == 'bkash' ) $bkash_charge = $item_charge->charge;
+						}
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-m-Y',strtotime($item->bill_dt))}}</td>
@@ -152,8 +167,8 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->net_bill}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$vat}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->total), 2, '.', ',')}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type === 'card' ? number_format(($item->charge), 2, '.', ',') : '0.00'}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type === 'bkash' ? number_format(($item->charge), 2, '.', ',') : '0.00'}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($card_charge), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($bkash_charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->ait), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->vat_wav), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>

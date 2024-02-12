@@ -426,8 +426,21 @@ if($vat_pro!='0')
 		}
 		if($pay_type=="card")
 		{
-		$charge=round($received-($received*0.987),2);
-		$received = round($received*0.987,2);
+			if($merchant_bank=="CBL"){
+				if($card_type=="CityVMQU"){
+					$charge=round($received-($received*0.983),2);
+					$received = round($received*0.983,2);
+				}
+				else{
+					$charge=round($received-($received*0.980),2);
+					$received = round($received*0.980,2);
+				}
+			}
+			else{
+				$charge=round($received-($received*0.987),2);
+				$received = round($received*0.987,2);
+			}
+			
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`,  `card_bank`, `card_no`, `card_type`, 
 				`merchant_bank`,`charge`) 

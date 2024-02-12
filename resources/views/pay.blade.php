@@ -543,11 +543,32 @@ foreach($result01 as $item01)
                                 <i class="fadeIn animated bx bx-money"></i>
                               </div>
                               <div class="info">
-                                 <h6 class="mb-2">Settlement Amount</h6>
-                                 <p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p>
-                                 <p class="mb-1"><b>Card: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p>
-								 <p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p>
-								 <p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p>
+								<table class="SettlementAmount">
+									<thead>
+										<tr>
+											<td><h6 class="mb-2">Settlement Amount</h6></td>
+											<td><h6 class="mb-2">Charge Amount</h6></td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td>TK. <input type="text" id="id-6-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
+											<td>TK. <input type="text" id="id-7-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p></td>
+											<td>TK. <input type="text" id="id-11-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
+											<td>TK. <input type="text" id="id-12-c" disabled ></td>
+										</tr>
+									</tboday>
+								</table>
 							  </div>
                            </div>
                            </div>
@@ -578,7 +599,17 @@ foreach($result01 as $item01)
 			
 </main>
 
-
+<style>
+.SettlementAmount input {
+    width: 80px;
+}
+.SettlementAmount tr > td:last-child {
+    text-align: right;
+}
+.SettlementAmount b {
+    font-size: 14px;
+}
+</style>
 
 		  
 @endsection		 
@@ -605,15 +636,15 @@ $(function () {
 
 $(function () {
   $("#id-1, #id-2, #id-3, #id-8").keyup(function () {
-    $("#id-6").val((+$("#id-1").val()*.985 ));
-  });
-});
-
-$(function () {
-  $("#id-1, #id-2, #id-3, #id-8").keyup(function () {
+	$("#id-6").val((+$("#id-1").val()*.985 ));
     $("#id-7").val((+$("#id-1").val()*.987 ));
 	$("#id-11").val((+$("#id-1").val()*.980 ));
 	$("#id-12").val((+$("#id-1").val()*.983 ));
+
+	$("#id-6-c").val((+$("#id-1").val()*.015 ));
+    $("#id-7-c").val((+$("#id-1").val()*.013 ));
+	$("#id-11-c").val((+$("#id-1").val()*.020 ));
+	$("#id-12-c").val((+$("#id-1").val()*.017 ));
   });
 
   

@@ -353,8 +353,10 @@ foreach($result as $item)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master">Master Card</option>
-			<option value="Visa">Visa Card</option>
+			<option value="Master" class="MTBL">Master Card</option>
+			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Amex" disabled class="CBL">City-AMEX</option>
+			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
 		
 	  </div>
@@ -364,7 +366,10 @@ foreach($result as $item)
 		<p class="mb-0">Merchant Bank</p>
 	  </div>
 	  <div style="width: 70%;">
-		<input type="text" name="merchant" style="width: 100%;"/>
+	  	<select name="merchant" class="form-select">
+			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+		</select>	
 	  </div>
 	</div>
 </div>
@@ -417,9 +422,32 @@ foreach($result as $item)
                                 <i class="fadeIn animated bx bx-money"></i>
                               </div>
                               <div class="info">
-                                 <h6 class="mb-2">Settlement Amount</h6>
-                                 <p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p>
-                                 <p class="mb-1"><b>Card: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p>
+							  	<table class="SettlementAmount">
+									<thead>
+										<tr>
+											<td><h6 class="mb-2">Settlement Amount</h6></td>
+											<td><h6 class="mb-2">Charge Amount</h6></td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td>TK. <input type="text" id="id-6-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
+											<td>TK. <input type="text" id="id-7-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p></td>
+											<td>TK. <input type="text" id="id-11-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
+											<td>TK. <input type="text" id="id-12-c" disabled ></td>
+										</tr>
+									</tboday>
+								</table>
 							  </div>
                            </div>
                            </div>
@@ -457,7 +485,17 @@ foreach($result as $item)
 			
 </main>
 
-
+<style>
+.SettlementAmount input {
+    width: 80px;
+}
+.SettlementAmount tr > td:last-child {
+    text-align: right;
+}
+.SettlementAmount b {
+    font-size: 14px;
+}
+</style>
 
 		  
 @endsection		 
@@ -475,17 +513,26 @@ foreach($result as $item)
  
  
 <script>
-    $(function () {
-      $("#id-1").keyup(function () {
-        $("#id-6").val((+$("#id-1").val()*.985 ));
-      });
-    });
-    
-    $(function () {
-      $("#id-1").keyup(function () {
-        $("#id-7").val((+$("#id-1").val()*.987 ));
-      });
-    });
+$(function () {
+  $("#id-1").keyup(function () {
+	$("#id-6").val((+$("#id-1").val()*.985 ));
+    $("#id-7").val((+$("#id-1").val()*.987 ));
+	$("#id-11").val((+$("#id-1").val()*.980 ));
+	$("#id-12").val((+$("#id-1").val()*.983 ));
+	$("#id-6-c").val((+$("#id-1").val()*.015 ));
+    $("#id-7-c").val((+$("#id-1").val()*.013 ));
+	$("#id-11-c").val((+$("#id-1").val()*.020 ));
+	$("#id-12-c").val((+$("#id-1").val()*.017 ));
+  });
+  
+ 
+  $("select[name='merchant']").on('change', function() {
+		//alert( this.value );
+		$("select[name='card_type']").val('');
+		$("select[name='card_type'] option").attr('disabled', 'disabled');
+		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+	});
+});
 </script>
  
 

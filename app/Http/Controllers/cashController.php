@@ -168,6 +168,8 @@ class cashController extends Controller
 		$card_no=$r->input('card_no');//post input
 		$card_type=$r->input('card_type');//post input
 		$merchant_bank=$r->input('merchant');//post input
+		$merchant_online=$r->input('merchant_online');//post input
+		$merchant_checque=$r->input('merchant_checque');//post input
 
 		$user_id = session('user_id');
 		$dt = date("Y-m-d");
@@ -189,9 +191,9 @@ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,round($receive
 if($pay_type=="online")
 {
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`vat_pro`,`ait`,
-		`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`) 
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,round($received,2),round($bonus,2)
-	,round($vat_wav,2),round($vat_pro,2),round($ait,2), round(-$due,2),$dt,$user_id,$pay_type,$ref,$note]);
+		`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`, `merchant_bank`) 
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,round($received,2),round($bonus,2)
+	,round($vat_wav,2),round($vat_pro,2),round($ait,2), round(-$due,2),$dt,$user_id,$pay_type,$ref,$note,$merchant_online]);
 }
 if($pay_type=="due")
 {
@@ -203,10 +205,10 @@ $pay_type,$ref,$note]);
 if($pay_type=="cheque")
 {
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`vat_pro`,`ait`,
-		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,'0',round($bonus,2)
+		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`, `merchant_bank`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,'0',round($bonus,2)
 		,round($vat_wav,2),round($vat_pro,2),round($ait,2), '0',$dt,$dt,$user_id,$pay_type,$ref,$note,
-		$bank,$chequeNo,$chequeDt]);
+		$bank,$chequeNo,$chequeDt,$merchant_checque]);
 
 		DB::insert('INSERT INTO `cheque_pending`(`bank`, `chequeNo`, `chequeDt`,`received`, `due`, 
 		`job_no`, `customer_id`, `flag`) VALUES (?,?,?,?,?,?,?,?)',[$bank, $chequeNo, $chequeDt,
@@ -297,6 +299,8 @@ if($vat_pro!='0')
 		$card_no=$r->input('card_no');//post input
 		$card_type=$r->input('card_type');//post input
 		$merchant_bank=$r->input('merchant');//post input
+		$merchant_online=$r->input('merchant_online');//post input
+		$merchant_checque=$r->input('merchant_checque');//post input
 		$user_id = session('user_id');
 		$dt = date("Y-m-d");
 		$bill_no = "";
@@ -310,16 +314,16 @@ if($vat_pro!='0')
 		if($pay_type=="online")
 		{
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
-				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `chequeNo`, `chequeDt`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
-			,"", -round($received,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$chequeNo,$chequeDt]);
+				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `chequeNo`, `chequeDt`, `merchant_bank`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
+			,"", -round($received,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$chequeNo,$chequeDt, $merchant_online]);
 		}
 		if($pay_type=="cheque")
 		{
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
-				`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `bank`, `chequeNo`, `chequeDt`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
-			,"", '0',$dt,$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$bank,$chequeNo,$chequeDt]);
+				`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `bank`, `chequeNo`, `chequeDt`, `merchant_bank`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
+			,"", '0',$dt,$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$bank,$chequeNo,$chequeDt, $merchant_checque]);
 
 				DB::insert('INSERT INTO `cheque_pending`(`bank`, `chequeNo`, `chequeDt`,`received`, `due`, 
 				`job_no`, `customer_id`, `flag`) VALUES (?,?,?,?,?,?,?,?)',[$bank, $chequeNo, $chequeDt,
@@ -389,6 +393,8 @@ if($vat_pro!='0')
 		$card_no=$r->input('card_no');//post input
 		$card_type=$r->input('card_type');//post input
 		$merchant_bank=$r->input('merchant');//post input
+		$merchant_online=$r->input('merchant_online');//post input
+		$merchant_checque=$r->input('merchant_checque');//post input
 		$user_id = session('user_id');
 		$dt = date("Y-m-d");
 		$bill_no = "";
@@ -403,19 +409,16 @@ if($vat_pro!='0')
 		if($pay_type=="online")
 		{
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`ait`,
-				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
-			,"","", round($received,2),$dt,$user_id,$pay_type,$ref,$note]);
+				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`merchant_bank`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
+			,"","", round($received,2),$dt,$user_id,$pay_type,$ref,$note,$merchant_online]);
 		}
 		if($pay_type=="cheque")//need to developer
-		{
-				
-				
-				
+		{	
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
-		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
-		,"", '0',$dt,$dt,$user_id,$pay_type,$ref,$note,	$bank,$chequeNo,$chequeDt]);
+		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`,`merchant_bank`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
+		,"", '0',$dt,$dt,$user_id,$pay_type,$ref,$note,	$bank,$chequeNo,$chequeDt, $merchant_checque]);
 
 		DB::insert('INSERT INTO `cheque_pending`(`bank`, `chequeNo`, `chequeDt`,`received`, `due`, 
 		`job_no`, `customer_id`, `flag`) VALUES (?,?,?,?,?,?,?,?)',[$bank, $chequeNo, $chequeDt,

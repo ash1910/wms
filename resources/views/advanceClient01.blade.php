@@ -161,7 +161,18 @@ foreach($result as $item)
 	
 </div>
 <div id="dvOnline" style="display: none">
-	
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Merchant Bank</p>
+	  </div>
+	  <div style="width: 70%;">
+		<select name="merchant_online" class="form-select">
+			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+		</select>		
+		
+	  </div>
+	</div>
 </div>
 
 <div id="dvBkash" style="display: none">
@@ -262,6 +273,18 @@ foreach($result as $item)
 	  </div>
 	  <div style="width: 70%;">
 		<input type="text" name="chequeDt" style="width: 100%;"/>
+	  </div>
+	</div>
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Merchant Bank</p>
+	  </div>
+	  <div style="width: 70%;">
+		<select name="merchant_checque" class="form-select">
+			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+		</select>		
+		
 	  </div>
 	</div>
 </div>

@@ -216,6 +216,8 @@ ROUND(SUM(CASE WHEN a.pay_type = 'bkash' then `received` ELSE 0 END),2) AS `bkas
 ROUND(SUM(CASE WHEN a.pay_type = 'cheque' then `received` ELSE 0 END),2) AS `cheque`,
 ROUND(SUM(CASE WHEN a.pay_type = 'card' then `received` ELSE 0 END),2) AS `card`,
 ROUND(SUM(CASE WHEN a.pay_type = 'online' then `received` ELSE 0 END),2) AS `online`,
+ROUND(SUM(CASE WHEN a.merchant_bank = 'MTBL' then `received` ELSE 0 END),2) AS `esl`,
+ROUND(SUM(CASE WHEN a.merchant_bank = 'CBL' then `received` ELSE 0 END),2) AS `has`,
 SUM(`received`) total
 FROM `pay` a
 WHERE 
@@ -231,6 +233,8 @@ foreach($result01 as $item01)
 			$cheque = $item01->cheque;
 			$card = $item01->card;
 			$online = $item01->online;
+			$esl = $item01->esl;
+			$has = $item01->has;
 		}					
 ?>
 	
@@ -240,6 +244,8 @@ foreach($result01 as $item01)
 <strong>Total MFS Received Amount: <a href="report041?pay_type=bkash&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}">Tk. {{number_format(($bkash), 2, '.', ',')}}</a>	</strong><br>
 <strong>Total Card Received Amount: <a href="report041?pay_type=card&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}">Tk. {{number_format(($card), 2, '.', ',')}}</a>	</strong><br>
 <strong>Total Online Received Amount: <a href="report041?pay_type=online&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}">Tk. {{number_format(($online), 2, '.', ',')}}</a>	</strong><br>
+<strong>Total ESL-MTBL-0022-0210004676 Amount: <a href="report041?pay_type=esl&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}">Tk. {{number_format(($esl), 2, '.', ',')}}</a>	</strong><br>
+<strong>Total HAS-MTBL-01301-000217814 Amount: <a href="report041?pay_type=has&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}">Tk. {{number_format(($has), 2, '.', ',')}}</a>	</strong><br>
 
 <?php
 /*$result02 = DB::select("

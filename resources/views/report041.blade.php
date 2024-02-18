@@ -78,6 +78,15 @@
 					<tbody>				
 <?php
 
+	if( $pay_type == "has"){
+		$where_pay_type = " and a.merchant_bank='CBL' ";
+	}
+	elseif( $pay_type == "esl"){
+		$where_pay_type = " and a.merchant_bank='MTBL' ";
+	}
+	else{
+		$where_pay_type = " and a.pay_type='$pay_type' ";
+	}
 
 	$result = DB::select("
 	SELECT `bill` bill_no, a.`job_no`, b.customer_nm, a.`bill_dt`, a.`net_bill`, `received`, `bonus`, `due`,`pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt, b.bill_dt,
@@ -86,8 +95,8 @@
 	WHERE 
 	a.bill = b.bill_no
 	AND a.dt between '$from_dt' and '$to_dt'
-	and a.user_id = c.user_id and a.pay_type<>'SYS'
-	and a.pay_type='$pay_type'
+	and a.user_id = c.user_id and a.pay_type<>'SYS' 
+	$where_pay_type 
 	order by bill, a.bill_dt desc
 	;
 	");

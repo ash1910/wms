@@ -79,10 +79,10 @@
 <?php
 
 	if( $pay_type == "has"){
-		$where_pay_type = " and a.merchant_bank='CBL' ";
+		$where_pay_type = " and a.merchant_bank='CBL' AND a.pay_type IN ('card','cheque','online') ";
 	}
 	elseif( $pay_type == "esl"){
-		$where_pay_type = " and a.merchant_bank='MTBL' ";
+		$where_pay_type = " and a.merchant_bank='MTBL' AND a.pay_type IN ('card','cheque','online') ";
 	}
 	else{
 		$where_pay_type = " and a.pay_type='$pay_type' ";

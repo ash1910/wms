@@ -216,8 +216,8 @@ ROUND(SUM(CASE WHEN a.pay_type = 'bkash' then `received` ELSE 0 END),2) AS `bkas
 ROUND(SUM(CASE WHEN a.pay_type = 'cheque' then `received` ELSE 0 END),2) AS `cheque`,
 ROUND(SUM(CASE WHEN a.pay_type = 'card' then `received` ELSE 0 END),2) AS `card`,
 ROUND(SUM(CASE WHEN a.pay_type = 'online' then `received` ELSE 0 END),2) AS `online`,
-ROUND(SUM(CASE WHEN a.merchant_bank = 'MTBL' then `received` ELSE 0 END),2) AS `esl`,
-ROUND(SUM(CASE WHEN a.merchant_bank = 'CBL' then `received` ELSE 0 END),2) AS `has`,
+ROUND(SUM(CASE WHEN a.merchant_bank = 'MTBL' AND a.pay_type IN ('card','cheque','online') then `received` ELSE 0 END),2) AS `esl`,
+ROUND(SUM(CASE WHEN a.merchant_bank = 'CBL' AND a.pay_type IN ('card','cheque','online') then `received` ELSE 0 END),2) AS `has`,
 SUM(`received`) total
 FROM `pay` a
 WHERE 

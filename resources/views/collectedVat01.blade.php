@@ -97,7 +97,7 @@ FROM
 SELECT job_no,SUM(`received`+IFNULL(`charge`, 0)) receive,SUM(`net_bill`/110*100) basic,(SUM(`received`+IFNULL(`charge`, 0))-SUM(`net_bill`/110*100)) collected_vat, MAX(dt) last_dt, MAX(bill) bill_no FROM `pay` 
 WHERE `job_no`in(SELECT `job_no` FROM `pay` WHERE `dt` BETWEEN '$from_dt' AND '$to_dt' AND `pay_type`<>'SYS') GROUP by job_no
 ) a
-WHERE a.collected_vat >0
+WHERE a.collected_vat >0 AND (a.last_dt BETWEEN '$from_dt' AND '$to_dt') 
 ");
 	$sl = '1'; 	$amount='0';		
 foreach($result as $item)

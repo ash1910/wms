@@ -422,12 +422,12 @@ foreach($result as $item)
 						<a href='report032?adjust=comple&&segment={{$item->sales_segment}}&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}'>{{number_format(($item->complementary_work), 2, '.', ',');}}</td>
 						<td style="border: 1px solid black;text-align: center;">
 						{{number_format((
-		$item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work+$item->advance_refund)
+		$item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work)
 						), 2, '.', ',');}}</td>
 <?php if($totalAmount!=''){?>
 						<td style="border: 1px solid black;text-align: center;">
 						{{
-		round((($item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work+$item->advance_refund))/$totalAmount)*100,2)
+		round((($item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work))/$totalAmount)*100,2)
 						;}}%</td>
 <?php } ?>
 						

@@ -448,7 +448,7 @@ foreach($result as $item)
 		$complementary_work = $item->complementary_work+$complementary_work;
 		$advance_refund = $item->advance_refund+$advance_refund;
 
-		$Net_Sales = $item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work+$item->advance_refund)+$Net_Sales;
+		$Net_Sales = $item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work)+$Net_Sales;
 		
 		}  
 ?>

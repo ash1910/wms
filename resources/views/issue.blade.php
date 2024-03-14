@@ -6,12 +6,16 @@
 <?php
 $id= '';
 $mess= '';
+$req= '';
+$dt= '';
 
 
 if (Session::has('job_no'))
 {
 	$job_no = Session::get('job_no');
 	$mess = Session::get('mess');
+  $req = Session::get('req');
+  $dt = Session::get('dt');
 }	
 	
 
@@ -72,21 +76,40 @@ if($job_no!=""){
                                <input autofocus required id="tags" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
                              </div>
 						
-							<div class="col-12">
-							  <label class="form-label">Quantity</label>
-							  <input min='0' required type="text" name='qty' class="form-control" placeholder="e.g.- 1">
-                            </div>
- 
-							<div class="col-12">
-							  <label class="form-label">Date</label>
-							  <!--input name='dt' type="text" onkeydown="event.preventDefault()" id="datepicker" class="form-control" required-->
-							  <input name='dt' type="date" class="form-control" required>
-                            </div>
-                            
                             <div class="col-12">
-							  <label class="form-label">Requisition</label>
-							  <input required name="req" type="text" class="form-control" placeholder="e.g.- 1111">
+                                <label class="form-label">Quantity</label>
+                                <input min='0' required type="text" name='qty' class="form-control" placeholder="e.g.- 1">
                             </div>
+
+
+<?php if($dt==""){ ?>    
+                <div class="col-12">
+                  <label class="form-label">Date</label>
+                  <input name='dt' type="date" class="form-control" required>
+                </div>
+<?php } ?>
+<?php if($dt!=""){ ?>
+                <div class="col-12">
+                  <label class="form-label">Date</label>
+                  <input disabled  value="{{$dt}}" required name="dt" type="date" class="form-control">
+							    <input name="dt" value="{{$dt}}" type="hidden">
+                </div>
+<?php } ?>	
+
+<?php if($req==""){ ?>    
+                <div class="col-12">
+                  <label class="form-label">Requisition</label>
+                  <input required name="req" type="text" class="form-control" placeholder="e.g.- 1111">
+                </div>
+<?php } ?>
+<?php if($req!=""){ ?>
+
+                <div class="col-12">
+                  <label class="form-label">Requisition</label>
+                  <input disabled  value="{{$req}}" required name="req" type="text" class="form-control" placeholder="e.g.- 1111">
+							    <input name="req" value="{{$req}}" type="hidden">
+                </div>
+<?php } ?>	
  
 							<div class="col-12">
 							  <label class="form-label">Note</label>
@@ -131,6 +154,7 @@ if($job_no!=""){
 							<th scope="col">#</th>
 							<th scope="col">Code</th>
 							<th scope="col">Product</th>
+              <th scope="col">Date</th>
 							<th scope="col">GIN</th>
 							<th scope="col">Qty</th>
 							<th scope="col">Req.</th>
@@ -148,15 +172,16 @@ if($job_no!=""){
 						<th scope="row">{{$sl}}</th>
 						<td>{{$item->prod_id}}</td>
 						<td>{{$item->prod_name}}</td>
+            <td>{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td>{{$item->gin}}</td>
 						<td>{{$item->qty}}</td>
 						<td>{{$item->req}}</td>
 						<td>{{$item->note}}</td>
 						<td><center>
 							<form style="display: inline;" action="issueDel" method="post">{{ csrf_field() }}
-							<input type="hidden" name="id" value="{{$item->id}}">
-							<input type="hidden" name="job_no" value="{{$job_no}}">
-							<button class="btn btn-sm btn-danger me-2" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button>
+                <input type="hidden" name="id" value="{{$item->id}}">
+                <input type="hidden" name="job_no" value="{{$job_no}}">
+                <button class="btn btn-sm btn-danger me-2" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button>
 							</form>
 							</center>
 						</td>

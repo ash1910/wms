@@ -161,7 +161,7 @@ class bomController extends Controller
 	}
 
 	public function issue()
-	{
+	{ 
 		return view ('issue',['job_no'=>'']);	
 	}
 	public function issue01(Request $r)
@@ -195,15 +195,15 @@ class bomController extends Controller
 		$data = DB::select("SELECT `avg_price`,`stock_qty` FROM `bom_prod` WHERE `parts_id`='$prod_id'");
 		foreach($data as $item){ $avg_price = $item->avg_price;$stock_qty = $item->stock_qty;}
 		
-	if($stock_qty<$qty){$mess='Not Enough Quantity!!! ['.$prod_id.']-'.$prod_name;} 
-	else
-	{	
-		DB::insert('INSERT INTO `issue`(`prod_id`, `prod_name`, `qty`, `job_no`, `note`, `user_id`, 
-		`dt`,`amount`,`avg_price`,`req`,`gin`)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$prod_id,$prod_name,$qty,$job_no,$note, $user_id, $dt, 
-		$avg_price*$qty, $avg_price, $req, 'GIN-'.$gin]);
-	}
-		return back()->with('job_no', $job_no)->with('mess', $mess); 
+		if($stock_qty<$qty){$mess='Not Enough Quantity!!! ['.$prod_id.']-'.$prod_name;} 
+		else
+		{	
+			DB::insert('INSERT INTO `issue`(`prod_id`, `prod_name`, `qty`, `job_no`, `note`, `user_id`, 
+			`dt`,`amount`,`avg_price`,`req`,`gin`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$prod_id,$prod_name,$qty,$job_no,$note, $user_id, $dt, 
+			$avg_price*$qty, $avg_price, $req, 'GIN-'.$gin]);
+		}
+		return back()->with('job_no', $job_no)->with('dt', $dt01)->with('req', $req)->with('mess', $mess); 
 	}
 	public function issueDel(Request $r)
 	{

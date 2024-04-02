@@ -170,10 +170,17 @@ $supplier_ref = $item->supplier_ref;$supplier_id = $item->supplier_id;}
             <td>{{$item->note}}</td>
 <?php if($flag=='0'){ ?>						
 						<td><center>
+            <?php 
+if (session('role')=="Super Administrator")
+{
+?>
 							<form style="display: inline;" action="purchaseDel" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
-							<button class="btn-danger" style="padding: 4px;" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button>
+							<button class="btn-danger" style="padding: 4px;" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button> 
 							</form>
+<?php  
+}
+?>
 							</center>
 						</td>
 <?php } ?>						

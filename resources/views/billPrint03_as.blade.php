@@ -141,7 +141,7 @@ function AmountInWords(float $amount)
 
 &emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781797</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
-&emsp;&emsp;&emsp;&emsp;<b>BIN: 004882855-0403</b><br><br>
+&emsp;&emsp;&emsp;&emsp;<b>BIN: 004882855-0203</b><br><br>
 <center><b>Bill:{{$bill_no}}</b></center>
 <?php
 $today=date("d-M-Y");		

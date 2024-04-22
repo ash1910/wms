@@ -86,7 +86,7 @@ if(session('role')!="PRO")
 					<i class="fadeIn animated bx bx-printer"></i> View</button>
 					</form>
 					
-					<form  target="_blank" style="display: inline;" action="billPrint" method="post">{{ csrf_field() }}
+					<form  target="_blank" style="display: inline;" action="billPrint_as" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
@@ -135,10 +135,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					</form>
 <?php } ?>
 
-					<form  target="_blank" style="display: inline;" action="billPrint_as" method="post">{{ csrf_field() }}
+					<form  target="_blank" style="display: inline;" action="billPrint" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
-					<i class="fadeIn animated bx bx-printer"></i> Auto Solutions</button>
+					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
 					</form>
 
 					
@@ -488,6 +488,17 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 		<input type="hidden" name="job_no" value="{{$job_no}}">
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Image</button>
+		</div>
+	</form>
+
+	<br>
+	<form class="row g-3" action="moneyReceipt07?image=1" method='post' target="_blank">{{ csrf_field() }}
+		<div class="col-12">
+		<input type="hidden" name="id" value="{{$item->id}}">
+		<input type="hidden" name="bill" value="{{$bill_no}}">
+		<input type="hidden" name="job_no" value="{{$job_no}}">
+			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+					<i class="fadeIn animated bx bx-printer"></i> HNS Auto Solutions</button>
 		</div>
 	</form>
 						

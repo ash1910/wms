@@ -132,12 +132,29 @@ foreach($result as $item)
 							
 		<form class="row g-3" action="payAdvance01" method='post' target="_blank">{{ csrf_field() }}
 			<div class="col-12">
-			<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
-			<input type="hidden" name="id" value="{{$item->id}}">
+				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
+				<input type="hidden" name="id" value="{{$item->id}}">
 				<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 						<i class="fadeIn animated bx bx-printer"></i> Print</button>
 			</div>
-		</form>						
+		</form>		
+		<form class="row g-3" action="payAdvance06?image=1" method='post' target="_blank">{{ csrf_field() }}
+			<div class="col-12">
+				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
+				<input type="hidden" name="id" value="{{$item->id}}">
+				<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+						<i class="fadeIn animated bx bx-printer"></i> M.R-ESL</button>
+			</div>
+		</form>
+		
+		<form class="row g-3" action="payAdvance07?image=1" method='post' target="_blank">{{ csrf_field() }}
+			<div class="col-12">
+				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
+				<input type="hidden" name="id" value="{{$item->id}}">
+				<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+						<i class="fadeIn animated bx bx-printer"></i> M.R-HAS</button>
+			</div>
+		</form>
 						</td>							
 						
 						

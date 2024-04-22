@@ -305,5 +305,19 @@ if($job_no=='X')
 
 	}
 
+	public function payAdvance06(Request $r)
+	{
+		$customer_id=$r->input('customer_id');//post input
+		$id=$r->input('id');//post input
+		return view ('payAdvance06',['customer_id' => $customer_id,'id' => $id]);
+	}
+
+	public function payAdvance07(Request $r)
+	{
+		$customer_id=$r->input('customer_id');//post input
+		$id=$r->input('id');//post input
+		return view ('payAdvance07',['customer_id' => $customer_id,'id' => $id]);
+	}
+
 
 }

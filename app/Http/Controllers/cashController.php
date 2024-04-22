@@ -587,6 +587,13 @@ if($vat_pro!='0')
 		$job_no=$r->input('job_no');//post input
 		return view ('moneyReceipt06',['id' => $id,'job_no' => $job_no,'bill' => $bill]);	
 	}
+	public function moneyReceipt07(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$bill=$r->input('bill');//post input
+		$job_no=$r->input('job_no');//post input
+		return view ('moneyReceipt07',['id' => $id,'job_no' => $job_no,'bill' => $bill]);	
+	}
 	public function refWiseDueEdit(Request $r)
 	{
 		$ref = DB::table('pay')->distinct()->get('ref');

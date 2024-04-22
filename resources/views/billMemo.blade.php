@@ -80,7 +80,7 @@ return redirect('home');
                     <div class="col-12 col-lg-12">
                       <h5 class="mb-0">Create Bill/ Cash Memo [Bill No: {{$bill_no}}]
 					  
-					<form  target="_blank" style="display: inline;" action="billPrint" method="post">{{ csrf_field() }}
+					<form  target="_blank" style="display: inline;" action="billPrint_as" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>

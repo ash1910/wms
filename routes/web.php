@@ -198,6 +198,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('payAdvance03','App\Http\Controllers\approvalController@payAdvance03');
 	Route::post('payAdvance04','App\Http\Controllers\approvalController@payAdvance04');
 	Route::post('payAdvance05','App\Http\Controllers\approvalController@payAdvance05');
+	Route::post('payAdvance06','App\Http\Controllers\approvalController@payAdvance06');
+	Route::post('payAdvance07','App\Http\Controllers\approvalController@payAdvance07');
 
 	// DAY END
 	Route::get('dayEnd','App\Http\Controllers\dayEndController@dayEnd');
@@ -257,6 +259,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('moneyReceipt04','App\Http\Controllers\cashController@moneyReceipt04');
 	Route::post('moneyReceipt05','App\Http\Controllers\cashController@moneyReceipt05');
 	Route::post('moneyReceipt06','App\Http\Controllers\cashController@moneyReceipt06');
+	Route::post('moneyReceipt07','App\Http\Controllers\cashController@moneyReceipt07');
 
 	Route::get('chequeApproval','App\Http\Controllers\cashController@chequeApproval');
 	Route::get('chequeConfirm','App\Http\Controllers\cashController@chequeConfirm');

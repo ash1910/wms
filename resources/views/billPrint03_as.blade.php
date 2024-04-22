@@ -130,7 +130,7 @@ function AmountInWords(float $amount)
 <div class="divHeader" style="width:710px">
 
 <div style="float: left;width: 0px;">
-<img src="" class="logo-icon" style="width: 70px;">
+<img src="assets/images/bkash.png" class="logo-icon" style="width: 70px;">
 </div>
 <div>
 <center>

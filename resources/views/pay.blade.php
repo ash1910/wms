@@ -163,7 +163,7 @@ foreach($result01 as $item01)
                               </div>
                               <div class="d-flex align-items-center mb-3" style="background: black;">
                                 <div>
-                                  <p class="mb-0" style="color: red;">Vat Provision</p>
+                                  <p class="mb-0" style="color: red;">Vat Deduction at Source(VDS)</p>
                                 </div>
                                 <div class="ms-auto"  style="color: red;">
                                   TK. <input id="id-9" name="vat_pro"  value='0' type="text" style="color: red;" required>

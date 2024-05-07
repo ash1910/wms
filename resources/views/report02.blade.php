@@ -346,6 +346,13 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 							{$ac_refund='1';}
 						}
 
+					$AdjCustDue = 0;
+					$AdjCust01 = DB::select("SELECT sum(`due`)due FROM `pay` WHERE `bill`='$bill_no' AND `pay_type` = 'Adj-Cust';");
+					foreach($AdjCust01 as $AdjCustItem01)
+						{ 					
+							$AdjCustDue = $AdjCustItem01->due;
+						}
+
 
 						
 					?>
@@ -424,6 +431,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 			?>	   
 				   </strong><br>
 <?php if($supplier_name01!=''){?><strong class="text-inverse">Supplier Adj:</b> Tk: {{$supplier_adj}} [{{$supplier_name01}}]</strong><?php } ?>
+<?php if($AdjCustDue != 0){?><strong class="text-inverse">Customer Adj:</b> Tk: {{$AdjCustDue}} [{{$customer_nm}}]</strong><?php } ?>
 				   
 				</address>
 			</div>			

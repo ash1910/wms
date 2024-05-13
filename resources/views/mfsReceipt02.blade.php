@@ -104,6 +104,13 @@ $(document).ready(function () {
 					</thead>
 					<tbody>				
 <?php
+$where_mer_bkash = "";
+if( $mer_bkash == "330"){
+	$where_mer_bkash = "a.mer_bkash = 330";
+}
+else{
+  $where_mer_bkash = "( a.mer_bkash <> 330 OR a.mer_bkash IS NULL )";
+}
 
 $result = DB::select("
 SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,
@@ -112,7 +119,7 @@ FROM `pay` a, customer_info b, bill_mas c, user d
 WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
-AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt'
+AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt' AND $where_mer_bkash 
 and a.check_approval = d.user_id
 order by a.`id`;
 ");

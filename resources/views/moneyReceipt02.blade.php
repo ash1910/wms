@@ -112,7 +112,7 @@ AND a.customer_id = b.customer_id;
 ");
 $result01 = DB::select("
 SELECT `id`,`bill`, `job_no`, `customer_id`, `bill_dt`, `net_bill`, `received`, `pay_type`, due,
-`dt`, `user_id`,  `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, `post_dt` 
+`dt`, `user_id`,  `mer_bkash`, `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, `post_dt` 
 FROM `pay` WHERE id='$id'
 order by id
 ");
@@ -173,7 +173,7 @@ and `chequeNo` = '$chequeNo' and `chequeDt` = '$chequeDt'
 
 
 }
-				$trix = $post01->trix;
+				$mer_bkash = $post01->mer_bkash;
 				$trix = $post01->trix;
 				$send = $post01->send;
 				
@@ -282,6 +282,12 @@ if($pay_type=="card")
 <tr>
 	<td>
 	<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+		<?php if($pay_type=="bkash"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
+		<?php } ?>
+		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> {{$merchant_bank}}
+		<?php } ?>
 	</td>
 </tr>
 </table>
@@ -392,7 +398,14 @@ if($pay_type=="card")
 
 <tr>
 	<td>
-	<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+		<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+
+		<?php if($pay_type=="bkash"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
+		<?php } ?>	
+		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> {{$merchant_bank}}
+		<?php } ?>
 	</td>
 </tr>
 </table>

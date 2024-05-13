@@ -158,6 +158,7 @@ class cashController extends Controller
 		$customer_id=$r->input('customer_id');//post input
 		$ref=$r->input('ref');//post input
 		$note=$r->input('note');//post input
+		$mer_bkash=$r->input('mer_bkash');//post input
 		$trix=$r->input('trix');//post input
 		$send=$r->input('send');//post input
 		$bank=$r->input('bank');//post input
@@ -217,12 +218,21 @@ if($pay_type=="cheque")
 
 if($pay_type=="bkash")
 {
-$charge=round($received-($received*0.985),2);
-$received = round($received*0.985,2);
+
+
+if($mer_bkash=="330"){
+	$charge=round($received-($received*0.988),2);
+	$received = round($received*0.988,2);
+}
+else{
+	$charge=round($received-($received*0.985),2);
+	$received = round($received*0.985,2);
+}
+
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`vat_pro`,`ait`,
-		`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`,`charge`) 
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,round($received,2),round($bonus,2)
-	,round($vat_wav,2),round($vat_pro,2),round($ait,2), round(-$due,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$charge]);
+		`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`,`charge`,`mer_bkash`) 
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,round($received,2),round($bonus,2)
+	,round($vat_wav,2),round($vat_pro,2),round($ait,2), round(-$due,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$charge,$mer_bkash]);
 }
 
 if($pay_type=="card")
@@ -290,6 +300,7 @@ if($vat_pro!='0')
 		$customer_id=$r->input('customer_id');//post input
 		$note=$r->input('note');//post input
 		$ref= 'Advance';
+		$mer_bkash=$r->input('mer_bkash');//post input
 		$trix=$r->input('trix');//post input
 		$send=$r->input('send');//post input
 		$bank=$r->input('bank');//post input
@@ -331,14 +342,23 @@ if($vat_pro!='0')
 		}
 		if($pay_type=="bkash")
 		{
-		$charge=round($received-($received*0.985),2);
-		$received = round($received*0.985,2);
+		
+
+		if($mer_bkash=="330"){
+			$charge=round($received-($received*0.988),2);
+			$received = round($received*0.988,2);
+		}
+		else{
+			$charge=round($received-($received*0.985),2);
+			$received = round($received*0.985,2);
+		}
+
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `chequeNo`, `chequeDt`
-				,`charge`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
+				,`charge`, `mer_bkash`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
 			,"", -round($received+$charge,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$chequeNo,$chequeDt
-			,$charge]);
+			,$charge,$mer_bkash]);
 		}
 		if($pay_type=="card")
 		{
@@ -384,6 +404,7 @@ if($vat_pro!='0')
 		$customer_id=$r->input('customer_id');//post input
 		$note=$r->input('note');//post input
 		$ref= 'Advance';
+		$mer_bkash=$r->input('mer_bkash');//post input
 		$trix=$r->input('trix');//post input
 		$send=$r->input('send');//post input
 		$bank=$r->input('bank');//post input
@@ -431,14 +452,24 @@ if($vat_pro!='0')
 		}
 		if($pay_type=="bkash")
 		{
-		$charge=round($received-($received*0.985),2);
-		$received = round($received*0.985,2);
+		
+
+		if($mer_bkash=="330"){
+			$charge=round($received-($received*0.988),2);
+			$received = round($received*0.988,2);
+		}
+		else{
+			$charge=round($received-($received*0.985),2);
+			$received = round($received*0.985,2);
+		}
+
+
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 				`due`, `dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `bank`, `chequeNo`, `chequeDt`
-				,`charge`) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
+				,`charge`,`mer_bkash`) 
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,round($received,2),""
 			,"", -round($received+$charge,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$send,$bank,$chequeNo,$chequeDt
-			,$charge]);
+			,$charge,$mer_bkash]);
 		}
 		if($pay_type=="card")
 		{

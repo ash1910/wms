@@ -86,6 +86,13 @@ $(document).ready(function () {
 					</thead>
 					<tbody>				
 <?php
+$where_mer_bkash = "";
+if( $mer_bkash == "330"){
+	$where_mer_bkash = "a.mer_bkash = 330";
+}
+else{
+  $where_mer_bkash = "( a.mer_bkash <> 330 OR a.mer_bkash IS NULL )";
+}
 
 $result = DB::select("
 SELECT a.settlement_date approval_dt, 
@@ -98,8 +105,8 @@ from
 	WHERE a.customer_id = b.customer_id
 	and b.customer_id= c.customer_id
 	and c.job_no = a.job_no
-	AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt between '$from_dt' and '$to_dt'
-	and a.check_approval = d.user_id
+	AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt between '$from_dt' and '$to_dt' AND $where_mer_bkash
+	and a.check_approval = d.user_id 
 	GROUP by a.dt, a.approval_dt
 	order by a.`id`
 )a
@@ -115,7 +122,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->approval_dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">
-						<a href="mfsReceipt02?from_dt={{$item->dt}}&to_dt={{$item->approval_dt}}">{{number_format(($item->received), 2, '.', ',')}}</a></td>
+						<a href="mfsReceipt02?from_dt={{$item->dt}}&to_dt={{$item->approval_dt}}&mer_bkash={{$mer_bkash}}">{{number_format(($item->received), 2, '.', ',')}}</a></td>
 						
 						
 					</tr>

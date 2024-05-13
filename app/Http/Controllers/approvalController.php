@@ -132,13 +132,15 @@ if($job_no=='X')
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt,'mer_bkash' => $mer_bkash]);
 	}
 	public function mfsReceipt02(Request $r)
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceipt02',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceipt02',['from_dt' => $from_dt,'to_dt' => $to_dt, 'mer_bkash' => $mer_bkash]);
 	}
 	public function mfsReceiptPrint(Request $r)
 	{

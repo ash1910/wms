@@ -109,7 +109,7 @@ foreach($result01 as $item01)
 
 
                      
-                      <div class="col-12 col-lg-4">
+                      <div class="col-12 col-lg-6">
                         <div class="card border shadow-none bg-light radius-10">
                           <div class="card-body">
 						  <form action="pay01" method="post">{{ csrf_field() }} 
@@ -535,7 +535,7 @@ foreach($result01 as $item01)
 
                      </div>
 					 
-                       <div class="col">
+                       <div class="col-lg-6">
                          <div class="card border shadow-none radius-10"style="margin-bottom: 0.5rem;">
                            <div class="card-body">
                             <div class="d-flex align-items-center gap-3">
@@ -581,28 +581,34 @@ foreach($result01 as $item01)
 									<thead>
 										<tr>
 											<td><h6 class="mb-2">Settlement Amount</h6></td>
+											<td><h6 class="mb-2">Charge Rate</h6></td>
 											<td><h6 class="mb-2">Charge Amount</h6></td>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td><p class="mb-1"><b>Bkash-797:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td><center>1.5%</center></td>
 											<td>TK. <input type="text" id="id-6-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>Bkash-330:</b> TK. <input type="text" id="id-6-1" disabled ></p></td>
+											<td><center>1.2%</center></td>
 											<td>TK. <input type="text" id="id-6-c-1" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
+											<td><center>1.3%</center></td>
 											<td>TK. <input type="text" id="id-7-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p></td>
+											<td><center>2.0%</center></td>
 											<td>TK. <input type="text" id="id-11-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
+											<td><center>1.7%</center></td>
 											<td>TK. <input type="text" id="id-12-c" disabled ></td>
 										</tr>
 									</tboday>

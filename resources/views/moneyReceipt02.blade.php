@@ -286,7 +286,7 @@ if($pay_type=="card")
 			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
 		<?php } ?>
 		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
-			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> {{$merchant_bank}}
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
 		<?php } ?>
 	</td>
 </tr>
@@ -404,7 +404,7 @@ if($pay_type=="card")
 			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
 		<?php } ?>	
 		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
-			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> {{$merchant_bank}}
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
 		<?php } ?>
 	</td>
 </tr>

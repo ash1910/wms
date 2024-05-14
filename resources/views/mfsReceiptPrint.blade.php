@@ -55,6 +55,7 @@
 </div>
 
 <center><b>Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}]</b></center>
+<center><b>bKash-01777781{{$mer_bkash}}</b></center>
 
 <div class="col-12 col-lg-12 d-flex">
 				<div class="table-responsive" >

@@ -63,10 +63,11 @@ $(document).ready(function () {
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
-                      <h5 class="mb-0">Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}]
+                      <h5 class="mb-0">Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}] <br><b>bKash-01777781{{$mer_bkash}}</b>
 					  
 					<form  target="_blank" style="display: inline;" action="mfsReceiptPrint" method="post">{{ csrf_field() }}
 					<input type="hidden" name="to_dt" value="{{$to_dt}}">
+          <input type="hidden" name="mer_bkash" value="{{$mer_bkash}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 					</form>

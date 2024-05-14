@@ -63,7 +63,7 @@ $(document).ready(function () {
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
-                      <h5 class="mb-0">Mobile Financial Services [From: {{date('d-M-Y', strtotime($from_dt))}} To: {{date('d-M-Y', strtotime($to_dt))}}]</h5>
+                      <h5 class="mb-0">Mobile Financial Services [From: {{date('d-M-Y', strtotime($from_dt))}} To: {{date('d-M-Y', strtotime($to_dt))}}] <br><b>bKash-01777781{{$mer_bkash}}</b></h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>

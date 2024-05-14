@@ -145,7 +145,8 @@ if($job_no=='X')
 	public function mfsReceiptPrint(Request $r)
 	{
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceiptPrint',['to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceiptPrint',['to_dt' => $to_dt, 'mer_bkash' => $mer_bkash]);
 	}
 	public function cardReceiptPrint(Request $r)
 	{

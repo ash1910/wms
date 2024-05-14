@@ -450,13 +450,14 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 						<th scope="col" style="text-align: center;">Received Amount(Tk.)</th>
 						<th scope="col" style="text-align: center;">Settle Amount(Tk.)</th>
 						<th scope="col" style="text-align: center;">Method</th>
+						<th scope="col" style="text-align: center;">Debit A/C</th>
 						<th scope="col" style="text-align: center;">Bkash</th>
 						<th scope="col" style="text-align: center;">Cheque</th>
 						<th scope="col" style="text-align: center;">Card</th>
 					</tr>
 <?php
 					$data = DB::select("SELECT a.id,`received`,`pay_type`,`dt`,
-					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`
+					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`, `merchant_bank`, `mer_bkash`  
 					FROM `pay` a, bill_mas b
 					WHERE a.job_no = b.job_no AND a.`job_no` = '$job_no' and a.pay_type<>'SYS'
 					and a.pay_type<>'due'
@@ -549,6 +550,10 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 						
 						
 <?php } ?>					
+						</td>
+						<td>
+						@if($item->merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($item->merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+						@if($item->pay_type == 'bkash') bKash-01777781{{$item->mer_bkash}} @endif
 						</td>
 <?php if($item->pay_type=='bkash'){?>
 						<td style="text-align: left;"><b>TRIX:</b>{{$item->trix}}<br>

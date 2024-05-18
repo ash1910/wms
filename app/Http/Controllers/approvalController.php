@@ -151,7 +151,8 @@ if($job_no=='X')
 	public function cardReceiptPrint(Request $r)
 	{
 		$s_dt=$r->input('s_dt');//post input
-		return view ('cardReceiptPrint',['s_dt' => $s_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input 
+		return view ('cardReceiptPrint',['s_dt' => $s_dt,'merchant_bank' => $merchant_bank]);
 	}
 	
 	public function cardReceipt()
@@ -162,13 +163,15 @@ if($job_no=='X')
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('cardReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input
+		return view ('cardReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt,'merchant_bank' => $merchant_bank]);
 	}
 	public function cardReceipt02(Request $r)
 	{
 		$m_dt=$r->input('m_dt');//post input
 		$s_dt=$r->input('s_dt');//post input
-		return view ('cardReceipt02',['m_dt' => $m_dt,'s_dt' => $s_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input
+		return view ('cardReceipt02',['m_dt' => $m_dt,'s_dt' => $s_dt,'merchant_bank' => $merchant_bank]);
 	}
 	public function advanceCheck()
 	{

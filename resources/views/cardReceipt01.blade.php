@@ -63,7 +63,7 @@ $(document).ready(function () {
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-6">
-                      <h5 class="mb-0">Card [From: {{date('d-M-Y', strtotime($from_dt))}} To: {{date('d-M-Y', strtotime($to_dt))}}]</h5>
+                      <h5 class="mb-0">Card [From: {{date('d-M-Y', strtotime($from_dt))}} To: {{date('d-M-Y', strtotime($to_dt))}}] <br><b>Debit A/C: @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif</b></h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>
@@ -87,6 +87,14 @@ $(document).ready(function () {
 					<tbody>				
 <?php
 
+$where_merchant_bank = "";
+if( $merchant_bank == "CBL"){
+	$where_merchant_bank = "a.merchant_bank = 'CBL'";
+}
+else{
+  $where_merchant_bank = "( a.merchant_bank <> 'CBL' OR a.merchant_bank IS NULL )";
+}
+
 $result = DB::select("
 SELECT a.settlement_date approval_dt, 
        SUM(a.received) AS received,
@@ -98,7 +106,7 @@ from
 	WHERE a.customer_id = b.customer_id
 	and b.customer_id= c.customer_id
 	and c.job_no = a.job_no
-	AND a.`pay_check`='1' and a.`pay_type` = 'card' and a.approval_dt between '$from_dt' and '$to_dt'
+	AND a.`pay_check`='1' and a.`pay_type` = 'card' and a.approval_dt between '$from_dt' and '$to_dt' AND $where_merchant_bank 
 	and a.check_approval = d.user_id
 	GROUP by a.dt, a.approval_dt
 	order by a.`id`
@@ -119,7 +127,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->approval_dt))}}</td>
 						<td style="border: 1px solid black;text-align: center;">
-						<a href="cardReceipt02?m_dt={{$item->dt}}&s_dt={{$item->approval_dt}}">{{number_format(($item->received), 2, '.', ',')}}</a></td>
+						<a href="cardReceipt02?m_dt={{$item->dt}}&s_dt={{$item->approval_dt}}&merchant_bank={{$merchant_bank}}">{{number_format(($item->received), 2, '.', ',')}}</a></td>
 					</tr>
 		<?php
 		$sl = $sl+1;

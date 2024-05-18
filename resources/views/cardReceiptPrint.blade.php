@@ -55,6 +55,7 @@
 </div>
 
 <center><b>Card [Settlement Date: {{date('d-M-Y', strtotime($s_dt))}}]</b></center>
+<center><b>Debit A/C: @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif</b></center>
 
 <div class="col-12 col-lg-12 d-flex">
 				<div class="table-responsive" >
@@ -79,6 +80,14 @@
 					<tbody>				
 <?php
 
+$where_merchant_bank = "";
+if( $merchant_bank == "CBL"){
+	$where_merchant_bank = "a.merchant_bank = 'CBL'";
+}
+else{
+  $where_merchant_bank = "( a.merchant_bank <> 'CBL' OR a.merchant_bank IS NULL )";
+}
+
 $result = DB::select("
 SELECT a.`id`, a.`card_type`, a.`card_bank`, a.`card_no`, `received`, `due`, a.`job_no`, b.customer_nm ,
 b.customer_reg,b.customer_vehicle, c.bill_no, a.dt, a.approval_dt, a.check_approval, d.user_name, charge
@@ -87,7 +96,7 @@ WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
 AND a.`pay_check`='1' and a.`pay_type` = 'card' 
-and a.approval_dt = '$s_dt'
+and a.approval_dt = '$s_dt' AND $where_merchant_bank 
 and a.check_approval = d.user_id
 order by a.`id`;
 ");

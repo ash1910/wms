@@ -431,7 +431,13 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 			?>	   
 				   </strong><br>
 <?php if($supplier_name01!=''){?><strong class="text-inverse">Supplier Adj:</b> Tk: {{$supplier_adj}} [{{$supplier_name01}}]</strong><?php } ?>
-<?php if($AdjCustDue != 0){?><strong class="text-inverse">Customer Adj:</b> Tk: {{$AdjCustDue}} [{{$customer_nm}}]</strong><?php } ?>
+<?php if($AdjCustDue != 0){
+	
+	$customer_id_adj = DB::table('pay')->where('job_no', $job_no."[adj]")->first()->customer_id;
+	$customer_nm_adj = DB::table('customer_info')->where('customer_id', $customer_id_adj)->first()->customer_nm;
+	
+	
+	?><strong class="text-inverse">Customer Adj:</b> Tk: {{$AdjCustDue}} [{{$customer_nm_adj}}]</strong><?php } ?>
 				   
 				</address>
 			</div>			

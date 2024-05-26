@@ -127,6 +127,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 ?>					
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
+					<input type="date" class="form-control" name='approval_dt'>
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Settlement</button>
 					</form>	

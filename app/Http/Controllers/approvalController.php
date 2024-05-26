@@ -101,11 +101,12 @@ if($job_no=='X')
 	public function mfsCheck01(Request $r)
 	{
 		$id=$r->input('id');//post input
+		$approval_dt=$r->input('approval_dt');//post input
 		$today = date("Y-m-d");
 		$user_id = session('user_id');
 
 		$result = DB::table('pay')->where('id', $id)
-		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $today]);
+		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $approval_dt ? $approval_dt : $today]);
 	
 		return back();
 	}
@@ -116,11 +117,12 @@ if($job_no=='X')
 	public function cardCheck01(Request $r)
 	{
 		$id=$r->input('id');//post input
+		$approval_dt=$r->input('approval_dt');//post input
 		$today = date("Y-m-d");
 		$user_id = session('user_id');
 
 		$result = DB::table('pay')->where('id', $id)
-		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $today]);
+		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $approval_dt ? $approval_dt : $today]);
 	
 		return back();
 	}

@@ -130,7 +130,7 @@ function AmountInWords(float $amount)
 <div class="divHeader" style="width:710px">
 
 <div style="float: left;width: 0px;">
-<img src="assets/images/bkash.png" class="logo-icon" style="width: 70px;">
+<img src="assets/images/bkash-qr-automobile.jpg" class="logo-icon" style="width: 70px;">
 </div>
 <div>
 <center>
@@ -139,7 +139,7 @@ function AmountInWords(float $amount)
 </center>
 </div>
 
-&emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781797</font>
+&emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
 &emsp;&emsp;&emsp;&emsp;<b>BIN: 004882855-0203</b><br><br>
 <center><b>Bill:{{$bill_no}}</b></center>

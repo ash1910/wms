@@ -27,13 +27,21 @@ class billController extends Controller
 	    $customer_vehicle = '';
 	    $customer_chas = '';
 		$estimate_id = '';
+		$customer_group = '';
+		$company = '';
+		$sister_companies = '';
 		
 		if($register=='register')
 		{
 			$result = DB::table('customer_info')->where('customer_reg', $search)
 			->where('flag', '1')->get();
 			foreach($result as $item1)
-			{$customer_id = $item1->customer_id;}
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
 			
@@ -47,7 +55,10 @@ class billController extends Controller
 			return view('billform', [
 			'result' => $result,
 			'parts_info' => $parts_info,
-			'service_info' => $service_info
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
 			]);			
 		}
 		if($chas=='chas')
@@ -55,7 +66,12 @@ class billController extends Controller
 			$result = DB::table('customer_info')->where('customer_chas', $search)
 			->where('flag', '1')->get();
 			foreach($result as $item1)
-			{$customer_id = $item1->customer_id;}
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
 			
@@ -67,7 +83,10 @@ class billController extends Controller
 			return view('billform', [
 			'result' => $result,
 			'parts_info' => $parts_info,
-			'service_info' => $service_info
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
 			]);			
 		}
 		

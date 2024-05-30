@@ -81,6 +81,18 @@ foreach($result as $post)
                     </address>
                    </div>
                 </div>
+
+                <div class="col-3">
+                  <div class="">
+                    <!--small>to</small-->
+                    <address class="m-t-5 m-b-5">
+                       <strong class="text-inverse">Customer Group: </strong>{{$customer_group}}<br>
+                       <strong class="text-inverse">Company: </strong>{{$company}}<br>
+                       <strong class="text-inverse">Sister Companies: </strong>{{$sister_companies}}<br>
+
+                    </address>
+                   </div>
+                </div>
                 			
                 
                </div>

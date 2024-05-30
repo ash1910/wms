@@ -114,7 +114,9 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Work Type</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill Created By</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Engineer</th>
-
+							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Group</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Company</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Sister Companies</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -129,7 +131,7 @@ $user_list = array();
 		}  
 
 $result = DB::select("
-SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
+SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
 sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due, sum(c.`sales_return`) sales_return, sum(c.`vat_pro`) vat_pro, sum(c.`complementary_work`) complementary_work, sum(c.`rework`) rework, sum(c.`damage_work`) damage_work, sum(advance_refund) advance_refund, 
 sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer, MIN(c.pay_type) pay_type 
@@ -139,7 +141,7 @@ and a.customer_id = b.customer_id
 AND a.`job_no` = c.job_no
 and a.bill_dt is not null 
  
-group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, a.`job_no`, 
+group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, b.customer_group, b.company, b.sister_companies, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer $where_billtype
 ;
 ");
@@ -299,6 +301,9 @@ echo 'Received';
 						<td style="border: 1px solid black;text-align: center;">{{$item->work}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{@$user_list[$item->user_id]}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->engineer}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->customer_group}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->company}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->sister_companies}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;

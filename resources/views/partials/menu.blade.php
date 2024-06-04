@@ -61,6 +61,14 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </a>
 	</li>			
 <?php } ?>    
+
+<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
+	<li>
+	  <a href="/est"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
+		<div class="menu-title">Estimate</div>
+	  </a>
+	</li>			
+<?php } ?> 
         
 <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")){ ?>
 	<li>

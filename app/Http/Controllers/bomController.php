@@ -145,6 +145,7 @@ class bomController extends Controller
 	public function purchaseDel(Request $r)
 	{
 		$id=$r->input('id');//post input
+		$amount = 0;
 		//find purchase ID
 		$data = DB::select("SELECT `purchase_id`FROM `purchase_det` WHERE `id`='$id'");
 		foreach($data as $item){ $purchase_id = $item->purchase_id;}
@@ -153,7 +154,7 @@ class bomController extends Controller
 		//amount
 		$data = DB::select("SELECT sum(`amount`) amount from purchase_det
 		WHERE purchase_id = '$purchase_id'");
-		foreach($data as $item){$amount = $item->amount;}
+		foreach($data as $item){$amount = $item->amount > 0 ?  $item->amount : 0;}
 		//update
 		DB::table('purchase_mas')->where('purchase_id', $purchase_id)
 		->update(['amount' => $amount]);

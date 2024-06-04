@@ -134,15 +134,27 @@ function AmountInWords(float $amount)
 </div>
 <div>
 <center>
-<img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;"><br>
-&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, Fax: 88-02-8819297<br>
+<img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;">
 </center>
+&emsp;&emsp;&emsp;&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, <br>
+
+
+	<div style="float: right;width: 170px;font-size:8px;border: 2px solid #000000;padding: 3px; margin-top: -40px;">
+		<table>
+			<tr><td style="width: 65px;">A/C Name</td><td>: HNS Auto Solutions</td></tr>
+			<tr><td>A/C No.</td><td>: 01301000217814</td></tr>
+			<tr><td>Routing No.</td><td>: 145264480</td></tr>
+			<tr><td>Swift Code</td><td>: MTBL BD DH GUL</td></tr>
+			<tr><td colspan="2">Mutual Trust Bank, Tejgaon, Dhaka</td></tr>
+		</table>
+	</div>
 </div>
 
 &emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
-&emsp;&emsp;&emsp;&emsp;<b>BIN: 004882855-0203</b><br><br>
-<center><b>Bill:{{$bill_no}}</b></center>
+<br><br>
+<p style="text-align:center; margin: 0;">&emsp;&emsp;&emsp;&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>
+<center></center>
 <?php
 $today=date("d-M-Y");		
 

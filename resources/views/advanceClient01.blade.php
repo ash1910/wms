@@ -254,6 +254,7 @@ foreach($result as $item)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
@@ -349,6 +350,7 @@ foreach($result as $item)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>

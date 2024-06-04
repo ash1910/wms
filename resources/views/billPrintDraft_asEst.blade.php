@@ -133,6 +133,7 @@ function AmountInWords(float $amount)
 ?>
 
 
+
 <div class="divHeader" style="width:710px">
 
 <div style="float: left;width: 0px;">
@@ -140,35 +141,23 @@ function AmountInWords(float $amount)
 </div>
 <div>
 <center>
-<img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;">
+<img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;"><br>
+&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, Fax: 88-02-8819297<br>
 </center>
-&emsp;&emsp;&emsp;&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, <br>
-
-
-	<div style="float: right;width: 170px;font-size:8px;border: 2px solid #000000;padding: 3px; margin-top: -40px;">
-		<table>
-			<tr><td style="width: 65px;">A/C Name</td><td>: HNS Auto Solutions</td></tr>
-			<tr><td>A/C No.</td><td>: 01301000217814</td></tr>
-			<tr><td>Routing No.</td><td>: 145264480</td></tr>
-			<tr><td>Swift Code</td><td>: MTBL BD DH GUL</td></tr>
-			<tr><td colspan="2">Mutual Trust Bank, Tejgaon, Dhaka</td></tr>
-		</table>
-	</div>
 </div>
 
 &emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
-&emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
-<br><br>
-<p style="text-align:center; margin: 0;">&emsp;&emsp;&emsp;&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>
-<center></center>
+&emsp;&emsp;<b><font style="font-size: large;">ESTIMATE</font></b>
+&emsp;&emsp;&emsp;&emsp;<b>BIN: 004882855-0203</b><br><br> 	
+<center><b>Estimate No:{{$est_no}}</b></center>
 <?php
 $today=date("d-M-Y");		
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
-FROM `bill_mas` a, `customer_info` b
-WHERE a.`bill_no` = $bill_no
+SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
+b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
+FROM `est_mas` a, `customer_info` b
+WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
 ");
 			$parts_info = DB::table('parts_info')->get();
@@ -186,9 +175,9 @@ AND a.customer_id = b.customer_id;
 				 $customer_chas = $post->customer_chas;
 				 $engineer = $post->engineer;
 				 $technician = $post->technician;
-				 $job_no = $post->job_no;
+				 $days = $post->days;
 				 $km = $post->km;
-				 $job_dt = $post->job_dt;
+				 $est_dt = $post->est_dt;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
 			}
@@ -220,7 +209,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                     <!--small>from</small-->
                     <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
 					<table style="font-size: 11px;">
-                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($job_dt))}}</td></tr>
+                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($est_dt))}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Address </strong></td><td style="font-style: MS Gothic;">:{{$customer_address}}</td></tr>
                     <?php if($customer_mobile!=""){?>   
@@ -253,8 +242,8 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                     <table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Engineer</strong></td><td style="font-style: MS Gothic;"> : {{$engineer}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Technician </strong></td><td style="font-style: MS Gothic;width: 180px;word-wrap: anywhere;">:{{$technician}}</td></tr>
-                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Job No. </strong></td><td style="font-style: MS Gothic;">: {{$job_no}}</td></tr>
-                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Job Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($job_dt))}}</td></tr>
+                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Time Required </strong></td><td style="font-style: MS Gothic;">: {{$days}} Working Days</td></tr>
+                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Estimate Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($est_dt))}}</td></tr>
 					</table>
                    </address>
                 </div>                
@@ -267,7 +256,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 			
 				
 				
-				<table  style="font-size: small;"><div class="watermark"><center><b>DRAFT MEMO</b></center></div>
+				<table  style="font-size: small;"><div class="watermark"><center><b>ESTIMATE</b></center></div>
 					
 						<tr style="background: darkgrey;">
 							<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
@@ -283,8 +272,8 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 					
 <?php
 	$stock = DB::select("
-	SELECT `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
-	FROM `bill_det` WHERE type = '1' and `bill_no`=$bill_no;");
+	SELECT `est_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
+	FROM `est_det` WHERE type = '1' and `est_no`=$est_no;");
 	$row='0'; $sl="1"; $subtotal="0";
 	foreach($stock as $item)
 		{ 					
@@ -361,8 +350,8 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 <tr><td colspan="5" style="border: 1px solid black;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service</strong></td></tr>
 <?php
 	$stock = DB::select("
-	SELECT `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
-	FROM `bill_det` WHERE type = '2' and `bill_no`=$bill_no;");
+	SELECT `est_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
+	FROM `est_det` WHERE type = '2' and `est_no`=$est_no;");
 	$row1=$row; $sl="1"; $subtotal01="0";
 	foreach($stock as $item)
 		{ 					
@@ -404,18 +393,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 		}  
 		
 
-	$stock01 = DB::select("
-	SELECT sum(`received`) received, sum(`bonus`) bonus, sum(`vat_wav`) vat_wav, sum(`due`)due, 
-	sum(`charge`) charge
-	FROM `pay` WHERE `job_no` = '$job_no';");
-	foreach($stock01 as $item01)
-		{ 					
-				$received = $item01->received;						
-				$discount = $item01->bonus;						
-				$vat_wav = $item01->vat_wav;						
-				$due = $item01->due;						
-				$charge = $item01->charge;						
-		} 
+
 			
 ?>			
 <tr><td colspan="2" style="border: 1px solid black;"></td>
@@ -443,15 +421,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 							</strong></td>
 						</tr>
 
-<?php if($received!=""){ ?>
-						<tr><td colspan="3" ></td>
-							<td colspan="1"><strong>Advance Paid Tk.: </strong></td><td style="text-align: right;"><strong>
-							<?php 
-							echo number_format(($received+$charge), 2, '.', ',');
-							?></td>
-							</strong></td>
-						</tr>
-<?php } ?>
+
 
 						
 					</tbody>

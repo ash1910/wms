@@ -82,6 +82,13 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('ModifyAcceptBill03','App\Http\Controllers\billController@ModifyAcceptBill03');
 	Route::get('ModifyBillDt','App\Http\Controllers\billController@ModifyBillDt');
 	Route::post('ModifyBillDt01','App\Http\Controllers\billController@ModifyBillDt01');
+
+	// Estimate
+	Route::get('est','App\Http\Controllers\estimateController@est');
+	Route::get('searchClientEst','App\Http\Controllers\estimateController@searchClientEst');
+	Route::post('billcardEst','App\Http\Controllers\estimateController@billcardEst');
+	Route::view('billMemoEst','billMemoEst');
+	Route::post('billPrint_asEst','App\Http\Controllers\estimateController@billPrint_asEst');
 	
 	// Bill report
 	Route::get('reports','App\Http\Controllers\billController@reports');

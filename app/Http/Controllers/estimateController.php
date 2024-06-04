@@ -70,4 +70,144 @@ return view('estimate', [
 */
 return back();
 	}
+
+
+	public function est()
+	{
+		return view ('est');	
+	}
+
+	public function searchClientEst(Request $r)
+	{
+		$search=$r->input('search');//post input
+		$register=$r->input('register');//post input
+		$chas=$r->input('chas');//post input
+		
+	    $customer_id = '';
+	    $customer_nm = '';
+	    $customer_reg = '';
+	    $customer_mobile = '';
+	    $customer_address = '';
+	    $customer_vehicle = '';
+	    $customer_chas = '';
+		$estimate_id = '';
+		$customer_group = '';
+		$company = '';
+		$sister_companies = '';
+		
+		if($register=='register')
+		{
+			$result = DB::table('customer_info')->where('customer_reg', $search)
+			->where('flag', '1')->get();
+			foreach($result as $item1)
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
+			$parts_info = DB::table('parts_info')->get();
+			$service_info = DB::table('service_info')->get();
+			
+			
+			if($result=="[]")
+				{
+				return redirect ('customer')->with('alert', 'Thanks For Subscribe!');
+				}
+
+
+			return view('billformEst', [
+			'result' => $result,
+			'parts_info' => $parts_info,
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
+			]);			
+		}
+		if($chas=='chas')
+		{
+			$result = DB::table('customer_info')->where('customer_chas', $search)
+			->where('flag', '1')->get();
+			foreach($result as $item1)
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
+			$parts_info = DB::table('parts_info')->get();
+			$service_info = DB::table('service_info')->get();
+			
+			if($result=="[]")
+				{
+				return redirect ('customer')->with('alert', 'Thanks For Subscribe!');
+				}
+			
+			return view('billformEst', [
+			'result' => $result,
+			'parts_info' => $parts_info,
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
+			]);			
+		}		
+		
+	}
+
+	public function	billcardEst(Request $r)
+	{
+		$register=$r->input('register');//post input
+		$engineer=$r->input('engineer');//post input
+		$technician=$r->input('technician');//post input
+		$km=$r->input('km');//post input
+		$days=$r->input('days');//post input
+		$work=$r->input('work');//post input
+		$est_dt = date("Y-m-d");
+		$est_no = date("ymdHis");
+		$customer_id=$r->input('customer_id');//post input
+		$customer_nm=$r->input('customer_nm');//post input
+		$user_id = session('user_id');
+
+
+		if($register=="register01")
+		{		
+			DB::insert('INSERT INTO `est_mas`(`est_no`, `customer_id`, `engineer`, `technician`, `days`, 
+			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$est_no,$customer_id,$engineer,$technician,$days,$est_dt,
+			$user_id,'',$work, $km,$customer_nm]);
+			
+			return redirect('/billMemoEst?est_no='.$est_no.'');
+		}
+
+
+	}
+
+	public function billPrint_asEst(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$data = DB::select("SELECT flag FROM `est_mas` WHERE `est_no`=$est_no;");
+		foreach($data as $item){ $flag = $item->flag; }		
+		
+		if($flag=='0')
+		{
+			return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
+		}		
+		if($flag=='1')
+		{
+			return view ('billPrint03_asEst',['est_no'=>$est_no]);
+		}
+		if($flag=='2')
+		{
+			return view ('billPrint03_asEst',['est_no'=>$est_no]);
+		}
+		if($flag=='3')
+		{
+			return view ('billPrint03_asEst',['est_no'=>$est_no]);
+		}
+		
+	}
+
+
+
 }

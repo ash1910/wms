@@ -142,7 +142,7 @@ function AmountInWords(float $amount)
 <center>
 <img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;">
 </center>
-&emsp;&emsp;&emsp;&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820 <br>
 
 
 	<div style="float: right;width: 170px;font-size:8px;border: 2px solid #000000;padding: 3px; margin-top: -40px;">
@@ -156,7 +156,7 @@ function AmountInWords(float $amount)
 	</div>
 </div>
 
-&emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
 <br><br>
 <p style="text-align:center; margin: 0;">&emsp;&emsp;&emsp;&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>

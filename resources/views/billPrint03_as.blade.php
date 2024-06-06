@@ -282,7 +282,6 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				$rework = $item01->rework;	
 				$damage_work = $item01->damage_work;	
 				$supplier_adj = $item01->supplier_adj;	
-				
 		} 
 ?>					
 				

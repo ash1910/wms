@@ -89,6 +89,13 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('billcardEst','App\Http\Controllers\estimateController@billcardEst');
 	Route::view('billMemoEst','billMemoEst');
 	Route::post('billPrint_asEst','App\Http\Controllers\estimateController@billPrint_asEst');
+	Route::post('billMemoOneEst','App\Http\Controllers\estimateController@billMemoOneEst');
+	Route::post('billMemoTwoEst','App\Http\Controllers\estimateController@billMemoTwoEst');
+	Route::post('billMemoEditEst','App\Http\Controllers\estimateController@billMemoEditEst');
+	Route::post('billMemoEditOneEst','App\Http\Controllers\estimateController@billMemoEditOneEst');
+	Route::post('billMemoThreeEst','App\Http\Controllers\estimateController@billMemoThreeEst');
+	Route::get('approvalEst','App\Http\Controllers\estimateController@approvalEst');
+	Route::post('approval01Est','App\Http\Controllers\estimateController@approval01Est');
 	
 	// Bill report
 	Route::get('reports','App\Http\Controllers\billController@reports');
@@ -207,6 +214,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('payAdvance05','App\Http\Controllers\approvalController@payAdvance05');
 	Route::post('payAdvance06','App\Http\Controllers\approvalController@payAdvance06');
 	Route::post('payAdvance07','App\Http\Controllers\approvalController@payAdvance07');
+	
 
 	// DAY END
 	Route::get('dayEnd','App\Http\Controllers\dayEndController@dayEnd');

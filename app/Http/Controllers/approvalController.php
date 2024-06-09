@@ -17,27 +17,27 @@ class approvalController extends Controller
 		$today = date("Y-m-d");
 		$job_no = 'X';
 	
-	$user_id = session('user_id');
-	$result = DB::select("
-	SELECT `bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, `user_id`, `total` net_bill ,bill_dt,`job_dt`
-	FROM `bill_mas` a, customer_info b
-	WHERE a.customer_id = b.customer_id and bill_no= '$bill_no' and a.`flag` = '0'
-	");
-	foreach($result as $item)
-		{	
-			 $bill_dt = $item->bill_dt;
-			 $job_no = $item->job_no;
-			 $customer_id = $item->customer_id;
-			 $customer_nm = $item->customer_nm;
-			 $customer_mobile = $item->customer_mobile;
-			 $net_bill = $item->net_bill;
-			 $job_dt = $item->job_dt;
-		}  
-//job Already Approved
-if($job_no=='X')
-{
-		return redirect ('/approval')->with('alert', 'This job Already Approved Before!!!');
-}
+		$user_id = session('user_id');
+		$result = DB::select("
+		SELECT `bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, `user_id`, `total` net_bill ,bill_dt,`job_dt`
+		FROM `bill_mas` a, customer_info b
+		WHERE a.customer_id = b.customer_id and bill_no= '$bill_no' and a.`flag` = '0'
+		");
+		foreach($result as $item)
+			{	
+				$bill_dt = $item->bill_dt;
+				$job_no = $item->job_no;
+				$customer_id = $item->customer_id;
+				$customer_nm = $item->customer_nm;
+				$customer_mobile = $item->customer_mobile;
+				$net_bill = $item->net_bill;
+				$job_dt = $item->job_dt;
+			}  
+			//job Already Approved
+			if($job_no=='X')
+			{
+					return redirect ('/approval')->with('alert', 'This job Already Approved Before!!!');
+			}
 
     		$result = DB::table('bill_mas')->where('bill_no', $bill_no)
     		->update(['flag' => '1', 'bill_dt' => $today]);

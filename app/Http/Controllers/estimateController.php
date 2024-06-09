@@ -33,42 +33,12 @@ class estimateController extends Controller
 		$unit_price = $item->unit_price;
 		}
 
-DB::insert('INSERT INTO `estimate`(`customer_id`, `prod_id`, `prod_name`, `qty`,unit_price, `dt`,
- `user_id`, `flag`,`type`)
-VALUES (?,?,?,?,?,?,?,?,?)',[$customer_id,$prod_id,$prod_name,$qty,$unit_price,$today,
-$user_id,'1',$type]);
+		DB::insert('INSERT INTO `estimate`(`customer_id`, `prod_id`, `prod_name`, `qty`,unit_price, `dt`,
+		`user_id`, `flag`,`type`)
+		VALUES (?,?,?,?,?,?,?,?,?)',[$customer_id,$prod_id,$prod_name,$qty,$unit_price,$today,
+		$user_id,'1',$type]);
 
-/*
-$result = DB::select("select customer_nm,customer_id, customer_reg, customer_mobile, customer_address,
-			customer_vehicle, customer_chas
-			from customer_info 
-			where customer_id='$customer_id' and flag='1'");
-			
-			foreach($result as $post)
-			{
-				 $customer_id = $post->customer_id;
-				 $customer_nm = $post->customer_nm;
-				 $customer_reg = $post->customer_reg;
-				 $customer_mobile = $post->customer_mobile;
-				 $customer_address = $post->customer_address;
-				 $customer_vehicle = $post->customer_vehicle;
-				 $customer_chas = $post->customer_chas;
-			}
-			$parts_info = DB::table('parts_info')->get();
-			$estimate = DB::table('estimate')->get();
-return view('estimate', [
-			'customer_id' => $customer_id, 
-			'customer_nm' => $customer_nm, 
-			'customer_reg' => $customer_reg,
-			'customer_mobile' => $customer_mobile,
-			'customer_address' => $customer_address,
-			'customer_vehicle' => $customer_vehicle,
-			'customer_chas' => $customer_chas,
-			'parts_info' => $parts_info,
-			'estimate' => $estimate
-			]);				
-*/
-return back();
+		return back();
 	}
 
 
@@ -208,6 +178,296 @@ return back();
 		
 	}
 
+	public function billMemoOneEst(Request $r)
+	{
+		$product=$r->input('prod');//post input
+		$pieces = explode(" - ", $product);
+		$prod_id = $pieces[0];
+		$prod_name = $pieces[1];
+		$qty=$r->input('qty');//post input
+		$unit_rate=$r->input('salepp');//post input
+		//$est_no=session('est_no');
+		$est_no=$r->input('est_no');//post input
+		$amount = $qty*$unit_rate;
+		$dt = date("Y-m-d");
+		$user_id = session('user_id');
+		$check = '';
+		// Check
+		$data02 = DB::select("
+		SELECT est_no from est_det where est_no = '$est_no' and type = '1' 
+		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and 
+		user_id = '$user_id'
+		");
+		foreach($data02 as $item02)
+		{ 
+		$check = $item02->est_no;  
+		}
+		if($check == '') 
+			{
+				//insert 
+				DB::insert('INSERT INTO `est_det`(`est_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,
+				`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,'1',$prod_id,$prod_name,$qty,$unit_rate,
+				$amount, $dt, $user_id]);	
+			
+				// netbill
+				$data = DB::select("
+				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
+				from
+				(SELECT nvl(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '1')A,
+				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '2')b;
+				");
+				foreach($data as $item)
+				{ 
+					$parts = $item->parts;  
+					$service = $item->service;
+					$net_bill = $item->net_bill;  
+					$total_bill = $item->total;
+
+					$data01 = DB::select("
+					SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
+					");
+					foreach($data01 as $item01)
+					{$work = $item01->work;}
+					if($work=='intercompany')
+					{
+						$total_bill = $net_bill;
+					}
+					if($work=='automobile')
+					{
+						$total_bill = $net_bill;
+					}
+				}		
+				
+				//update netbill
+				DB::table('est_mas')->where('est_no', $est_no)
+				->update(['net_bill' => $net_bill,'parts' => $parts,'service' => $service,
+				'total' => round($total_bill,2), 'user_id' => session('user_id')]);
+			}
+			return back();		
+	}
+	
+	public function billMemoTwoEst(Request $r)
+	{
+		$product=$r->input('prod');//post input
+		$pieces = explode(" - ", $product);
+		$prod_id = $pieces[0];
+		$prod_name = $pieces[1];
+		$qty=$r->input('qty');//post input
+		$unit_rate=$r->input('salepp');//post input
+		//$est_no=session('est_no');
+		$est_no=$r->input('est_no');//post input
+		$amount = $qty*$unit_rate;
+		$dt = date("Y-m-d");
+		$user_id = session('user_id');
+		$check = '';
+		// Check
+		$data02 = DB::select("
+		SELECT est_no from est_det where est_no = '$est_no' and type = '2' 
+		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and 
+		user_id = '$user_id'
+		");
+		foreach($data02 as $item02)
+		{ 
+		$check = $item02->est_no;  
+		}
+		if($check == '') 
+			{
+				//insert
+				DB::insert('INSERT INTO `est_det`(`est_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,
+				`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,'2',$prod_id,$prod_name,$qty,$unit_rate,
+				$amount, $dt, $user_id]);	
+				//net_bill
+			
+				$data = DB::select("
+				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
+				from
+				(SELECT nvl(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
+				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
+				");
+				foreach($data as $item)
+				{ 
+					$parts = $item->parts;  
+					$service = $item->service;
+					$net_bill = $item->net_bill;  
+					$total_bill = $item->total;
+
+					$data01 = DB::select("
+					SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
+					");
+					foreach($data01 as $item01)
+					{$work = $item01->work;}
+					if($work=='intercompany')
+					{
+						$total_bill = $net_bill;
+					}
+					if($work=='automobile')
+					{
+						$total_bill = $net_bill;
+					}
+				}
+				
+				//update net_bill
+				DB::table('est_mas')->where('est_no', $est_no)
+				->update(['net_bill' => $net_bill,'parts' => $parts, 'service' => $service, 
+				'total' => round($total_bill,2), 'user_id' => session('user_id')]);
+			}
+			return back();		
+	}	
+
+	public function billMemoEditEst(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$est_no=$r->input('est_no');//post input
+		return view('billMemoEditEst', [
+			'id' => $id,
+			'est_no' => $est_no
+			]);	
+	}
+	public function billMemoEditOneEst(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$est_no=$r->input('est_no');//post input
+		$qty=$r->input('qty');//post input
+		$unit_rate=$r->input('salepp');//post input
+		$amount = $qty*$unit_rate;
+
+		$result = DB::table('est_det')
+		->where('id', $id)
+		->update(['qty' => $qty,'unit_rate' => $unit_rate,'amount' => $amount]);
+		
+		$data = DB::select("
+		SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
+		from
+		(SELECT sum(`amount`) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
+		(SELECT sum(`amount`) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
+		");
+		foreach($data as $item){ 
+		$parts = $item->parts;  
+		$service = $item->service;
+		$net_bill = $item->net_bill;  
+		$total_bill = $item->total;
+		}
+
+		$data01 = DB::select("
+		SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
+		");
+		foreach($data01 as $item01)
+		{$work = $item01->work;}
+		if($work=='intercompany')
+		{
+			$total_bill = $net_bill;
+		}
+		if($work=='automobile')
+		{
+			$total_bill = $net_bill;
+		}
+
+
+		$result = DB::table('est_mas')
+		->where('est_no', $est_no)
+		->update(['parts' => $parts,'service' => $service,'net_bill' => $net_bill,'total' => $total_bill]);
+		return redirect('/billMemoEst?est_no='.$est_no.'');	
+
+	}
+
+	public function billMemoThreeEst(Request $r)
+	{
+		$id=$r->input('id');//post input
+		//delQty,delAmount
+		$data = DB::select("SELECT `id`,`est_no`, `qty`,`type`, `amount` FROM `est_det` WHERE `id` = $id;");
+		foreach($data as $item){ $delQty = $item->qty; $delAmount = $item->amount; $est_no = $item->est_no;
+		$type = $item->type; }
+		//net_bill
+		$data = DB::select("SELECT SUM(`net_bill`) net_bill, sum(`parts`) parts, sum(service) service FROM `est_mas` WHERE `est_no`=$est_no;");
+		foreach($data as $item){ $net_bill01 = $item->net_bill;$parts01 = $item->parts;$service01 = $item->service; }
+		$net_bill = $net_bill01-$delAmount;
+		$parts = $parts01-$delAmount;
+		$service = $service01-$delAmount;
+		$total_bill = $net_bill+($net_bill*.1);
+		//update net_bill
+		$data01 = DB::select("
+		SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
+		");
+		foreach($data01 as $item01)
+		{$work = $item01->work;}
+		if($work=='intercompany')
+		{
+			$total_bill = $net_bill;
+		}
+		if($work=='automobile')
+		{
+			$total_bill = $net_bill;
+		}
+
+		if($type=='1')
+		{
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['net_bill' => $net_bill,'parts' => $parts, 'total' => $total_bill, 
+		'user_id' => session('user_id')]);
+		}
+		if($type=='2')
+		{
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['net_bill' => $net_bill,'service' => $service, 'total' => $total_bill, 
+		'user_id' => session('user_id')]);
+		}		
+		//del
+		$result = DB::table('est_det')->delete($id);
+		return back();	
+		
+	}
+
+	public function approvalEst()
+	{
+		return view ('approvalEst');	
+	}
+	public function approval01Est(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$job_no=$r->input('job_no');//post input
+		$today = date("Y-m-d");
+		$job_dt = date("Y-m-d");
+	
+		$user_id = session('user_id');
+		$result = DB::select("SELECT * FROM `est_mas` WHERE est_no= '$est_no' and `flag` = '0'");
+		foreach($result as $item)
+		{	
+			$est_no = $item->est_no;
+			$customer_id = $item->customer_id;
+			$customer_nm = $item->customer_nm;
+			$engineer = $item->engineer;
+			$technician = $item->technician;
+			$km = $item->km;
+			$work = $item->work;
+			$parts = $item->parts;
+			$service = $item->service;
+			$net_bill = $item->net_bill;
+			$total = $item->total;
+		}
+
+		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`,
+		`job_dt`, `user_id`,`parts`,`service`,`total`,`net_bill`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$est_no,$customer_id,$customer_nm,$engineer,$technician,$job_no,$km, $work, $job_dt,
+		$user_id,$parts,$service, $total, $net_bill]);
+
+		$result = DB::select("SELECT * FROM `est_det` WHERE est_no= '$est_no'");
+		foreach($result as $item)
+		{	
+			$type = $item->type;
+			$prod_id = $item->prod_id;
+			$prod_name = $item->prod_name;
+			$qty = $item->qty;
+			$unit_rate = $item->unit_rate;
+			$amount = $item->amount;
+
+			DB::insert('INSERT INTO `bill_det`(`bill_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,$type,$prod_id,$prod_name,$qty,$unit_rate,$amount, $today, $user_id]);
+		}
+
+
+		$result = DB::table('est_mas')->where('est_no', $est_no)->update(['flag' => '1', 'bill_dt' => $today]);
+		
+		
+		return back();		
+	}
 
 
 }

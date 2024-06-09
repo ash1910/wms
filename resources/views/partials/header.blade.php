@@ -286,7 +286,37 @@ if($num!="0")
                 </div>
               </a>
 			  </li>
-<?php } ?>  
+<?php } 
+
+if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts")||(session('role')=="PRO")){ ?>  
+
+<li class="nav-item dropdown dropdown-large">
+              <a title="Estimate Approval" class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="/approvalEst" >
+                <div class="notifications">
+    
+<?php
+$num = "0";
+$result = DB::select("
+SELECT count(*) num
+FROM `est_mas` a
+WHERE a.flag = '0'
+");
+foreach($result as $item)
+		{
+			$num = $item->num;
+		}
+if($num!="0")
+{	
+?>
+				  <span class="notify-badge">{{$num}}</span>
+<?php 
+} 
+?>              
+				  <i class="bi bi-calculator-fill"></i> 
+                </div>
+              </a>
+			  </li>
+<?php } ?> 
 
 
 

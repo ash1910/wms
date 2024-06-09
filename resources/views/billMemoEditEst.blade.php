@@ -4,7 +4,9 @@
 @section("content")
 
 <?php 
-$est_no = $_GET["est_no"];
+
+//$est_no = session('est_no');
+//$est_no = $_GET["bill"];
 
 
 $result = DB::select("
@@ -14,13 +16,6 @@ FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
 ");
-			$parts_info = DB::table('parts_info')->get();
-			$service_info = DB::table('service_info')->get();
-
-
-
-
-
 		foreach($result as $post)
 			{
 				 $customer_id = $post->customer_id;
@@ -32,29 +27,46 @@ AND a.customer_id = b.customer_id;
 				 $customer_chas = $post->customer_chas;
 				 $engineer = $post->engineer;
 				 $technician = $post->technician;
+				 $days = $post->days;
 				 $km = $post->km;
 				 $est_dt = $post->est_dt;
 				 $user_id = $post->user_id;
 				 $flag = $post->flag;
-				 $days = $post->days;
 			}
 			
 if($flag!='0')
 {
 return redirect('home');
 }
+
+$result01 = DB::select("
+SELECT `id`, `prod_id`, `prod_name`, `qty`, `unit_rate`
+FROM `est_det` 
+WHERE `id` = $id;
+");
+		foreach($result01 as $post01)
+			{
+				 $prod_id = $post01->prod_id;
+				 $prod_name = $post01->prod_name;
+				 $qty = $post01->qty;
+				 $unit_rate = $post01->unit_rate;
+			}
+
+
+
+
 			
 ?>
 		<main class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-              <div class="breadcrumb-title pe-3">Estimate</div>
+              <div class="breadcrumb-title pe-3">Bill</div>
               <div class="ps-3">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
                   </ol>
                 </nav>
               </div>
@@ -77,13 +89,8 @@ return redirect('home');
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
                       <h5 class="mb-0">Create Estimate [Estimate No: {{$est_no}}]
-					  
-					<form  target="_blank" style="display: inline;" action="billPrint_asEst" method="post">{{ csrf_field() }}
-					<input type="hidden" name="est_no" value="{{$est_no}}">
-					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
-					<i class="fadeIn animated bx bx-printer"></i> Print</button>
-					</form>			
-					  
+										  
+					<a class="btn btn-sm btn-success me-2" href="billMemoEst?est_no={{$est_no}}"><i class="lni lni-exit"></i> Exit Edit</a>  
 					  </h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
@@ -140,49 +147,31 @@ return redirect('home');
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
-						<ul class="nav nav-tabs nav-primary" role="tablist">
-							<li class="nav-item" role="presentation">
-								<a class="nav-link active" data-bs-toggle="tab" href="#parts" role="tab" aria-selected="true">
-									<div class="d-flex align-items-center">
-										<div class="tab-icon"><i class="bx bx-cart font-18 me-1"></i>
-										</div>
-										<div class="tab-title">Parts</div>
-									</div>
-								</a>
-							</li>
-							<li class="nav-item" role="presentation">
-								<a class="nav-link" data-bs-toggle="tab" href="#service" role="tab" aria-selected="false">
-									<div class="d-flex align-items-center">
-										<div class="tab-icon"><i class="bx bx-cog font-18 me-1"></i>
-										</div>
-										<div class="tab-title">Service</div>
-									</div>
-								</a>
-							</li>
-						</ul>
+						
 						<div class="tab-content py-3  col-lg-4">	
 						<!----------------parts--------------------->							
 							<div class="tab-pane fade active show" id="parts" role="tabpanel">
 								<div class="col-12 d-flex">
 									<div class="card border shadow-none w-100">
 										<div class="card-body">
-										<form action="billMemoOneEst" method="post" class="row g-3">{{ csrf_field() }}
+										<form action="billMemoEditOneEst" method="post" class="row g-3">{{ csrf_field() }}
+										<input type="hidden" name="id" value="{{$id}}">
 										<input type="hidden" name="est_no" value="{{$est_no}}">
 										 <div class="col-12">
 										   <label class="form-label">Product</label>
-										   <input autofocus required id="tags" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
+										   <input disabled required id="tags" name="prod" type="text" class="form-control" value="{{$prod_id}} - {{$prod_name}}">
 										 </div>
 										 <div class="col-12">
 										  <label class="form-label">Quantity</label>
-										  <input required name="qty" type="text" class="form-control" placeholder="e.g.- 1">
+										  <input required name="qty" type="text" class="form-control" value="{{$qty}}">
 										</div>
 										<div class="col-12">
 										   <label class="form-label">Unit Rate</label>
-										   <input required name="salepp" type="text" class="form-control" placeholder="e.g.- 25000">
+										   <input required name="salepp" type="text" class="form-control" value="{{$unit_rate}}">
 										 </div>
 										<div class="col-12">
 										  <div class="d-grid">
-											<button class="btn btn-primary">Add Bill</button>
+											<button class="btn btn-primary">Update</button>
 										  </div>
 										</div>
 									   </form>
@@ -191,34 +180,7 @@ return redirect('home');
 								</div>
 							</div>
 						<!----------------service--------------------->							
-							<div class="tab-pane fade" id="service" role="tabpanel">
-								<div class="col-12 d-flex">
-									<div class="card border shadow-none w-100">
-										<div class="card-body">
-										<form action="billMemoTwoEst" method="post" class="row g-3">{{ csrf_field() }}
-										<input type="hidden" name="est_no" value="{{$est_no}}">
-										 <div class="col-12">
-										   <label class="form-label">Service</label>
-										   <input  required id="tags01" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
-										 </div>
-										 <div class="col-12">
-										  <label class="form-label">Quantity</label>
-										  <input required name="qty" type="text" class="form-control" placeholder="e.g.- 1">
-										</div>
-										<div class="col-12">
-										   <label class="form-label">Unit Rate</label>
-										   <input required name="salepp" type="text" class="form-control" placeholder="e.g.- 25000">
-										 </div>
-										<div class="col-12">
-										  <div class="d-grid">
-											<button class="btn btn-primary">Add Bill</button>
-										  </div>
-										</div>
-									   </form>
-										</div>
-									</div>
-								</div>
-							</div>
+							
 									<center>
 					<!--form action="billPrint" method="post">{{ csrf_field() }}
 						<input type="hidden" name="est_no" value="{{$est_no}}">
@@ -293,7 +255,7 @@ return redirect('home');
 						<td style="text-align: center;" class="sorting_1">
 						
 						
-							<form style="display: inline;" action="billMemoEditEst" method="post">{{ csrf_field() }}
+							<form style="display: inline;" action="billMemoEdit" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<input type="hidden" name="est_no" value="{{$item->est_no}}">
 							<button class="btn btn-sm btn-sucess me-2" type="submit" name="" value=""><i class="lni lni-pencil-alt"></i></button>
@@ -303,10 +265,10 @@ return redirect('home');
 						<td scope="row">{{$sl}}</th>
 						<td>{{$item->prod_id}} - {{$item->prod_name}}</td>
 						<td style="text-align: center;">{{$item->qty}}</td>
-						<td style="text-align: center;">{{number_format(($item->unit_rate), 2, '.', ',')}}</td>
-						<td style="text-align: right;">{{number_format(($item->amount), 2, '.', ',')}}</td>
+						<td style="text-align: center;">{{number_format(intval($item->unit_rate), 2, '.', ',')}}</td>
+						<td style="text-align: right;">{{number_format(intval($item->amount), 2, '.', ',')}}</td>
 						<td><center>
-							<form style="display: inline;" action="billMemoThreeEst" method="post">{{ csrf_field() }}
+							<form style="display: inline;" action="billMemoThree" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<button class="btn btn-sm btn-danger me-2" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button>
 							</form>
@@ -330,7 +292,7 @@ return redirect('home');
 						<td style="text-align: center;" class="sorting_1">
 						
 						
-							<form style="display: inline;" action="billMemoEditEst" method="post">{{ csrf_field() }}
+							<form style="display: inline;" action="billMemoEdit" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<input type="hidden" name="est_no" value="{{$item->est_no}}">
 							<button class="btn btn-sm btn-sucess me-2" type="submit" name="" value=""><i class="lni lni-pencil-alt"></i></button>
@@ -340,10 +302,10 @@ return redirect('home');
 						<td scope="row">{{$sl}}</th>
 						<td>{{$item->prod_id}} - {{$item->prod_name}}</td>
 						<td style="text-align: center;">{{$item->qty}}</td>
-						<td style="text-align: center;">{{number_format(($item->unit_rate), 2, '.', ',')}}</td>
-						<td style="text-align: right;">{{number_format(($item->amount), 2, '.', ',')}}</td>
+						<td style="text-align: center;">{{$item->unit_rate}}</td>
+						<td style="text-align: right;">{{$item->amount}}</td>
 						<td><center>
-							<form style="display: inline;" action="billMemoThreeEst" method="post">{{ csrf_field() }}
+							<form style="display: inline;" action="billMemoThree" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<button class="btn btn-sm btn-danger me-2" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button>
 							</form>
@@ -407,45 +369,3 @@ return redirect('home');
 
 
 
-@section("js")
-
-  <link rel="stylesheet" href="assets/js/jquery-ui.css">
-  <script src="assets/js/jquery-3.6.0.js"></script>
-  <script src="assets/js/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    var availableTags = [
- 
-  <?php
-foreach ($parts_info as $p) 
-{
-echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
-}
-					   ?>
-    ];
-    $( "#tags" ).autocomplete({
-      source: availableTags
-    });
-  } );
-  </script>
-  
-  <script>
-  $( function() {
-    var availableTags = [
- 
-  <?php
-foreach ($service_info as $p) 
-{
-echo '"'.$p->service_id.' - '.$p->service_name.'",';
-}
-					   ?>
-    ];
-    $( "#tags01" ).autocomplete({
-      source: availableTags
-    });
-  } );
-  </script>
-  
- @endsection
- 
-  

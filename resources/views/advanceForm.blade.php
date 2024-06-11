@@ -572,7 +572,7 @@ $(function () {
 		//alert( this.value );
 		$("select[name='card_type']").val('');
 		$("select[name='card_type'] option").attr('disabled', 'disabled');
-		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+		$("select[name='card_type'] option").filter("."+this.value).removeAttr('disabled');
 	});
 });
 </script>

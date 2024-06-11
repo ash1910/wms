@@ -487,8 +487,8 @@ foreach($result01 as $item01)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master" class="MTBL">Master Card</option>
-			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Master" class="MTBL CBL">Master Card</option>
+			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
@@ -701,7 +701,7 @@ $(function () {
 		//alert( this.value );
 		$("select[name='card_type']").val('');
 		$("select[name='card_type'] option").attr('disabled', 'disabled');
-		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+		$("select[name='card_type'] option").filter("."+this.value).removeAttr('disabled');
 	});
 
 });

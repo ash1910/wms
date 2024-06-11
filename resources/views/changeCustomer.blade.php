@@ -158,6 +158,27 @@
 		</div>
 		</div>
 
+
+		<div class="col-6">
+			<div class="card shadow-none border radius-15">
+				<div class="card-body">
+					<form class="row g-3" action="changeCustomer07" method='post'>
+						{{ csrf_field() }}
+						<input type="hidden" name="bill_no" value="{{$bill}}">
+						<div class="col-md-12">
+							<label for="validationDefault01" class="form-label">Cartridge No</label>
+							<input value="{{$cartridge}}" type="text" class="fas form-control" name='cartridge' required>
+						</div>
+
+						<div class="col-12">
+							<button class="btn btn-success" type="submit" name="register" value="register">
+							<i class="fadeIn animated bx bx-edit-alt"></i>Change Cartridge No.</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	</div>
 			

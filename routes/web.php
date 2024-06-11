@@ -77,6 +77,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('changeCustomer04','App\Http\Controllers\billController@changeCustomer04');
 	Route::post('changeCustomer05','App\Http\Controllers\billController@changeCustomer05');
 	Route::post('changeCustomer06','App\Http\Controllers\billController@changeCustomer06');
+	Route::post('changeCustomer07','App\Http\Controllers\billController@changeCustomer07');
 	Route::get('ModifyAcceptBill','App\Http\Controllers\billController@ModifyAcceptBill');
 	Route::post('ModifyAcceptBill01','App\Http\Controllers\billController@ModifyAcceptBill01');
 	Route::post('ModifyAcceptBill03','App\Http\Controllers\billController@ModifyAcceptBill03');

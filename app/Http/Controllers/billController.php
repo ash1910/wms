@@ -593,12 +593,14 @@ if($check == '')
 		$engineer=$r->input('engineer');//post input
 		$technician=$r->input('technician');//post input
 		$km=$r->input('km');//post input
+		$cartridge=$r->input('cartridge');//post input
 		return view ('changeCustomer',[
 		'bill'=>$bill,
 		'job_no'=>$job_no,
 		'engineer'=>$engineer,
 		'technician'=>$technician,
-		'km'=>$km
+		'km'=>$km,
+		'cartridge'=>$cartridge
 		]);
 	}
 	public function changeCustomer01(Request $r)
@@ -681,6 +683,16 @@ if($register=='register01')
 		$technician=$r->input('technician');//post input
 		DB::table('bill_mas')->where('bill_no', $bill_no)
 		->update(['technician' => $technician]);
+		
+		return redirect('/billMemo?bill='.$bill_no.'');
+		
+	}	
+	public function changeCustomer07(Request $r)
+	{
+		$bill_no=$r->input('bill_no');//post input
+		$cartridge=$r->input('cartridge');//post input
+		DB::table('bill_mas')->where('bill_no', $bill_no)
+		->update(['cartridge' => $cartridge]);
 		
 		return redirect('/billMemo?bill='.$bill_no.'');
 		

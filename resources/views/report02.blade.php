@@ -9,7 +9,7 @@ $bill_no = $bill;
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, c.user_name, `net_bill` ,a.flag flag, bill_dt, a.work
+b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, cartridge, c.user_name, `net_bill` ,a.flag flag, bill_dt, a.work
 FROM `bill_mas` a, `customer_info` b, `user` c
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id
@@ -37,7 +37,7 @@ AND a.user_id=c.user_id;
 				 $bill_dt = $post->bill_dt;
 				 $flag = $post->flag; 
 				 $user_name = $post->user_name;
-				 
+				 $cartridge = $post->cartridge;
 			}
 ?>
 		<main class="page-content">
@@ -215,6 +215,7 @@ if($flag!='0')
                        <strong class="text-inverse">Technician: </strong>{{$technician}}<br>
                        <strong class="text-inverse">Job No.:  </strong>{{$job_no}}<br>
                        <strong class="text-inverse">Bill Create By:  </strong>{{$user_name}}<br>
+					   <strong class="text-inverse">Cartridge No:  </strong>{{$cartridge}}<br>
 					</table>
 					</address>
 				   </div>

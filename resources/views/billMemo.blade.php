@@ -11,7 +11,7 @@ $bill_no = $_GET["bill"];
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `user_id`, `net_bill` ,`km`, a.flag
+b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `user_id`, `net_bill` ,`km`, `cartridge`, a.flag
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -39,6 +39,7 @@ AND a.customer_id = b.customer_id;
 				 $job_dt = $post->job_dt;
 				 $user_id = $post->user_id;
 				 $flag = $post->flag;
+				 $cartridge = $post->cartridge;
 			}
 			
 if($flag!='0')
@@ -92,6 +93,7 @@ return redirect('home');
 					<input type="hidden" name="km" value="{{$km}}">
 					<input type="hidden" name="engineer" value="{{$engineer}}">
 					<input type="hidden" name="technician" value="{{$technician}}">
+					<input type="hidden" name="cartridge" value="{{$cartridge}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated lni lni-reload"></i> Change Customer/Date/JobID</button>
 					</form>					

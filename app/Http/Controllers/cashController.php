@@ -371,6 +371,10 @@ if($vat_pro!='0')
 					$charge=round($received-($received*0.983),2);
 					$received = round($received*0.983,2);
 				}
+				elseif($card_type=="Visa" || $card_type=="Master"){
+					$charge=round($received-($received*0.987),2);
+					$received = round($received*0.987,2);
+				}
 				else{
 					$charge=round($received-($received*0.980),2);
 					$received = round($received*0.980,2);
@@ -481,6 +485,10 @@ if($vat_pro!='0')
 				if($card_type=="CityVMQU"){
 					$charge=round($received-($received*0.983),2);
 					$received = round($received*0.983,2);
+				}
+				elseif($card_type=="Visa" || $card_type=="Master"){
+					$charge=round($received-($received*0.987),2);
+					$received = round($received*0.987,2);
 				}
 				else{
 					$charge=round($received-($received*0.980),2);

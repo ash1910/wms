@@ -382,8 +382,8 @@ foreach($result as $item)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master" class="MTBL">Master Card</option>
-			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Master" class="MTBL CBL">Master Card</option>
+			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>

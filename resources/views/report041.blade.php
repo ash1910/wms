@@ -106,7 +106,7 @@
 ?>					<tr>
 					<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 					<td style="border: 1px solid black;text-align: center;">{{$item->id}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{$item->bill_dt}}</td>
+					<td style="border: 1px solid black;text-align: center;">{{date('d-m-y', strtotime($item->bill_dt))}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->customer_nm}}</td>
 					<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->bill_no}}</a></td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>
@@ -161,7 +161,7 @@
 ?>					<tr>
 					<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 					<td style="border: 1px solid black;text-align: center;">{{$item->id}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{$item->bill_dt}}</td>
+					<td style="border: 1px solid black;text-align: center;">{{date('d-M-y', strtotime($item->bill_dt))}}</td> 
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->bill_no}}</a></td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>

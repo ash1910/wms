@@ -7,39 +7,39 @@ use DB;
 
 class estimateController extends Controller
 {
-    public function estimateAdd(Request $r)
-	{
-		$product =request('product');//post input
-		$pieces = explode(" - ", $product);
-		$prod_id = $pieces[0];
-		$prod_name = $pieces[1];
-		$customer_id =request('customer_id');//post input
-		$type =request('type');//post input
-		$qty =request('qty');//post input
-		$today = date("Y-m-d");
-		$user_id = session('user_id');
-		$data = DB::table('parts_info')
-				->where('parts_id', $prod_id)->where('type', $type)
-				->get();
-		foreach($data as $item)
-		{
-		$unit_price = $item->unit_price;
-		}
-		$data = DB::table('service_info')
-				->where('service_id', $prod_id)->where('type', $type)
-				->get();
-		foreach($data as $item)
-		{
-		$unit_price = $item->unit_price;
-		}
+    // public function estimateAdd(Request $r)
+	// {
+	// 	$product =request('product');//post input
+	// 	$pieces = explode(" - ", $product);
+	// 	$prod_id = $pieces[0];
+	// 	$prod_name = $pieces[1];
+	// 	$customer_id =request('customer_id');//post input
+	// 	$type =request('type');//post input
+	// 	$qty =request('qty');//post input
+	// 	$today = date("Y-m-d");
+	// 	$user_id = session('user_id');
+	// 	$data = DB::table('parts_info')
+	// 			->where('parts_id', $prod_id)->where('type', $type)
+	// 			->get();
+	// 	foreach($data as $item)
+	// 	{
+	// 	$unit_price = $item->unit_price;
+	// 	}
+	// 	$data = DB::table('service_info')
+	// 			->where('service_id', $prod_id)->where('type', $type)
+	// 			->get();
+	// 	foreach($data as $item)
+	// 	{
+	// 	$unit_price = $item->unit_price;
+	// 	}
 
-		DB::insert('INSERT INTO `estimate`(`customer_id`, `prod_id`, `prod_name`, `qty`,unit_price, `dt`,
-		`user_id`, `flag`,`type`)
-		VALUES (?,?,?,?,?,?,?,?,?)',[$customer_id,$prod_id,$prod_name,$qty,$unit_price,$today,
-		$user_id,'1',$type]);
+	// 	DB::insert('INSERT INTO `estimate`(`customer_id`, `prod_id`, `prod_name`, `qty`,unit_price, `dt`,
+	// 	`user_id`, `flag`,`type`)
+	// 	VALUES (?,?,?,?,?,?,?,?,?)',[$customer_id,$prod_id,$prod_name,$qty,$unit_price,$today,
+	// 	$user_id,'1',$type]);
 
-		return back();
-	}
+	// 	return back();
+	// }
 
 
 	public function est()
@@ -135,7 +135,7 @@ class estimateController extends Controller
 		$days=$r->input('days');//post input
 		$work=$r->input('work');//post input
 		$est_dt = date("Y-m-d");
-		$est_no = date("ymdHis");
+		//$est_no = date("ymdHis");
 		$customer_id=$r->input('customer_id');//post input
 		$customer_nm=$r->input('customer_nm');//post input
 		$user_id = session('user_id');
@@ -143,9 +143,11 @@ class estimateController extends Controller
 
 		if($register=="register01")
 		{		
-			DB::insert('INSERT INTO `est_mas`(`est_no`, `customer_id`, `engineer`, `technician`, `days`, 
-			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$est_no,$customer_id,$engineer,$technician,$days,$est_dt,
+			DB::insert('INSERT INTO `est_mas`(`customer_id`, `engineer`, `technician`, `days`, 
+			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?)',[$customer_id,$engineer,$technician,$days,$est_dt,
 			$user_id,'',$work, $km,$customer_nm]);
+			$est_no = DB::getPdo()->lastInsertId();
+			$est_no = str_pad($est_no, 5, '0', STR_PAD_LEFT);
 			
 			return redirect('/billMemoEst?est_no='.$est_no.'');
 		}
@@ -425,6 +427,7 @@ class estimateController extends Controller
 	{
 		$est_no=$r->input('est_no');//post input
 		$job_no=$r->input('job_no');//post input
+		$bill_no = date("ymdHis");
 		$today = date("Y-m-d");
 		$job_dt = date("Y-m-d");
 	
@@ -445,8 +448,8 @@ class estimateController extends Controller
 			$total = $item->total;
 		}
 
-		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`,
-		`job_dt`, `user_id`,`parts`,`service`,`total`,`net_bill`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$est_no,$customer_id,$customer_nm,$engineer,$technician,$job_no,$km, $work, $job_dt,
+		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`, `est_no`, 
+		`job_dt`, `user_id`,`parts`,`service`,`total`,`net_bill`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill_no,$customer_id,$customer_nm,$engineer,$technician,$job_no,$km, $work, $est_no, $job_dt,
 		$user_id,$parts,$service, $total, $net_bill]);
 
 		$result = DB::select("SELECT * FROM `est_det` WHERE est_no= '$est_no'");
@@ -459,7 +462,7 @@ class estimateController extends Controller
 			$unit_rate = $item->unit_rate;
 			$amount = $item->amount;
 
-			DB::insert('INSERT INTO `bill_det`(`bill_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,$type,$prod_id,$prod_name,$qty,$unit_rate,$amount, $today, $user_id]);
+			DB::insert('INSERT INTO `bill_det`(`bill_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$bill_no,$type,$prod_id,$prod_name,$qty,$unit_rate,$amount, $today, $user_id]);
 		}
 
 

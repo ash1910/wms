@@ -31,11 +31,14 @@ a  <link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="
 										<br><b>Mobile:</b> {{$item->customer_mobile}}
 										<br><b>Email:</b> {{$item->email}}
 										<br><b>Address:</b> {{$item->customer_address}}
-										<br><b>Contact Person:</b> {{$item->contact_person}}
+										@if($item->contact_person)<br><b>Contact Person:</b> {{$item->contact_person}} @endif
+										@if($item->car_user)<br><b>User Name:</b> {{$item->car_user}} @endif
 										</td>
 										<td style="text-align: left;"><b>Car Name:</b> {{$item->customer_vehicle}}
 										<br><b>Car Reg.:</b> {{$item->customer_reg}}
 										<br><b>Car Chasis:</b> {{$item->customer_chas}}
+										<br><b>Engine No:</b> {{$item->customer_eng}}
+										
 										</td>
 										<td><a data-id="{{$item->customer_id}}" class="custDetailAnchor" href="javascript:;">Details</a></td>
 									</tr>

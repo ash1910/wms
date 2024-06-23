@@ -147,7 +147,7 @@ function AmountInWords(float $amount)
 $today=date("d-M-Y");		
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
 b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
@@ -159,6 +159,8 @@ AND a.customer_id = b.customer_id;
 			{
 				 $customer_id = $post->customer_id;
 				 $customer_nm = $post->customer_nm;
+				 $car_user = $post->car_user;
+				 $customer_eng = $post->customer_eng;
 				 $customer_reg = $post->customer_reg;
 				 $customer_mobile = $post->customer_mobile;
 				 $email = $post->email;
@@ -204,6 +206,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 					<table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;"> : {{date('d-M-Y', strtotime($bill_dt))}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
+					   @if($car_user)<tr><td><strong class="text-inverse" style="font-family: Arial;">Car User Name </strong></td><td style="font-style: MS Gothic;">: {{$car_user}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Address </strong></td><td style="font-style: MS Gothic;">:{{$customer_address}}</td></tr>
                     <?php if($customer_mobile!=""){?>   
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Contact </strong></td><td style="font-style: MS Gothic;">: {{$customer_mobile}}</td></tr>
@@ -223,6 +226,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                     <table style="font-size: 11px;" >
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Reg</strong></td><td style="font-style: MS Gothic;"> : {{$customer_reg}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Chas </strong></td><td style="font-style: MS Gothic;">: {{$customer_chas}}</td></tr>
+					   @if($customer_eng)<tr><td><strong class="text-inverse" style="font-family: Arial;">Engine</strong></td><td style="font-style: MS Gothic;">: {{$customer_eng}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">KM </strong></td><td style="font-style: MS Gothic;">: {{$km}}</td ></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Model </strong></td><td style="font-style: MS Gothic;line-height: 0.8;">:{{$customer_vehicle}}</td></tr>
 					</table>

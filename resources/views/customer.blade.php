@@ -38,13 +38,21 @@ $(document).ready(function () {
                     <label class="form-label">Registration</label> 
                     <input placeholder="e.g: DHK-123" type="text" class="form-control" name="customer_reg">
                   </div>				
-                  <div class="col-12">
+                  <div class="col-8">
                     <label class="form-label">Chassis</label>
                     <input placeholder="e.g: ZYX10-2031342" type="text" class="form-control" name="customer_chas">
-                  </div>				
+                  </div>		
+                  <div class="col-4">
+                    <label class="form-label">Engine No.</label>
+                    <input placeholder="e.g: PJ12345U123456P" type="text" class="form-control" name="customer_eng">
+                  </div>		
                   <div class="col-12">
                     <label class="form-label">Customer Name</label>
                     <input id="tags01" placeholder="e.g: Abdul Karim" type="text" class="form-control" name="customer_nm" required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Car User Name</label>
+                    <input id="tags01" placeholder="e.g: Jobbar" type="text" class="form-control" name="car_user">
                   </div>
                   <div class="col-12">
                     <label class="form-label">Address</label>

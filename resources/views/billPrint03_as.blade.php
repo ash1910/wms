@@ -159,7 +159,7 @@ function AmountInWords(float $amount)
 $today=date("d-M-Y");		
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, b.contact_person, 
 b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
@@ -187,6 +187,7 @@ AND a.customer_id = b.customer_id;
 				 $job_dt = $post->job_dt;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
+				 $contact_person = $post->contact_person;
 			}
 			
 $result01 = DB::select("
@@ -229,6 +230,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 					<?php if($driver_mobile!=""){?>   
 					   <tr><td><strong class="text-inverse" style="font-family: Arial;">Attend </strong></td><td style="font-style: MS Gothic;">: {{$driver_mobile}}</td></tr>
 					<?php } ?>
+					@if($contact_person)<tr><td><strong class="text-inverse" style="font-family: Arial;">Contact Person </strong></td><td style="font-style: MS Gothic;">: {{$contact_person}}</td></tr> @endif
 					</table>
                     </address>
                  </div>

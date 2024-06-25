@@ -76,7 +76,9 @@ table td {
 word-wrap:break-word;
 white-space: normal;
 }
-
+address.add-info td {
+    font-size: 10px;
+}
  
 </style> 
 </head>
@@ -203,11 +205,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 			   
                  <div style="width: 300px;padding-right: 2px;">
                     <!--small>from</small-->
-                    <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
+                    <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
 					<table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;"> : {{date('d-M-Y', strtotime($bill_dt))}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
-					   @if($car_user)<tr><td><strong class="text-inverse" style="font-family: Arial;">Car User Name </strong></td><td style="font-style: MS Gothic;">: {{$car_user}}</td></tr> @endif
+					   @if($car_user)<tr><td><strong class="text-inverse" style="font-family: Arial;">User</strong></td><td style="font-style: MS Gothic;">: {{$car_user}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Address </strong></td><td style="font-style: MS Gothic;">:{{$customer_address}}</td></tr>
                     <?php if($customer_mobile!=""){?>   
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Contact </strong></td><td style="font-style: MS Gothic;">: {{$customer_mobile}}</td></tr>
@@ -218,7 +220,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 					<?php if($driver_mobile!=""){?>   
 					   <tr><td><strong class="text-inverse" style="font-family: Arial;">Attend </strong></td><td style="font-style: MS Gothic;">: {{$driver_mobile}}</td></tr>
 					<?php } ?>
-					@if($contact_person)<tr><td><strong class="text-inverse" style="font-family: Arial;">Contact Person </strong></td><td style="font-style: MS Gothic;">: {{$contact_person}}</td></tr> @endif
+					@if($contact_person)<tr><td><strong class="text-inverse" style="font-family: Arial;">C/P</strong></td><td style="font-style: MS Gothic;">: {{$contact_person}}</td></tr> @endif
 					</table>
                     </address>
                  </div>

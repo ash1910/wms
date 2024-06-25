@@ -113,7 +113,7 @@ AND a.customer_id = b.customer_id;
 $result01 = DB::select("
 SELECT a.`id`, a.`bill`, a.`job_no`, a.`customer_id`, a.`bill_dt`, a.`net_bill`, a.`received`, a.`pay_type`, 
 a.`dt`, a.`user_id`,  a.`trix`, a.`send`, a.`bank`, a.`chequeNo`, a.`chequeDt`,due,
-b.customer_nm, b.customer_mobile, b.customer_address, b.customer_reg, b.customer_chas,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`
+b.customer_nm, b.customer_mobile, b.customer_address, b.customer_reg, b.customer_chas,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, mer_bkash 
 FROM `pay` a, customer_info b 
 WHERE  a.customer_id='$customer_id' 
 AND a.bill = 'Advance' 
@@ -166,6 +166,7 @@ SELECT `received` FROM `cheque_pending` WHERE `chequeNo`='$chequeNo' and flag = 
 				$customer_address = $post01->customer_address;
 				$customer_reg = $post01->customer_reg;
 				$customer_chas = $post01->customer_chas;
+				$mer_bkash = $post01->mer_bkash;
 			}
 
 ?>
@@ -242,8 +243,15 @@ if($pay_type=="card")
 
 
 <tr>
-	<td>
-	<b>In words Tk:&nbsp;</b><?php echo AmountInWords($received); ?>
+	<td> 
+		<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+		
+		<?php if($pay_type=="bkash"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
+		<?php } ?>	
+		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+		<?php } ?>
 	</td>
 </tr>
 </table>
@@ -332,8 +340,15 @@ if($pay_type=="card")
 
 
 <tr>
-	<td>
-	<b>In words Tk:&nbsp;</b><?php echo AmountInWords($received); ?>
+	<td> 
+		<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+		
+		<?php if($pay_type=="bkash"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
+		<?php } ?>	
+		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+		<?php } ?>
 	</td>
 </tr>
 </table>

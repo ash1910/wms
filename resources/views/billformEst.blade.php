@@ -118,7 +118,7 @@ foreach($result as $post)
 						   <tr><td><strong class="text-inverse">Technician: </strong></td><td><input name="technician" type="text"></td></tr>
 						   <tr><td><strong class="text-inverse">KM: </strong></td><td><input name="km" type="text" ></td></tr>
 						   <tr><td><strong class="text-inverse">Time Required: </strong></td><td><input name="days" type="text" maxlength="3" minlength="0"> Working Days</td></tr>
-						   <tr><td><div class="form-check">
+						   <!-- <tr><td><div class="form-check">
 									<input required class="form-check-input" type="radio" name="work" value="engineering">
 									<label class="form-check-label" for="flexRadioDefault1">Engineering&nbsp;&nbsp;&nbsp;</label>
 								</div></td><td><div class="form-check">
@@ -127,7 +127,7 @@ foreach($result as $post)
 								</div></td><td><div class="form-check">
 									<input required class="form-check-input" type="radio" name="work" value="automobile">
 									<label class="form-check-label" for="flexRadioDefault1">Automobile</label>
-								</div></td></tr>
+								</div></td></tr> -->
 						<tr><td>					
 						<button class="btn btn-success" type="submit" name="register" value="register01">
 						<i class="lni lni-chevron-right-circle"></i> Next</button>

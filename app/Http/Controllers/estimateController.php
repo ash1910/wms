@@ -427,6 +427,7 @@ class estimateController extends Controller
 	{
 		$est_no=$r->input('est_no');//post input
 		$job_no=$r->input('job_no');//post input
+		$work=$r->input('work');//post input
 		$bill_no = date("ymdHis");
 		$today = date("Y-m-d");
 		$job_dt = date("Y-m-d");
@@ -441,11 +442,19 @@ class estimateController extends Controller
 			$engineer = $item->engineer;
 			$technician = $item->technician;
 			$km = $item->km;
-			$work = $item->work;
+			//$work = $item->work;
 			$parts = $item->parts;
 			$service = $item->service;
 			$net_bill = $item->net_bill;
 			$total = $item->total;
+		}
+		if($work=='intercompany')
+		{
+			$total = $net_bill;
+		}
+		if($work=='automobile')
+		{
+			$total = $net_bill;
 		}
 
 		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`, `est_no`, 
@@ -472,5 +481,100 @@ class estimateController extends Controller
 		return back();		
 	}
 
+	public function changeCustomerEst(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$days=$r->input('days');//post input
+		$engineer=$r->input('engineer');//post input
+		$technician=$r->input('technician');//post input
+		$km=$r->input('km');//post input
+		return view ('changeCustomerEst',[
+		'est_no'=>$est_no,
+		'days'=>$days,
+		'engineer'=>$engineer,
+		'technician'=>$technician,
+		'km'=>$km
+		]);
+	}
+	public function changeCustomerEst01(Request $r)
+	{
+		$customer_reg=$r->input('customer_reg');//post input
+		$est_no=$r->input('est_no');//post input
+		$register=$r->input('register');//post input
+
+		if($register=='register')
+		{
+				$result = DB::table('customer_info')->where('customer_reg', $customer_reg)
+					->where('flag', '1')->get();
+					foreach($result as $item1)
+					{$customer_id = $item1->customer_id;$customer_nm = $item1->customer_nm;}
+		}
+		if($register=='register01')
+		{
+				$result = DB::table('customer_info')->where('customer_chas', $customer_reg)
+					->where('flag', '1')->get();
+					foreach($result as $item1)
+					{$customer_id = $item1->customer_id;$customer_nm = $item1->customer_nm;}
+		}
+		
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['customer_id' => $customer_id,'customer_nm' => $customer_nm]);
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+		
+	}
+	public function changeCustomerEst02(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$change_dt=$r->input('change_dt');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['job_dt' => $change_dt]);
+		
+		//$r->session()->put('bill_no',$bill_no);
+		//return redirect('billMemo');
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+	}
+	public function changeCustomerEst03(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$days=$r->input('days');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['days' => $days]);
+		
+		//$r->session()->put('bill_no',$bill_no);
+		//return redirect('billMemo');
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+	}
+	public function changeCustomerEst04(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$km=$r->input('km');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['km' => $km]);
+		
+		//$r->session()->put('bill_no',$bill_no);
+		//return redirect('billMemo');
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+		
+	}	
+	public function changeCustomerEst05(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$engineer=$r->input('engineer');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['engineer' => $engineer]);
+		
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+		
+	}	
+	public function changeCustomerEst06(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$technician=$r->input('technician');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['technician' => $technician]);
+		
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+		
+	}
 
 }

@@ -84,6 +84,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('ModifyBillDt','App\Http\Controllers\billController@ModifyBillDt');
 	Route::post('ModifyBillDt01','App\Http\Controllers\billController@ModifyBillDt01');
 
+	
+
 	// Estimate
 	Route::get('est','App\Http\Controllers\estimateController@est');
 	Route::get('searchClientEst','App\Http\Controllers\estimateController@searchClientEst');
@@ -97,6 +99,15 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('billMemoThreeEst','App\Http\Controllers\estimateController@billMemoThreeEst');
 	Route::get('approvalEst','App\Http\Controllers\estimateController@approvalEst');
 	Route::post('approval01Est','App\Http\Controllers\estimateController@approval01Est');
+
+	Route::post('changeCustomerEst','App\Http\Controllers\estimateController@changeCustomerEst');
+	Route::post('changeCustomerEst01','App\Http\Controllers\estimateController@changeCustomerEst01');
+	Route::post('changeCustomerEst02','App\Http\Controllers\estimateController@changeCustomerEst02');
+	Route::post('changeCustomerEst03','App\Http\Controllers\estimateController@changeCustomerEst03');
+	Route::post('changeCustomerEst04','App\Http\Controllers\estimateController@changeCustomerEst04');
+	Route::post('changeCustomerEst05','App\Http\Controllers\estimateController@changeCustomerEst05');
+	Route::post('changeCustomerEst06','App\Http\Controllers\estimateController@changeCustomerEst06');
+	Route::post('changeCustomerEst07','App\Http\Controllers\estimateController@changeCustomerEst07');
 	
 	// Bill report
 	Route::get('reports','App\Http\Controllers\billController@reports');

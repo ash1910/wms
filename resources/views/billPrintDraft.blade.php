@@ -149,13 +149,13 @@ function AmountInWords(float $amount)
 &emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781797</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
 &emsp;&emsp;&emsp;&emsp;<b>BIN: 000445917-0203</b><br><br> 	
-<center><b>Bill:{{$bill_no}}</b></center>
+
 <?php
 $today=date("d-M-Y");		
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
+b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, est_no 
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -180,6 +180,7 @@ AND a.customer_id = b.customer_id;
 				 $job_dt = $post->job_dt;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
+				 $est_no = $post->est_no;
 			}
 			
 $result01 = DB::select("
@@ -202,6 +203,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 
 ?>
 
+<center> @if($est_no)<b style="float: left;">EST:{{$est_no}}</b>@endif<b>Bill:{{$bill_no}}</b></center>
 
                <div class="row row-cols-1 row-cols-lg-3">
 			   

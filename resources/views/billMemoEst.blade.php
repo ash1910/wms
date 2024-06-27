@@ -76,13 +76,23 @@ return redirect('home');
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
-                      <h5 class="mb-0">Create Estimate [Estimate No: {{$est_no}}]
+                      <h5 class="mb-0">Create Estimate [Estimate No: {{$est_no}}] 
 					  
 					<form  target="_blank" style="display: inline;" action="billPrint_asEst" method="post">{{ csrf_field() }}
 					<input type="hidden" name="est_no" value="{{$est_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
-					</form>			
+					</form>		
+					
+					<form style="display: inline;" action="changeCustomerEst" method="post">{{ csrf_field() }}
+					<input type="hidden" name="est_no" value="{{$est_no}}">
+					<input type="hidden" name="days" value="{{$days}}">
+					<input type="hidden" name="km" value="{{$km}}">
+					<input type="hidden" name="engineer" value="{{$engineer}}">
+					<input type="hidden" name="technician" value="{{$technician}}">
+					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+					<i class="fadeIn animated lni lni-reload"></i> Modify</button>
+					</form>	
 					  
 					  </h5>
                     </div>
@@ -325,7 +335,7 @@ return redirect('home');
 	FROM `est_det` WHERE type = '2' and `est_no`=$est_no;");
 	$sl="1";
 	foreach($stock as $item)
-		{ 					
+		{		
 ?>					<tr>
 						<td style="text-align: center;" class="sorting_1">
 						

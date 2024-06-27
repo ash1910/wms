@@ -109,9 +109,36 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(se
 					<form style="display: inline;" action="approval01Est" method="post">{{ csrf_field() }}
 						<input type="hidden" name="est_no" value="{{$item->est_no}}">
 						<input type="hidden" name="est_dt" value="{{$item->est_dt}}">
-						<b>Job No:</b> <input type="text" name="job_no" maxlength="7" minlength="7" required style="width: 80px;">
-						<button class="btn btn-outline-success px-3" type="submit" name="" value="">
+						
+            <table style="display: inline;">
+              <tr><td>
+                <b>Job No:</b> <input type="text" name="job_no" maxlength="7" minlength="7" required style="width: 80px;">
+              </td></tr>
+              
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="engineering">
+                    <label class="form-check-label" for="flexRadioDefault1">Engineering&nbsp;&nbsp;&nbsp;</label>
+                  </div>
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="intercompany">
+                    <label class="form-check-label" for="flexRadioDefault1">Intercompany</label>
+                  </div>
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="automobile">
+                    <label class="form-check-label" for="flexRadioDefault1">Automobile</label>
+                  </div>
+                </td>
+              </tr>
+
+                  <tr><td>
+                    
+                  </td></tr>
+              </table>
+              <button class="btn btn-outline-success px-3" type="submit" name="" value="">
 						Approval to<br> Draft Bill</button>
+						
 					</form>						
 <?php } else {?>						
 					

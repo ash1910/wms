@@ -161,14 +161,13 @@ function AmountInWords(float $amount)
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781330</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
 <br><br>
-<p style="text-align:center; margin: 0;">&emsp;&emsp;&emsp;&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>
-<center></center>
+
 <?php
 $today=date("d-M-Y");		
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, b.contact_person, 
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
+b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, est_no 
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -196,6 +195,7 @@ AND a.customer_id = b.customer_id;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
 				 $contact_person = $post->contact_person;
+				 $est_no = $post->est_no;
 			}
 			
 $result01 = DB::select("
@@ -218,6 +218,8 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 
 ?>
 
+<p style="text-align:center; margin: 0;"> @if($est_no)<b style="float: left;">EST:{{$est_no}}</b>@else &emsp;&emsp;&emsp; @endif&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>
+<center></center>
 
                <div class="row row-cols-1 row-cols-lg-3">
 			   

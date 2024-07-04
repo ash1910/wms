@@ -30,9 +30,11 @@ class customerController extends Controller
 		$customer_reg =request('customer_reg');//post input
 		$customer_chas =request('customer_chas');//post input
 		$customer_address =request('customer_address');//post input
+		$year =request('year');//post input
 
 		$customer_eng =request('customer_eng');//post input
 		$car_user =request('car_user');//post input
+		$car_colour =request('car_colour');//post input
 
 		$driver_mobile =request('driver_mobile');//post input
 		$company =request('company');//post input
@@ -75,8 +77,8 @@ class customerController extends Controller
 		$contact4_desig=request('contact4_desig');
 		$contact4_purpose=request('contact4_purpose');
 
-		DB::insert('INSERT INTO `customer_info`( `customer_reg`, `customer_nm`, `customer_mobile`,`email`, `customer_eng`, `car_user`, 
-		`customer_address`, `customer_vehicle`, `flag`, `customer_chas`,`driver_mobile`,`company`,`customer_group`,`sister_companies`,`contact_person`,`ac_name`,`ac_no`,`bank_name`,
+		DB::insert('INSERT INTO `customer_info`( `customer_reg`, `customer_nm`, `customer_mobile`,`email`, `customer_eng`, `car_user`, `car_colour`,  
+		`customer_address`, `customer_vehicle`, `flag`, `customer_chas`,`year`,`driver_mobile`,`company`,`customer_group`,`sister_companies`,`contact_person`,`ac_name`,`ac_no`,`bank_name`,
 		`branch_name`,`routing_no`,`swift_code`,`ac_name02`,`ac_no02`,`bank_name02`,
 		`branch_name02`,`routing_no02`,`swift_code02`,`bin`,
 		`contact1_name`,`contact1_mobile`,`contact1_desig`,`contact1_purpose`,
@@ -84,8 +86,8 @@ class customerController extends Controller
 		`contact3_name`,`contact3_mobile`,`contact3_desig`,`contact3_purpose`,
 		`contact4_name`,`contact4_mobile`,`contact4_desig`,`contact4_purpose`
 		) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_reg,$customer_nm,$customer_mobile,$email,$customer_eng,$car_user
-		,$customer_address,$customer_vehicle,'1',$customer_chas,$driver_mobile,$company,$customer_group,$sister_companies,$contact_person,$ac_name,$ac_no,$bank_name,$branch_name,
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_reg,$customer_nm,$customer_mobile,$email,$customer_eng,$car_user, $car_colour 
+		,$customer_address,$customer_vehicle,'1',$customer_chas,$year,$driver_mobile,$company,$customer_group,$sister_companies,$contact_person,$ac_name,$ac_no,$bank_name,$branch_name,
 		$routing_no,$swift_code,$ac_name02,$ac_no02,$bank_name02,$branch_name02,
 		$routing_no02,$swift_code02,$bin, $contact1_name, $contact1_mobile, $contact1_desig, $contact1_purpose,  $contact2_name, $contact2_mobile, $contact2_desig, $contact2_purpose, $contact3_name, $contact3_mobile, $contact3_desig, $contact3_purpose, $contact4_name, $contact4_mobile, $contact4_desig, $contact4_purpose]);
 
@@ -133,8 +135,11 @@ class customerController extends Controller
 		$company =request('company');//post input
 		$sister_companies =request('sister_companies');//post input
 
+		$year =request('year');//post input
+
 		$customer_eng =request('customer_eng');//post input
 		$car_user =request('car_user');//post input
+		$car_colour =request('car_colour');//post input
 
 		$contact_person =request('contact_person');//post input
 		$bin =request('bin');//post input
@@ -178,12 +183,14 @@ class customerController extends Controller
 	  'customer_nm' => $customer_nm,
 	  'customer_eng' => $customer_eng,
 	  'car_user' => $car_user,
+	  'car_colour' => $car_colour,
 	  'customer_mobile' => $customer_mobile,
 	  'email' => $email,
 	  'driver_mobile' => $driver_mobile,
 	  'customer_vehicle' => $customer_vehicle,
 	  'customer_reg' => $customer_reg,
 	  'customer_chas' => $customer_chas,
+	  'year' => $year,
 	  'customer_address' => $customer_address,
 	  'customer_group' => $customer_group,
 	  'company' => $company,

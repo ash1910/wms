@@ -148,7 +148,7 @@ $today=date("d-M-Y");
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
+b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour 
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -173,6 +173,8 @@ AND a.customer_id = b.customer_id;
 				 $job_dt = $post->job_dt;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
+				 $year = $post->year;
+				 $car_colour = $post->car_colour;
 			}
 			
 $result01 = DB::select("
@@ -225,6 +227,8 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Chas </strong></td><td style="font-style: MS Gothic;">: {{$customer_chas}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">KM </strong></td><td style="font-style: MS Gothic;">: {{$km}}</td ></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Model </strong></td><td style="font-style: MS Gothic;line-height: 0.8;">:{{$customer_vehicle}}</td></tr>
+					   @if($year)<tr><td><strong class="text-inverse" style="font-family: Arial;">Year</strong></td><td style="font-style: MS Gothic;">: {{$year}}</td></tr> @endif
+					   @if($car_colour)<tr><td><strong class="text-inverse" style="font-family: Arial;">Colour</strong></td><td style="font-style: MS Gothic;">: {{$car_colour}}</td></tr> @endif
 					</table>
                    </address>
                 </div>

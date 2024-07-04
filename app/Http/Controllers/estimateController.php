@@ -159,7 +159,9 @@ class estimateController extends Controller
 	{
 		$est_no=$r->input('est_no');//post input
 		$data = DB::select("SELECT flag FROM `est_mas` WHERE `est_no`=$est_no;");
-		foreach($data as $item){ $flag = $item->flag; }		
+		foreach($data as $item){ $flag = $item->flag; }	
+		
+		return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
 		
 		if($flag=='0')
 		{
@@ -527,7 +529,7 @@ class estimateController extends Controller
 		$est_no=$r->input('est_no');//post input
 		$change_dt=$r->input('change_dt');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
-		->update(['job_dt' => $change_dt]);
+		->update(['est_dt' => $change_dt]);
 		
 		//$r->session()->put('bill_no',$bill_no);
 		//return redirect('billMemo');

@@ -451,6 +451,21 @@ if($check == '')
 		'to_dt'=>$to_dt
 		]);	
 	}
+
+	public function form_estimate()
+	{
+		return view ('form_estimate');	
+	}
+
+	public function report_estimate(Request $r)
+	{
+		$from_dt=$r->input('from_dt');//post input
+		$to_dt=$r->input('to_dt');//post input
+		return view ('report_estimate',[
+		'from_dt'=>$from_dt,
+		'to_dt'=>$to_dt
+		]);	
+	}
 	
 	public function report02(Request $r)
 	{

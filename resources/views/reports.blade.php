@@ -30,6 +30,23 @@
 
 
 
+<?php 
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Store")
+	||(session('role')=="Administrator")||(session('role')=="Service Engineer")||(session('role')=="Executive")||(session('role')=="PRO")){
+?>	  
+	  <a href="/form_estimate">
+	  <div class="col">
+		<div class="card radius-10">
+		  <div class="card-body text-center" style="height: 175px;">
+			<div class="widget-icon mx-auto mb-3 bg-light-primary text-primary">
+			  <i class="lni lni-files"></i>
+			</div>
+			 <h3>Estimate List</h3>
+		  </div>
+		</div>
+	  </div>
+	  </a>
+<?php } ?>
 
 
 <?php 

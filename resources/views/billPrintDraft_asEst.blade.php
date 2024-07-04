@@ -80,7 +80,9 @@ table td {
 word-wrap:break-word;
 white-space: normal;
 }
-
+address.add-info td {
+    font-size: 10px;
+}
 
 </style> 
   
@@ -207,7 +209,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 			   
                  <div style="width: 300px;padding-right: 2px;">
                     <!--small>from</small-->
-                    <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
+                    <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
 					<table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($est_dt))}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
@@ -225,7 +227,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                     </address>
                  </div>
                  <div style="width: 180px;padding: 0;">
-                    <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
+                    <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
                     <!--small>to</small-->
                     <table style="font-size: 11px;" >
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Reg</strong></td><td style="font-style: MS Gothic;"> : {{$customer_reg}}</td></tr>
@@ -237,7 +239,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                    </address>
                 </div>
                  <div style="width: 250px;padding-left: 2px;">
-                    <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
+                    <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
                     <!--small>to</small-->
                     <table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Engineer</strong></td><td style="font-style: MS Gothic;"> : {{$engineer}}</td></tr>

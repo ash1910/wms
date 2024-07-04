@@ -48,6 +48,25 @@
 		</div>
 		</div>
 
+		<div class="col-6">
+		<div class="card shadow-none border radius-15">
+		<div class="card-body">
+	<form class="row g-3" action="changeCustomerEst02" method='post'>
+	{{ csrf_field() }}
+	<input type="hidden" name="est_no" value="{{$est_no}}">
+			<div class="col-md-12">
+				<label class="form-label">Change Estimate Date:</label>
+				<input  autofocus type="date" class="form-control" name='change_dt' >
+			</div>		
+		<div class="col-12">
+			<button class="btn btn-success" type="submit">
+			<i class="lni lni-reload"></i> Change Date</button>
+		</div>
+	</form>
+		</div>
+		</div>
+		</div>
+
 	</div>
 	</div>
 			
@@ -118,7 +137,7 @@
 		</div>
 	</form>
 		</div>
-		</div>
+		</div> 
 		</div>
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">

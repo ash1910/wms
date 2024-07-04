@@ -17,10 +17,6 @@ AND a.customer_id = b.customer_id;
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
 
-
-
-
-
 		foreach($result as $post)
 			{
 				 $customer_id = $post->customer_id;
@@ -41,7 +37,7 @@ AND a.customer_id = b.customer_id;
 			
 if($flag!='0')
 {
-return redirect('home');
+//return redirect('home');
 }
 			
 ?>

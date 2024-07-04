@@ -118,6 +118,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('form08','App\Http\Controllers\billController@form08');
 	Route::get('form09','App\Http\Controllers\billController@form09');
 	Route::get('form10','App\Http\Controllers\billController@form10');
+	Route::get('form_estimate','App\Http\Controllers\billController@form_estimate');
+
 	Route::get('advance','App\Http\Controllers\billController@advance');
 	Route::get('advanceClient','App\Http\Controllers\billController@advanceClient');
 	Route::get('advanceClient01','App\Http\Controllers\billController@advanceClient01');
@@ -154,6 +156,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('dueRef02','App\Http\Controllers\billController@dueRef02');
 	Route::get('dueRef03','App\Http\Controllers\billController@dueRef03');
 	Route::get('dueRef04','App\Http\Controllers\billController@dueRef04');
+	Route::get('report_estimate','App\Http\Controllers\billController@report_estimate');
 	// cash in
 	Route::get('cashIn','App\Http\Controllers\cashController@cashIn');
 	Route::get('form06','App\Http\Controllers\cashController@form06');

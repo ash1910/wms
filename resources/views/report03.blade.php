@@ -212,7 +212,7 @@ foreach($result as $item)
 
 						<td style="border: 1px solid black;text-align: center;">@if($item->due<0) {{number_format((-$item->due), 2, '.', ',')}} @else 0.00 @endif</td>
 						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 1) {{number_format((-$item->advance_refund), 2, '.', ',')}} @else 0.00 @endif</td>
-						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 0) {{number_format((-$item->advance_refund), 2, '.', ',')}} @else 0.00 @endif</td>
+						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 0 && $item->advance_refund < 0) ({{number_format((-$item->advance_refund), 2, '.', ',')}}) @else 0.00 @endif</td>
 
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->sales_return), 2, '.', ',')}}</td>
@@ -309,7 +309,7 @@ echo 'Received';
 		$sl = $sl+1;
 		$total01 = $item->total;
 		$total02 = $total01+$total02;
-		$total03 = $total03+$item->net_bill;
+		$total03 = $total03+(float)$item->net_bill;
 
 		}  
 ?>

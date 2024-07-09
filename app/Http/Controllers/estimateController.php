@@ -224,8 +224,8 @@ class estimateController extends Controller
 				{ 
 					$parts = $item->parts;  
 					$service = $item->service;
-					$net_bill = $item->net_bill;  
-					$total_bill = $item->total;
+					$net_bill = $item->net_bill;
+					$total_bill = number_format((float)$item->total, 2, '.', '');
 
 					$data01 = DB::select("
 					SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
@@ -293,7 +293,7 @@ class estimateController extends Controller
 					$parts = $item->parts;  
 					$service = $item->service;
 					$net_bill = $item->net_bill;  
-					$total_bill = $item->total;
+					$total_bill = number_format((float)$item->total, 2, '.', '');
 
 					$data01 = DB::select("
 					SELECT `work` FROM `est_mas` WHERE `est_no` = '$est_no'
@@ -349,7 +349,7 @@ class estimateController extends Controller
 		$parts = $item->parts;  
 		$service = $item->service;
 		$net_bill = $item->net_bill;  
-		$total_bill = $item->total;
+		$total_bill = number_format((float)$item->total, 2, '.', '');
 		}
 
 		$data01 = DB::select("

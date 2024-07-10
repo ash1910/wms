@@ -342,14 +342,17 @@ class estimateController extends Controller
 		$data = DB::select("
 		SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 		from
-		(SELECT sum(`amount`) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
-		(SELECT sum(`amount`) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
+		(SELECT COALESCE(SUM(amount),0) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
+		(SELECT COALESCE(SUM(amount),0) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
 		");
+
+		//echo "<pre>";print_r($data );exit;
+
 		foreach($data as $item){ 
 		$parts = $item->parts;  
 		$service = $item->service;
 		$net_bill = $item->net_bill;  
-		$total_bill = number_format((float)$item->total, 2, '.', '');
+		$total_bill =  number_format((float)$item->total, 2, '.', '');
 		}
 
 		$data01 = DB::select("

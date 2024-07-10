@@ -8,7 +8,7 @@ $est_no = $_GET["est_no"];
 
 
 $result = DB::select("
-SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
+SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, year, car_colour, 
 b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `user_id`, `net_bill` ,`km`, a.flag
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
@@ -33,6 +33,8 @@ AND a.customer_id = b.customer_id;
 				 $user_id = $post->user_id;
 				 $flag = $post->flag;
 				 $days = $post->days;
+				 $year = $post->year;
+				 $car_colour = $post->car_colour;
 			}
 			
 if($flag!='0')
@@ -119,7 +121,8 @@ if($flag!='0')
                        <strong class="text-inverse">Registration No.: </strong>{{$customer_reg}}<br>
                        <strong class="text-inverse">Chassis No.: </strong>{{$customer_chas}}<br>
                        <strong class="text-inverse">Vehicle: </strong>{{$customer_vehicle}}<br>
-
+					   <strong class="text-inverse">Year: </strong>{{$year}}<br>
+					   <strong class="text-inverse">Colour Code: </strong>{{$car_colour}}<br>
                     </address>
                    </div>
                 </div>

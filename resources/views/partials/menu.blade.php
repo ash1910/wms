@@ -62,7 +62,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>    
 
-<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/est"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Estimate</div>

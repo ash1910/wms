@@ -275,7 +275,7 @@ if($flag!='0')
 				
 				
 				
-				<table class="table table-bordered mb-0">
+				<table id="example4" class="table table-bordered mb-0">
 					<thead>
 						<tr>
 							<th scope="col">Edit</th>
@@ -404,23 +404,10 @@ if($flag!='0')
 @endsection
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 @section("js")
 
   <link rel="stylesheet" href="assets/js/jquery-ui.css">
-  <script src="assets/js/jquery-3.6.0.js"></script>
-  <script src="assets/js/jquery-ui.js"></script>
+
   <script>
   $( function() {
     var availableTags = [
@@ -454,7 +441,6 @@ echo '"'.$p->service_id.' - '.$p->service_name.'",';
     });
   } );
   </script>
-  
+
  @endsection
  
-  

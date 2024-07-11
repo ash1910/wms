@@ -76,14 +76,18 @@ class setupController extends Controller
 		$id=$r->input('id');//post input
 		$cat=$r->input('cat');//post input
 		$sub_cat=$r->input('sub_cat');//post input
+		$section=$r->input('section');//post input
 		$result = DB::table('parts_info')->where('parts_id', $id)
-		->update(['cat' => $cat,'sub_cat' => $sub_cat]);
+		->update(['cat' => $cat,'sub_cat' => $sub_cat, 'section' => $section]);
 		return redirect('/parts');
 	}
 	public function partsAddOne(Request $r)
 	{
 		$parts_name=$r->input('parts_name');//post input
-		DB::insert('INSERT INTO `parts_info`(`parts_name`, `type`) VALUES (?,?)',[$parts_name,'1']);
+		$cat=$r->input('cat');//post input
+		$sub_cat=$r->input('sub_cat');//post input
+		$section=$r->input('section');//post input
+		DB::insert('INSERT INTO `parts_info`(`parts_name`, `type`, cat, sub_cat, section) VALUES (?,?,?,?,?)',[$parts_name,'1',$cat,$sub_cat,$section]);
 		return redirect ('/parts')->with('success', 'New Parts Add Sucessfully!!!');
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

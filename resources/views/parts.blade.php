@@ -39,7 +39,7 @@ else {
 										<th>Parts Name</th>
 										<th>Category</th>
 										<th>Sub Category</th>
-										
+										<th>Parts Type</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -51,6 +51,7 @@ else {
 										<td>{{$item->parts_name}}</td>
 										<td>{{$item->cat}}</td>
 										<td>{{$item->sub_cat}}</td>
+										<td>{{$item->section}}</td>
 									</tr>
 								@endforeach 
 								

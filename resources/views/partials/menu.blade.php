@@ -92,7 +92,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>   
 
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="Administrator")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){ ?>
 			<li class="">
               <a class="has-arrow" href="javascript:;" aria-expanded="false">
                 <div class="parent-icon"><i class="bi bi-lock"></i>

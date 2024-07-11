@@ -117,7 +117,7 @@ foreach($result as $post)
 <?php } ?>
 						   <tr><td><strong class="text-inverse">Technician: </strong></td><td><input name="technician" type="text"></td></tr>
 						   <tr><td><strong class="text-inverse">KM: </strong></td><td><input name="km" type="text" ></td></tr>
-						   <tr><td><strong class="text-inverse">Time Required: </strong></td><td><input name="days" type="text" maxlength="3" minlength="0"> Working Days</td></tr>
+						   <tr><td><strong class="text-inverse">Time Required: </strong></td><td><input name="days" type="text" maxlength="20" minlength="0"> Working Days</td></tr>
 						   <!-- <tr><td><div class="form-check">
 									<input required class="form-check-input" type="radio" name="work" value="engineering">
 									<label class="form-check-label" for="flexRadioDefault1">Engineering&nbsp;&nbsp;&nbsp;</label>

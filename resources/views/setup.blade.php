@@ -64,7 +64,7 @@ if ((session('role')=="Super Administrator")||(session('user')=="Mosharraf")){
 	  </a>
  <?php } ?>
  <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Service Engineer")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Service Engineer")||(session('role')=="PRO")){
 ?>
 	  <a href="/parts">
 	  <div class="col">
@@ -80,7 +80,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
 	  </a>
  <?php } ?>
  <?php 
-if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Service Engineer")){
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Service Engineer")||(session('role')=="PRO")){
 ?>
 
 	  <a href="/service">

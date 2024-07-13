@@ -11,7 +11,9 @@
     </div>
 @endif					
 				<div class="card" >
-				<a class="btn btn-success" href="/serviceAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Service</a>
+				@if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator"))
+					<a class="btn btn-success" href="/serviceAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Service</a>
+				@endif
 					<div class="card-body">
 					
 						<div class="table-responsive">

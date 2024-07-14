@@ -424,9 +424,12 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 
 @section("js")
 
-  <link rel="stylesheet" href="assets/js/jquery-ui.css">
+
+<link rel="stylesheet" href="assets/js/jquery-ui.css">
+  <script src="assets/js/jquery-ui.js"></script>
 
   <script>
+
   $( function() {
     var availableTags = [
  
@@ -463,7 +466,6 @@ echo '"'.$p->service_id.' - '.$p->service_name.'",';
  @endsection
  
  @section("dataTable")
-  <script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
-  <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+
   <script src="assets/js/table-datatable.js"></script>
  @endsection

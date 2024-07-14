@@ -274,7 +274,11 @@ if($flag!='0')
 					 </div>
 				
 				
-				
+<style>
+table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.dataTable tbody th, table#example4.table-bordered.dataTable tbody td {
+    border-bottom-width: 1px;
+}
+</style>				
 				<table id="example4" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -289,7 +293,14 @@ if($flag!='0')
 					</thead>
 					<tbody>
 					
-<tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parts</strong></td></tr>
+<tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parts</strong></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td> 
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+</tr>
 					
 <?php
 	$stock = DB::select("
@@ -327,7 +338,14 @@ if($flag!='0')
 		}  
 				
 ?>
-<tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service</strong></td></tr>
+<tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service</strong></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td> 
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+	<td style="display: none;"></td>
+</tr>
 <?php
 	$stock = DB::select("
 	SELECT `est_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`, id
@@ -444,3 +462,8 @@ echo '"'.$p->service_id.' - '.$p->service_name.'",';
 
  @endsection
  
+ @section("dataTable")
+  <script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+  <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+  <script src="assets/js/table-datatable.js"></script>
+ @endsection

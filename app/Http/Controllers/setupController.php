@@ -21,8 +21,22 @@ class setupController extends Controller
 	public function serviceAddOne(Request $r)
 	{
 		$service_name=$r->input('service_name');//post input
-		DB::insert('INSERT INTO `service_info`(`service_name`, `type`) VALUES (?,?)',[$service_name,'2']);
+		$section=$r->input('section');//post input
+		DB::insert('INSERT INTO `service_info`(`service_name`, `type`, `section`) VALUES (?,?,?)',[$service_name,'2',$section]);
 		return redirect ('/service')->with('success', 'New Service Add Sucessfully!!!');
+	}
+	public function serviceEdit(Request $r)
+	{
+		$id=$r->input('id');//post input
+		return view('serviceEdit',['id'=>$id]);
+	}
+	public function serviceEditOne(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$section=$r->input('section');//post input
+		$result = DB::table('service_info')->where('service_id', $id)
+		->update([ 'section' => $section]);
+		return redirect('/service');
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function user()

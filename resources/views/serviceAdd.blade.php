@@ -39,6 +39,17 @@ $(document).ready(function () {
                     <label class="form-label">Service Name</label>
                     <input id="tags01" placeholder="e.g: Brake System Service" type="text" class="form-control" name="service_name" required>
                   </div>
+                  <div class="col-12">
+                    <label class="form-label">Service Type</label>
+                    <select class="form-control" name="section" >
+                      <option value="">Select</option>
+                      <option value="General Repair" >General Repair</option>
+                      <option value="A.C & Electric">A.C & Electric</option>
+                      <option value="Body & Paint">Body & Paint</option>
+                      <option value="Maintenance">Maintenance</option>
+                      <option value="CNG & LPG">CNG & LPG</option>
+                    </select>
+                  </div>
                   
 				  
                   <div class="col-12">

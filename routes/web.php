@@ -181,6 +181,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('service','App\Http\Controllers\setupController@service');
 	Route::get('serviceAdd','App\Http\Controllers\setupController@serviceAdd');
 	Route::post('serviceAddOne','App\Http\Controllers\setupController@serviceAddOne');
+	Route::get('serviceEdit','App\Http\Controllers\setupController@serviceEdit');
+	Route::post('serviceEditOne','App\Http\Controllers\setupController@serviceEditOne');
 	Route::get('user','App\Http\Controllers\setupController@user');
 	Route::get('userAdd','App\Http\Controllers\setupController@userAdd');
 	Route::post('userAddOne','App\Http\Controllers\setupController@userAddOne');

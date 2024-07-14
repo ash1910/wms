@@ -20,27 +20,23 @@
 							<table id="example2" class="table table-striped table-bordered" style="width:40%">
 								<thead>
 									<tr>
-										<th>service_name</th>
-										
+										<th>Edit</th>
+										<th>Service Name</th>
+										<th>Service Type</th>
 									</tr>
 								</thead>
 								<tbody>
 								
 								@foreach($data as $item)
 									<tr>
-
+									<td style="text-align: center;"><a href = "serviceEdit?id={{$item->service_id}}"><i class="lni lni-pencil-alt"></i></a></td>
 										<td>{{$item->service_name}}</td>
+										<td>{{$item->section}}</td>
 										
 									</tr>
 								@endforeach 
 								
 								</tbody>
-								<tfoot>
-									<tr>
-										<th>service_name</th>
-									
-									</tr>
-								</tfoot>
 							</table>
 						</div>
 					</div>

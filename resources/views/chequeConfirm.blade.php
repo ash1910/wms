@@ -100,8 +100,6 @@ and b.customer_id= c.customer_id
 and c.job_no = a.job_no
 AND a.confirm='0'
 AND d.job_no = a.job_no AND d.bank = a.bank AND a.chequeNo = d.chequeNo;
-
-;
 ");
 	$sl = '1'; 	$amount='0';		
 foreach($result as $item)

@@ -17,10 +17,11 @@
 					<div class="card-body">
 					
 						<div class="table-responsive">
-							<table id="example2" class="table table-striped table-bordered" style="width:40%">
+							<table id="example2" class="table table-striped table-bordered" style="width:80%">
 								<thead>
 									<tr>
 										<th>Edit</th>
+										<th>Service Code</th>
 										<th>Service Name</th>
 										<th>Service Type</th>
 									</tr>
@@ -30,6 +31,7 @@
 								@foreach($data as $item)
 									<tr>
 									<td style="text-align: center;"><a href = "serviceEdit?id={{$item->service_id}}"><i class="lni lni-pencil-alt"></i></a></td>
+										<td>{{$item->service_id}}</td>
 										<td>{{$item->service_name}}</td>
 										<td>{{$item->section}}</td>
 										

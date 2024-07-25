@@ -7,7 +7,7 @@
 <script>window.location = "/home";</script>
 <?php  }   ?>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 
 <main class="page-content">
             <!--breadcrumb-->

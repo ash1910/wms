@@ -32,7 +32,7 @@ $swift_code02 = $item->swift_code02 ;
 
 <!---Alert message----> 
 @if (Session::get('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
 Invalid Customer, Please Signup the Entry Form
 </div>

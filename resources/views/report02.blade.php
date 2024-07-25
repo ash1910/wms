@@ -707,7 +707,7 @@ else { echo "<td></td>";}?>
 
 						</div>
 <!---------BOM TAB-------------->
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
 						<div class="tab-pane fade" id="primarybom" role="tabpanel">
 
 
@@ -758,7 +758,7 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
 
 						</div>
 <!---------Sales Commission TAB-------------->
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
 					<div class="tab-pane fade" id="primarySale" role="tabpanel">
 						
 						

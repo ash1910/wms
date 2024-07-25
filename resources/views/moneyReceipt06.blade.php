@@ -16,8 +16,8 @@
   <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="assets/css/style.css" rel="stylesheet" />
   <link href="assets/css/icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="assets/css/font-roboto.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
   <!--Theme Styles-->
   <link href="assets/css/dark-theme.css" rel="stylesheet" />
   <link href="assets/css/light-theme.css" rel="stylesheet" />
@@ -327,8 +327,8 @@ if($pay_type=="card")
 <!-- <button id="cmd">generate PDF</button> -->
 
 <script src="assets/js/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script type="text/javascript" src="assets/js/jspdf.min.js"></script>
+<script type="text/javascript" src="assets/js//html2canvas.js"></script>
 
 
 <script type="text/javascript">

@@ -22,7 +22,7 @@
             <!--end breadcrumb-->
 
 <div class="col-11">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+<link rel="stylesheet" href="assets/css/fontawesome-all-v5.6.3.css" >
 	
 	<div class="card">
 	<div class="row">

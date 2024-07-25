@@ -24,7 +24,7 @@
 		<div class="col-12">
 
 
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+	<link rel="stylesheet" href="assets/css/fontawesome-all-v5.6.3.css" >
 		
 
 	<form class="row g-3" action="purchase041" method='post'>

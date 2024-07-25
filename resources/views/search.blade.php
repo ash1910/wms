@@ -5,7 +5,7 @@
 
 <!---Alert message----> 
 @if (Session::get('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
 Already Create Estimate!!!!
 </div>
@@ -22,7 +22,7 @@ $(document).ready(function () {
 <!---Alert message----> 
 
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" >
+<link rel="stylesheet" href="assets/css/fontawesome-all-v5.6.3.css" >
 
 
 	<form class="row g-3" action="searchby" method='get' target="_blank">

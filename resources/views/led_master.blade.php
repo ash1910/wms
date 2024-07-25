@@ -11,7 +11,7 @@
 
 <!---Alert message----> 
 @if(session()->has('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>

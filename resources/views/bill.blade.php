@@ -43,7 +43,7 @@ $(document).ready(function () {
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-lg-4">
+		<div class="col-12 col-lg-4 offset-lg-4">
 			<div class="card shadow-none border radius-15">
 				<div class="card-body">
 					<form class="row g-3" action="customerEditOne" method='get' target="_blank">

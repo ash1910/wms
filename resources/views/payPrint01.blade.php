@@ -401,6 +401,6 @@ if($pay_type=="card")
 
 <script type="text/javascript">
 window.print();
-var win = window.open("about:blank", "_self");
-win.close();
+//var win = window.open("about:blank", "_self");
+//win.close();
 </script>

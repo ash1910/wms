@@ -107,6 +107,22 @@ class customerController extends Controller
 		$sister_companies = DB::table('customer_info')->distinct()->get('sister_companies');
 
 		$id =request('id');//post input
+
+		$search=$r->input('search');//post input
+		$register=$r->input('register');//post input
+		$chas=$r->input('chas');//post input
+
+		if( $id == "" ){
+			if($register=='register'){
+				$id = DB::table('customer_info')->where('customer_reg', $search)
+				->where('flag', '1')->first()->customer_id;
+			}
+			if($chas=='chas'){
+				$id = DB::table('customer_info')->where('customer_chas', $search)
+				->where('flag', '1')->first()->customer_id;
+			}
+		}
+
 		$data = DB::table('customer_info')
 		->where('customer_id', $id)
 		->get();

@@ -242,7 +242,8 @@ class customerController extends Controller
 	  'contact4_desig' => $contact4_desig,
 	  'contact4_purpose' => $contact4_purpose
 	  ]);
-	  return redirect ('/customerEdit');
+	  //return redirect ('/customerEdit');
+	  return redirect ('/home')->with('success', 'Customer has been Updated Sucessfully.');
 	}
 	public function customerDel(Request $r)
 	{

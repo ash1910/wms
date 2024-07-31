@@ -16,8 +16,8 @@
   <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="assets/css/style.css" rel="stylesheet" />
   <link href="assets/css/icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="assets/css/font-roboto.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
   <!--Theme Styles-->
   <link href="assets/css/dark-theme.css" rel="stylesheet" />
   <link href="assets/css/light-theme.css" rel="stylesheet" />

@@ -16,8 +16,8 @@
   <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="assets/css/style.css" rel="stylesheet" />
   <link href="assets/css/icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="assets/css/font-roboto.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
   <!--Theme Styles-->
   <link href="assets/css/dark-theme.css" rel="stylesheet" />
   <link href="assets/css/light-theme.css" rel="stylesheet" />
@@ -76,7 +76,9 @@ table td {
 word-wrap:break-word;
 white-space: normal;
 }
-
+address.add-info td {
+    font-size: 10px;
+}
  
 </style> 
 </head>
@@ -142,13 +144,13 @@ function AmountInWords(float $amount)
 &emsp;&emsp;&emsp;&emsp;&emsp;<font style="font-size: small;">bKash Payment-01777781797</font>
 &emsp;&emsp;<b><font style="font-size: large;">BILL/CASH MEMO</font></b>
 &emsp;&emsp;&emsp;&emsp;<b>BIN: 000445917-0203</b><br><br>
-<center><b>Bill:{{$bill_no}}</b></center>
+
 <?php
 $today=date("d-M-Y");		
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, b.contact_person, 
+b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, est_no, year, car_colour 
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -159,6 +161,8 @@ AND a.customer_id = b.customer_id;
 			{
 				 $customer_id = $post->customer_id;
 				 $customer_nm = $post->customer_nm;
+				 $car_user = $post->car_user;
+				 $customer_eng = $post->customer_eng;
 				 $customer_reg = $post->customer_reg;
 				 $customer_mobile = $post->customer_mobile;
 				 $email = $post->email;
@@ -173,6 +177,10 @@ AND a.customer_id = b.customer_id;
 				 $job_dt = $post->job_dt;
 				 $bill_dt = $post->bill_dt;
 				 $user_id = $post->user_id;
+				 $contact_person = $post->contact_person;
+				 $est_no = $post->est_no;
+				 $year = $post->year;
+				 $car_colour = $post->car_colour;
 			}
 			
 $result01 = DB::select("
@@ -195,15 +203,18 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 		
 ?>
 
+<center> @if($est_no)<b style="float: left;">EST:{{$est_no}}</b>@endif<b>Bill:{{$bill_no}}</b></center>
+
 
                <div class="row row-cols-1 row-cols-lg-3">
 			   
                  <div style="width: 300px;padding-right: 2px;">
                     <!--small>from</small-->
-                    <address class="m-t-5 m-b-5" style="border-style: solid;border-width: thin;height: 150px;">
+                    <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
 					<table style="font-size: 11px;">
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Date</strong></td><td style="font-style: MS Gothic;"> : {{date('d-M-Y', strtotime($bill_dt))}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
+					   @if($car_user)<tr><td><strong class="text-inverse" style="font-family: Arial;">User</strong></td><td style="font-style: MS Gothic;">: {{$car_user}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Address </strong></td><td style="font-style: MS Gothic;">:{{$customer_address}}</td></tr>
                     <?php if($customer_mobile!=""){?>   
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Contact </strong></td><td style="font-style: MS Gothic;">: {{$customer_mobile}}</td></tr>
@@ -214,6 +225,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 					<?php if($driver_mobile!=""){?>   
 					   <tr><td><strong class="text-inverse" style="font-family: Arial;">Attend </strong></td><td style="font-style: MS Gothic;">: {{$driver_mobile}}</td></tr>
 					<?php } ?>
+					@if($contact_person)<tr><td><strong class="text-inverse" style="font-family: Arial;">C/P</strong></td><td style="font-style: MS Gothic;">: {{$contact_person}}</td></tr> @endif
 					</table>
                     </address>
                  </div>
@@ -223,8 +235,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                     <table style="font-size: 11px;" >
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Reg</strong></td><td style="font-style: MS Gothic;"> : {{$customer_reg}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Chas </strong></td><td style="font-style: MS Gothic;">: {{$customer_chas}}</td></tr>
+					   @if($customer_eng)<tr><td><strong class="text-inverse" style="font-family: Arial;">Engine</strong></td><td style="font-style: MS Gothic;">: {{$customer_eng}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">KM </strong></td><td style="font-style: MS Gothic;">: {{$km}}</td ></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Model </strong></td><td style="font-style: MS Gothic;line-height: 0.8;">:{{$customer_vehicle}}</td></tr>
+					   @if($year)<tr><td><strong class="text-inverse" style="font-family: Arial;">Year</strong></td><td style="font-style: MS Gothic;">: {{$year}}</td></tr> @endif
+					   @if($car_colour)<tr><td><strong class="text-inverse" style="font-family: Arial;">Colour</strong></td><td style="font-style: MS Gothic;">: {{$car_colour}}</td></tr> @endif
 					</table>
                    </address>
                 </div>

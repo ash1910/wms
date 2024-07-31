@@ -1,4 +1,3 @@
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -13,7 +12,7 @@
 
 <!---Alert message----> 
 @if (Session::get('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-success">
 New Payment Add Sucessfully!!!
 </div>
@@ -30,7 +29,7 @@ $(document).ready(function () {
 <!---Alert message----> 
 <!---Alert message----> 
 @if (Session::get('alertDel'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
 Payment Delete Sucessfully!!!
 </div>

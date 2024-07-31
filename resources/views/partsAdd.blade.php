@@ -11,7 +11,7 @@
 
 <!---Alert message----> 
 @if (Session::get('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
 Invalid Customer, Please Signup the Entry Form
 </div>
@@ -42,11 +42,22 @@ $(document).ready(function () {
                   
                   <div class="col-12">
                     <label class="form-label">Category</label>
-                    <input id="tags02" placeholder="e.g: lubricant" type="text" class="form-control" name="company" >
+                    <input id="tags02" placeholder="e.g: lubricant" type="text" class="form-control" name="cat" >
                   </div>
                   <div class="col-12">
                     <label class="form-label">Sub Category</label>
-                    <input id="tags03" placeholder="e.g: Engine Oil" type="text" class="form-control" name="sister_companies" >
+                    <input id="tags03" placeholder="e.g: Engine Oil" type="text" class="form-control" name="sub_cat" >
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Parts Type</label>
+                    <select class="form-control" name="section" >
+                      <option value="">Select</option>
+                      <option value="General Repair" >General Repair</option>
+                      <option value="A.C & Electric">A.C & Electric</option>
+                      <option value="Body & Paint">Body & Paint</option>
+                      <option value="Maintenance">Maintenance</option>
+                      <option value="CNG & LPG">CNG & LPG</option>
+                    </select>
                   </div>
 				  
                   <div class="col-12">

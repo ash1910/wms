@@ -77,11 +77,37 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('changeCustomer04','App\Http\Controllers\billController@changeCustomer04');
 	Route::post('changeCustomer05','App\Http\Controllers\billController@changeCustomer05');
 	Route::post('changeCustomer06','App\Http\Controllers\billController@changeCustomer06');
+	Route::post('changeCustomer07','App\Http\Controllers\billController@changeCustomer07');
 	Route::get('ModifyAcceptBill','App\Http\Controllers\billController@ModifyAcceptBill');
 	Route::post('ModifyAcceptBill01','App\Http\Controllers\billController@ModifyAcceptBill01');
 	Route::post('ModifyAcceptBill03','App\Http\Controllers\billController@ModifyAcceptBill03');
 	Route::get('ModifyBillDt','App\Http\Controllers\billController@ModifyBillDt');
 	Route::post('ModifyBillDt01','App\Http\Controllers\billController@ModifyBillDt01');
+
+	
+
+	// Estimate
+	Route::get('est','App\Http\Controllers\estimateController@est');
+	Route::get('searchClientEst','App\Http\Controllers\estimateController@searchClientEst');
+	Route::post('billcardEst','App\Http\Controllers\estimateController@billcardEst');
+	Route::view('billMemoEst','billMemoEst');
+	Route::post('billPrint_asEst','App\Http\Controllers\estimateController@billPrint_asEst');
+	Route::post('billMemoOneEst','App\Http\Controllers\estimateController@billMemoOneEst');
+	Route::post('billMemoTwoEst','App\Http\Controllers\estimateController@billMemoTwoEst');
+	Route::post('billMemoEditEst','App\Http\Controllers\estimateController@billMemoEditEst');
+	Route::post('billMemoEditOneEst','App\Http\Controllers\estimateController@billMemoEditOneEst');
+	Route::post('billMemoThreeEst','App\Http\Controllers\estimateController@billMemoThreeEst');
+	Route::get('approvalEst','App\Http\Controllers\estimateController@approvalEst');
+	Route::post('approval01Est','App\Http\Controllers\estimateController@approval01Est');
+
+	Route::post('changeCustomerEst','App\Http\Controllers\estimateController@changeCustomerEst');
+	Route::post('changeCustomerEst01','App\Http\Controllers\estimateController@changeCustomerEst01');
+	Route::post('changeCustomerEst02','App\Http\Controllers\estimateController@changeCustomerEst02');
+	Route::post('changeCustomerEst03','App\Http\Controllers\estimateController@changeCustomerEst03');
+	Route::post('changeCustomerEst04','App\Http\Controllers\estimateController@changeCustomerEst04');
+	Route::post('changeCustomerEst05','App\Http\Controllers\estimateController@changeCustomerEst05');
+	Route::post('changeCustomerEst06','App\Http\Controllers\estimateController@changeCustomerEst06');
+	Route::post('changeCustomerEst07','App\Http\Controllers\estimateController@changeCustomerEst07');
 	
 	// Bill report
 	Route::get('reports','App\Http\Controllers\billController@reports');
@@ -92,6 +118,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('form08','App\Http\Controllers\billController@form08');
 	Route::get('form09','App\Http\Controllers\billController@form09');
 	Route::get('form10','App\Http\Controllers\billController@form10');
+	Route::get('form_estimate','App\Http\Controllers\billController@form_estimate');
+
 	Route::get('advance','App\Http\Controllers\billController@advance');
 	Route::get('advanceClient','App\Http\Controllers\billController@advanceClient');
 	Route::get('advanceClient01','App\Http\Controllers\billController@advanceClient01');
@@ -128,6 +156,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('dueRef02','App\Http\Controllers\billController@dueRef02');
 	Route::get('dueRef03','App\Http\Controllers\billController@dueRef03');
 	Route::get('dueRef04','App\Http\Controllers\billController@dueRef04');
+	Route::get('report_estimate','App\Http\Controllers\billController@report_estimate');
 	// cash in
 	Route::get('cashIn','App\Http\Controllers\cashController@cashIn');
 	Route::get('form06','App\Http\Controllers\cashController@form06');
@@ -152,6 +181,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('service','App\Http\Controllers\setupController@service');
 	Route::get('serviceAdd','App\Http\Controllers\setupController@serviceAdd');
 	Route::post('serviceAddOne','App\Http\Controllers\setupController@serviceAddOne');
+	Route::get('serviceEdit','App\Http\Controllers\setupController@serviceEdit');
+	Route::post('serviceEditOne','App\Http\Controllers\setupController@serviceEditOne');
 	Route::get('user','App\Http\Controllers\setupController@user');
 	Route::get('userAdd','App\Http\Controllers\setupController@userAdd');
 	Route::post('userAddOne','App\Http\Controllers\setupController@userAddOne');
@@ -200,6 +231,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('payAdvance05','App\Http\Controllers\approvalController@payAdvance05');
 	Route::post('payAdvance06','App\Http\Controllers\approvalController@payAdvance06');
 	Route::post('payAdvance07','App\Http\Controllers\approvalController@payAdvance07');
+	
 
 	// DAY END
 	Route::get('dayEnd','App\Http\Controllers\dayEndController@dayEnd');

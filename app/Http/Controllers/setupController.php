@@ -21,8 +21,22 @@ class setupController extends Controller
 	public function serviceAddOne(Request $r)
 	{
 		$service_name=$r->input('service_name');//post input
-		DB::insert('INSERT INTO `service_info`(`service_name`, `type`) VALUES (?,?)',[$service_name,'2']);
+		$section=$r->input('section');//post input
+		DB::insert('INSERT INTO `service_info`(`service_name`, `type`, `section`) VALUES (?,?,?)',[$service_name,'2',$section]);
 		return redirect ('/service')->with('success', 'New Service Add Sucessfully!!!');
+	}
+	public function serviceEdit(Request $r)
+	{
+		$id=$r->input('id');//post input
+		return view('serviceEdit',['id'=>$id]);
+	}
+	public function serviceEditOne(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$section=$r->input('section');//post input
+		$result = DB::table('service_info')->where('service_id', $id)
+		->update([ 'section' => $section]);
+		return redirect('/service');
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function user()
@@ -76,14 +90,18 @@ class setupController extends Controller
 		$id=$r->input('id');//post input
 		$cat=$r->input('cat');//post input
 		$sub_cat=$r->input('sub_cat');//post input
+		$section=$r->input('section');//post input
 		$result = DB::table('parts_info')->where('parts_id', $id)
-		->update(['cat' => $cat,'sub_cat' => $sub_cat]);
+		->update(['cat' => $cat,'sub_cat' => $sub_cat, 'section' => $section]);
 		return redirect('/parts');
 	}
 	public function partsAddOne(Request $r)
 	{
 		$parts_name=$r->input('parts_name');//post input
-		DB::insert('INSERT INTO `parts_info`(`parts_name`, `type`) VALUES (?,?)',[$parts_name,'1']);
+		$cat=$r->input('cat');//post input
+		$sub_cat=$r->input('sub_cat');//post input
+		$section=$r->input('section');//post input
+		DB::insert('INSERT INTO `parts_info`(`parts_name`, `type`, cat, sub_cat, section) VALUES (?,?,?,?,?)',[$parts_name,'1',$cat,$sub_cat,$section]);
 		return redirect ('/parts')->with('success', 'New Parts Add Sucessfully!!!');
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

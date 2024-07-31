@@ -43,6 +43,12 @@
 			<label class="form-label">To Date:</label>
 			<input  autofocus type="date" class="form-control" name='to_dt'>
 		</div>
+		<div class="col-md-12">
+			<select name="merchant_bank" class="form-select">
+				<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+				<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+			</select>
+		</div>
 		<div class="col-12">
 			<button class="btn btn-success" type="submit" name="register" value="register">
 			<i class="lni lni-files"></i> Generate Report</button>

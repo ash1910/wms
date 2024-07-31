@@ -28,7 +28,7 @@
 	</li>			
 
 <?php 
-if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
+if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Super Administrator")){
 ?>	<li>
 	  <a href="/setup"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
 		<div class="menu-title">Setup</div>
@@ -61,6 +61,14 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </a>
 	</li>			
 <?php } ?>    
+
+<?php if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
+	<li>
+	  <a href="/est"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
+		<div class="menu-title">Estimate</div>
+	  </a>
+	</li>			
+<?php } ?> 
         
 <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")){ ?>
 	<li>
@@ -84,7 +92,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	</li>			
 <?php } ?>   
 
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="Administrator")){ ?>
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){ ?>
 			<li class="">
               <a class="has-arrow" href="javascript:;" aria-expanded="false">
                 <div class="parent-icon"><i class="bi bi-lock"></i>

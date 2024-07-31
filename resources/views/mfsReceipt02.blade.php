@@ -13,7 +13,6 @@ else {
 }
 ?>
 
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -24,7 +23,7 @@ else {
 <main class="page-content">
 <!---Alert message----> 
 @if(session()->has('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
@@ -63,10 +62,11 @@ $(document).ready(function () {
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
-                      <h5 class="mb-0">Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}]
+                      <h5 class="mb-0">Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}] <br><b>bKash-01777781{{$mer_bkash}}</b>
 					  
 					<form  target="_blank" style="display: inline;" action="mfsReceiptPrint" method="post">{{ csrf_field() }}
 					<input type="hidden" name="to_dt" value="{{$to_dt}}">
+          <input type="hidden" name="mer_bkash" value="{{$mer_bkash}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 					</form>
@@ -104,6 +104,13 @@ $(document).ready(function () {
 					</thead>
 					<tbody>				
 <?php
+$where_mer_bkash = "";
+if( $mer_bkash == "330"){
+	$where_mer_bkash = "a.mer_bkash = 330";
+}
+else{
+  $where_mer_bkash = "( a.mer_bkash <> 330 OR a.mer_bkash IS NULL )";
+}
 
 $result = DB::select("
 SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,
@@ -112,7 +119,7 @@ FROM `pay` a, customer_info b, bill_mas c, user d
 WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
-AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt'
+AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt' AND $where_mer_bkash 
 and a.check_approval = d.user_id
 order by a.`id`;
 ");

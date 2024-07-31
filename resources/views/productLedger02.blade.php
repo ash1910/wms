@@ -1,4 +1,3 @@
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 <?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")
@@ -110,6 +109,7 @@ foreach($data01 as $item)
 							<th scope="col" style="border: 1px solid black;text-align: center;">Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">PID</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Supplier</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Job No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">GRN</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Qty</th>
@@ -120,7 +120,7 @@ foreach($data01 as $item)
 					<tbody>				
 						<?php
 						$result = DB::select("
-SELECT b.`prod_id`, b.`prod_name`,b.`qty` qty, b.`amount` amount, ((b.`amount`)/(b.`qty`)) rate,
+SELECT b.`prod_id`, b.`prod_name`,b.`qty` qty, b.`amount` amount, ((b.`amount`)/(b.`qty`)) rate, b.`job_no` job_no, b.`id` id,  
 a.`purchase_dt`, a.supplier_id, c.supplier_name, b.purchase_id, b.grn, a.supplier_ref
 FROM `purchase_mas` a, `purchase_det` b, suppliers c
 WHERE a.purchase_id = b.purchase_id and b.`prod_id` = '$product_id'
@@ -134,6 +134,7 @@ AND a.supplier_id = c.supplier_id order by a.`purchase_dt` desc
 							<td style="border: 1px solid black;text-align: center;">{{date('d-m-Y', strtotime($item->purchase_dt))}}</td>
 							<td style="border: 1px solid black;text-align: center;"><a href="purchase02?id={{$item->purchase_id}}">{{$item->purchase_id}}</a></td>
 							<td style="border: 1px solid black;text-align: left;">{{$item->supplier_id}} - {{$item->supplier_name}}</td>
+							<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>
 							<td style="border: 1px solid black;text-align: center;">{{$item->supplier_ref}}</td>
 							<td style="border: 1px solid black;text-align: center;">{{$item->grn}}</td>
 							<td style="border: 1px solid black;text-align: center;">{{$item->qty}}</td>
@@ -197,7 +198,16 @@ AND a.supplier_id = c.supplier_id order by a.`purchase_dt` desc
 							<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 							<td style="border: 1px solid black;text-align: center;"><a href="report02?job_no={{$item->job_no}}">{{$item->job_no}}</a></td>
 							<td style="border: 1px solid black;text-align: center;">{{$item->req}}</td>
-							<td style="border: 1px solid black;text-align: center;">{{$item->gin}}</td>
+							<td style="border: 1px solid black;text-align: center;">
+						
+								<form class="row g-3" action="issueModi01" method='post'>
+									{{ csrf_field() }}
+									<input type="hidden" name="job_no" value="{{$item->job_no}}" required>
+									<button class="btn btn-success" type="submit" name="next" value="next">
+									{{$item->gin}}</button>
+								</form>
+						
+						</td>
 							<td style="border: 1px solid black;text-align: center;">{{$item->qty}}</td>
 							<td style="border: 1px solid black;text-align: center;">{{number_format((round($item->avg_price,2)), 2, '.', ',')}}</td>
 							<td style="border: 1px solid black;text-align: center;">{{number_format(($item->amount), 2, '.', ',')}}</td>

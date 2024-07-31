@@ -13,7 +13,6 @@ else {
 }
 ?>
 
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -24,7 +23,7 @@ else {
 <main class="page-content">
 <!---Alert message----> 
 @if(session()->has('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
@@ -83,6 +82,7 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Transaction Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">TRIX</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sender</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Debit A/C</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Transaction Amount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Charge</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement Amount</th>
@@ -93,7 +93,7 @@ $(document).ready(function () {
 <?php
 
 $result = DB::select("
-SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,charge,
+SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,charge, `mer_bkash`, 
 b.customer_reg,b.customer_vehicle, c.bill_no, a.dt, a.charge
 FROM `pay` a, customer_info b, bill_mas c 
 WHERE a.customer_id = b.customer_id
@@ -117,6 +117,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->trix}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->send}}</td>
+						<td style="border: 1px solid black;text-align: center;"> 01777781{{$item->mer_bkash}} </td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received+$item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
@@ -127,6 +128,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 ?>					
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
+					<input type="date" class="form-control" name='approval_dt'>
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Settlement</button>
 					</form>	

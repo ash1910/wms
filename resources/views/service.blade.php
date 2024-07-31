@@ -1,4 +1,4 @@
-  <link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
 
 @extends("layouts.master")
 
@@ -11,34 +11,34 @@
     </div>
 @endif					
 				<div class="card" >
-				<a class="btn btn-success" href="/serviceAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Service</a>
+				@if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator"))
+					<a class="btn btn-success" href="/serviceAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Service</a>
+				@endif
 					<div class="card-body">
 					
 						<div class="table-responsive">
-							<table id="example2" class="table table-striped table-bordered" style="width:40%">
+							<table id="example2" class="table table-striped table-bordered" style="width:80%">
 								<thead>
 									<tr>
-										<th>service_name</th>
-										
+										<th>Edit</th>
+										<th>Service Code</th>
+										<th>Service Name</th>
+										<th>Service Type</th>
 									</tr>
 								</thead>
 								<tbody>
 								
 								@foreach($data as $item)
 									<tr>
-
+									<td style="text-align: center;"><a href = "serviceEdit?id={{$item->service_id}}"><i class="lni lni-pencil-alt"></i></a></td>
+										<td>{{$item->service_id}}</td>
 										<td>{{$item->service_name}}</td>
+										<td>{{$item->section}}</td>
 										
 									</tr>
 								@endforeach 
 								
 								</tbody>
-								<tfoot>
-									<tr>
-										<th>service_name</th>
-									
-									</tr>
-								</tfoot>
 							</table>
 						</div>
 					</div>

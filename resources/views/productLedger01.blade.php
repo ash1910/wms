@@ -1,4 +1,3 @@
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 <?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")

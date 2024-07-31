@@ -2,9 +2,9 @@
 
 @section("content")
 <?php
-$data = DB::select("SELECT `parts_id`,`parts_name`,`cat`,`sub_cat` FROM `parts_info` WHERE `parts_id` = '$id'");
+$data = DB::select("SELECT `parts_id`,`parts_name`,`cat`,`sub_cat`,`section` FROM `parts_info` WHERE `parts_id` = '$id'");
 foreach($data as $item){ $parts_id = $item->parts_id ;$parts_name = $item->parts_name ;
-$cat = $item->cat ;$sub_cat = $item->sub_cat ;}
+$cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
 ?>
 
 <main class="page-content">
@@ -30,6 +30,19 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;}
                   <div class="col-12">
                     <label class="form-label">Sub Category</label>
                     <input value="{{$sub_cat}}" id="tags03" placeholder="e.g: Engine Oil" type="text" class="form-control" name="sub_cat" >
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label">Parts Type</label>
+                    <select class="form-control" name="section" >
+                      <option value="">Select</option>
+                      <option value="General Repair" @if($section == "General Repair")selected @endif>General Repair</option>
+                      <option value="A.C & Electric" @if($section == "A.C & Electric")selected @endif>A.C & Electric</option>
+                      <option value="Body & Paint" @if($section == "Body & Paint")selected @endif>Body & Paint</option>
+                      <option value="Maintenance" @if($section == "Maintenance")selected @endif>Maintenance</option>
+                      <option value="CNG & LPG" @if($section == "CNG & LPG")selected @endif>CNG & LPG</option>
+
+                    </select>
                   </div>
 				  
 

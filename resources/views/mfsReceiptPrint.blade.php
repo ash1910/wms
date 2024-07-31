@@ -16,8 +16,8 @@
   <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="assets/css/style.css" rel="stylesheet" />
   <link href="assets/css/icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="assets/css/font-roboto.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
   <!--Theme Styles-->
   <link href="assets/css/dark-theme.css" rel="stylesheet" />
   <link href="assets/css/light-theme.css" rel="stylesheet" />
@@ -55,6 +55,7 @@
 </div>
 
 <center><b>Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}]</b></center>
+<center><b>bKash-01777781{{$mer_bkash}}</b></center>
 
 <div class="col-12 col-lg-12 d-flex">
 				<div class="table-responsive" >
@@ -87,6 +88,14 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
     $browser = 'Chrome';
 }
 
+$where_mer_bkash = "";
+if( $mer_bkash == "330"){
+	$where_mer_bkash = "a.mer_bkash = 330";
+}
+else{
+  $where_mer_bkash = "( a.mer_bkash <> 330 OR a.mer_bkash IS NULL )";
+}
+
 $result = DB::select("
 SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,
 b.customer_reg,b.customer_vehicle, c.bill_no, a.dt, a.approval_dt, a.check_approval, d.user_name, charge
@@ -94,9 +103,9 @@ FROM `pay` a, customer_info b, bill_mas c, user d
 WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
-AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt'
+AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt' AND $where_mer_bkash 
 and a.check_approval = d.user_id
-order by a.`id`;
+order by a.`id`; 
 ");
 	$sl = '1'; 	$amount='0';	$charge='0';	$amount1='0';		
 foreach($result as $item)

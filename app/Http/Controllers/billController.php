@@ -27,13 +27,21 @@ class billController extends Controller
 	    $customer_vehicle = '';
 	    $customer_chas = '';
 		$estimate_id = '';
+		$customer_group = '';
+		$company = '';
+		$sister_companies = '';
 		
 		if($register=='register')
 		{
 			$result = DB::table('customer_info')->where('customer_reg', $search)
 			->where('flag', '1')->get();
 			foreach($result as $item1)
-			{$customer_id = $item1->customer_id;}
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
 			
@@ -47,7 +55,10 @@ class billController extends Controller
 			return view('billform', [
 			'result' => $result,
 			'parts_info' => $parts_info,
-			'service_info' => $service_info
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
 			]);			
 		}
 		if($chas=='chas')
@@ -55,7 +66,12 @@ class billController extends Controller
 			$result = DB::table('customer_info')->where('customer_chas', $search)
 			->where('flag', '1')->get();
 			foreach($result as $item1)
-			{$customer_id = $item1->customer_id;}
+			{
+				$customer_id = $item1->customer_id;
+				$customer_group = $item1->customer_group;
+				$company = $item1->company;
+				$sister_companies = $item1->sister_companies;
+			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
 			
@@ -67,7 +83,10 @@ class billController extends Controller
 			return view('billform', [
 			'result' => $result,
 			'parts_info' => $parts_info,
-			'service_info' => $service_info
+			'service_info' => $service_info,
+			'customer_group' => $customer_group,
+			'company' => $company,
+			'sister_companies' => $sister_companies
 			]);			
 		}
 		
@@ -432,6 +451,21 @@ if($check == '')
 		'to_dt'=>$to_dt
 		]);	
 	}
+
+	public function form_estimate()
+	{
+		return view ('form_estimate');	
+	}
+
+	public function report_estimate(Request $r)
+	{
+		$from_dt=$r->input('from_dt');//post input
+		$to_dt=$r->input('to_dt');//post input
+		return view ('report_estimate',[
+		'from_dt'=>$from_dt,
+		'to_dt'=>$to_dt
+		]);	
+	}
 	
 	public function report02(Request $r)
 	{
@@ -574,12 +608,14 @@ if($check == '')
 		$engineer=$r->input('engineer');//post input
 		$technician=$r->input('technician');//post input
 		$km=$r->input('km');//post input
+		$cartridge=$r->input('cartridge');//post input
 		return view ('changeCustomer',[
 		'bill'=>$bill,
 		'job_no'=>$job_no,
 		'engineer'=>$engineer,
 		'technician'=>$technician,
-		'km'=>$km
+		'km'=>$km,
+		'cartridge'=>$cartridge
 		]);
 	}
 	public function changeCustomer01(Request $r)
@@ -662,6 +698,16 @@ if($register=='register01')
 		$technician=$r->input('technician');//post input
 		DB::table('bill_mas')->where('bill_no', $bill_no)
 		->update(['technician' => $technician]);
+		
+		return redirect('/billMemo?bill='.$bill_no.'');
+		
+	}	
+	public function changeCustomer07(Request $r)
+	{
+		$bill_no=$r->input('bill_no');//post input
+		$cartridge=$r->input('cartridge');//post input
+		DB::table('bill_mas')->where('bill_no', $bill_no)
+		->update(['cartridge' => $cartridge]);
 		
 		return redirect('/billMemo?bill='.$bill_no.'');
 		

@@ -17,27 +17,27 @@ class approvalController extends Controller
 		$today = date("Y-m-d");
 		$job_no = 'X';
 	
-	$user_id = session('user_id');
-	$result = DB::select("
-	SELECT `bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, `user_id`, `total` net_bill ,bill_dt,`job_dt`
-	FROM `bill_mas` a, customer_info b
-	WHERE a.customer_id = b.customer_id and bill_no= '$bill_no' and a.`flag` = '0'
-	");
-	foreach($result as $item)
-		{	
-			 $bill_dt = $item->bill_dt;
-			 $job_no = $item->job_no;
-			 $customer_id = $item->customer_id;
-			 $customer_nm = $item->customer_nm;
-			 $customer_mobile = $item->customer_mobile;
-			 $net_bill = $item->net_bill;
-			 $job_dt = $item->job_dt;
-		}  
-//job Already Approved
-if($job_no=='X')
-{
-		return redirect ('/approval')->with('alert', 'This job Already Approved Before!!!');
-}
+		$user_id = session('user_id');
+		$result = DB::select("
+		SELECT `bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, `job_no`, `user_id`, `total` net_bill ,bill_dt,`job_dt`
+		FROM `bill_mas` a, customer_info b
+		WHERE a.customer_id = b.customer_id and bill_no= '$bill_no' and a.`flag` = '0'
+		");
+		foreach($result as $item)
+			{	
+				$bill_dt = $item->bill_dt;
+				$job_no = $item->job_no;
+				$customer_id = $item->customer_id;
+				$customer_nm = $item->customer_nm;
+				$customer_mobile = $item->customer_mobile;
+				$net_bill = $item->net_bill;
+				$job_dt = $item->job_dt;
+			}  
+			//job Already Approved
+			if($job_no=='X')
+			{
+					return redirect ('/approval')->with('alert', 'This job Already Approved Before!!!');
+			}
 
     		$result = DB::table('bill_mas')->where('bill_no', $bill_no)
     		->update(['flag' => '1', 'bill_dt' => $today]);
@@ -101,11 +101,12 @@ if($job_no=='X')
 	public function mfsCheck01(Request $r)
 	{
 		$id=$r->input('id');//post input
+		$approval_dt=$r->input('approval_dt');//post input
 		$today = date("Y-m-d");
 		$user_id = session('user_id');
 
 		$result = DB::table('pay')->where('id', $id)
-		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $today]);
+		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $approval_dt ? $approval_dt : $today]);
 	
 		return back();
 	}
@@ -116,11 +117,12 @@ if($job_no=='X')
 	public function cardCheck01(Request $r)
 	{
 		$id=$r->input('id');//post input
+		$approval_dt=$r->input('approval_dt');//post input
 		$today = date("Y-m-d");
 		$user_id = session('user_id');
 
 		$result = DB::table('pay')->where('id', $id)
-		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $today]);
+		->update(['pay_check' => '1','check_approval' => $user_id,'approval_dt' => $approval_dt ? $approval_dt : $today]);
 	
 		return back();
 	}
@@ -132,23 +134,27 @@ if($job_no=='X')
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt,'mer_bkash' => $mer_bkash]);
 	}
 	public function mfsReceipt02(Request $r)
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceipt02',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceipt02',['from_dt' => $from_dt,'to_dt' => $to_dt, 'mer_bkash' => $mer_bkash]);
 	}
 	public function mfsReceiptPrint(Request $r)
 	{
 		$to_dt=$r->input('to_dt');//post input
-		return view ('mfsReceiptPrint',['to_dt' => $to_dt]);
+		$mer_bkash=$r->input('mer_bkash');//post input
+		return view ('mfsReceiptPrint',['to_dt' => $to_dt, 'mer_bkash' => $mer_bkash]);
 	}
 	public function cardReceiptPrint(Request $r)
 	{
 		$s_dt=$r->input('s_dt');//post input
-		return view ('cardReceiptPrint',['s_dt' => $s_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input 
+		return view ('cardReceiptPrint',['s_dt' => $s_dt,'merchant_bank' => $merchant_bank]);
 	}
 	
 	public function cardReceipt()
@@ -159,13 +165,15 @@ if($job_no=='X')
 	{
 		$from_dt=$r->input('from_dt');//post input
 		$to_dt=$r->input('to_dt');//post input
-		return view ('cardReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input
+		return view ('cardReceipt01',['from_dt' => $from_dt,'to_dt' => $to_dt,'merchant_bank' => $merchant_bank]);
 	}
 	public function cardReceipt02(Request $r)
 	{
 		$m_dt=$r->input('m_dt');//post input
 		$s_dt=$r->input('s_dt');//post input
-		return view ('cardReceipt02',['m_dt' => $m_dt,'s_dt' => $s_dt]);
+		$merchant_bank=$r->input('merchant_bank');//post input
+		return view ('cardReceipt02',['m_dt' => $m_dt,'s_dt' => $s_dt,'merchant_bank' => $merchant_bank]);
 	}
 	public function advanceCheck()
 	{

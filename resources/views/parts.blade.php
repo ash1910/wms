@@ -1,6 +1,6 @@
 <?php 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator"))
+	||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="Service Engineer")||(session('role')=="PRO"))
 {
 //return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');
@@ -14,7 +14,6 @@ else {
 }
 ?>
 
-  <link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -27,7 +26,9 @@ else {
     </div>
 @endif					
 				<div class="card" >
-				<a class="btn btn-success" href="/partsAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Parts</a>
+				@if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator"))
+					<a class="btn btn-success" href="/partsAdd"><i class="fadeIn animated bx bx-add-to-queue"></i> Add New Parts</a>
+				@endif
 					<div class="card-body">
 					
 						<div class="table-responsive">
@@ -39,7 +40,7 @@ else {
 										<th>Parts Name</th>
 										<th>Category</th>
 										<th>Sub Category</th>
-										
+										<th>Parts Type</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -51,6 +52,7 @@ else {
 										<td>{{$item->parts_name}}</td>
 										<td>{{$item->cat}}</td>
 										<td>{{$item->sub_cat}}</td>
+										<td>{{$item->section}}</td>
 									</tr>
 								@endforeach 
 								

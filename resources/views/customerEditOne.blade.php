@@ -16,6 +16,14 @@
                     <label class="form-label">Customer Name</label>
                     <input value="{{$item->customer_nm}}" type="text" class="form-control" name="customer_nm" required>
                   </div>
+                  <div class="col-8">
+                    <label class="form-label">Car User Name</label>
+                    <input value="{{$item->car_user}}" placeholder="e.g: Jobbar" type="text" class="form-control" name="car_user">
+                  </div>
+                  <div class="col-4">
+                    <label class="form-label">Colour Code</label>
+                    <input value="{{$item->car_colour}}" id="tags01" placeholder="e.g: Pearl" type="text" class="form-control" name="car_colour">
+                  </div>
                   <div class="col-12">
                     <label class="form-label">Mobile</label>
                     <input value="{{$item->customer_mobile}}" type="text" class="form-control" name="customer_mobile" required>
@@ -37,9 +45,17 @@
                     <input value="{{$item->customer_reg}}" type="text" class="form-control" disabled>
                     <input value="{{$item->customer_reg}}" type="hidden" class="form-control" name="customer_reg">
                   </div>
-                  <div class="col-12">
+                  <div class="col-6">
                     <label class="form-label">Chas</label>
                     <input name="customer_chas" value="{{$item->customer_chas}}" type="text" class="form-control" >
+                  </div>
+                  <div class="col-3">
+                    <label class="form-label">Year</label>
+                    <input placeholder="e.g: 2020" value="{{$item->year}}" type="text" class="form-control" name="year">
+                  </div>
+                  <div class="col-3">
+                    <label class="form-label">Engine No.</label>
+                    <input placeholder="e.g: PJ12345U123456P" value="{{$item->customer_eng}}" type="text" class="form-control" name="customer_eng">
                   </div>
                   <div class="col-12">
                     <label class="form-label">Address</label>

@@ -109,7 +109,7 @@ foreach($result01 as $item01)
 
 
                      
-                      <div class="col-12 col-lg-4">
+                      <div class="col-12 col-lg-6">
                         <div class="card border shadow-none bg-light radius-10">
                           <div class="card-body">
 						  <form action="pay01" method="post">{{ csrf_field() }} 
@@ -280,6 +280,17 @@ foreach($result01 as $item01)
 <div id="dvBkash" style="display: none">
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
 	  <div style="width: 30%;">
+		<p class="mb-0">bKash Merchant No</p>
+	  </div>
+	  <div style="width: 70%;">
+		<select name="mer_bkash" class="form-select">
+			<option value='797'>bKash (01777781797)</option>
+			<option value='330'>bKash (01777781330)</option>
+		</select>		
+	  </div>
+	</div>
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
 		<p class="mb-0">Trix </p>
 	  </div>
 	  <div style="width: 70%;">
@@ -346,6 +357,7 @@ foreach($result01 as $item01)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
@@ -442,6 +454,7 @@ foreach($result01 as $item01)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
@@ -474,8 +487,8 @@ foreach($result01 as $item01)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master" class="MTBL">Master Card</option>
-			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Master" class="MTBL CBL">Master Card</option>
+			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
@@ -524,7 +537,7 @@ foreach($result01 as $item01)
 
                      </div>
 					 
-                       <div class="col">
+                       <div class="col-lg-6">
                          <div class="card border shadow-none radius-10"style="margin-bottom: 0.5rem;">
                            <div class="card-body">
                             <div class="d-flex align-items-center gap-3">
@@ -570,24 +583,34 @@ foreach($result01 as $item01)
 									<thead>
 										<tr>
 											<td><h6 class="mb-2">Settlement Amount</h6></td>
+											<td><h6 class="mb-2">Charge Rate</h6></td>
 											<td><h6 class="mb-2">Charge Amount</h6></td>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td><p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td><p class="mb-1"><b>Bkash-797:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td><center>1.5%</center></td>
 											<td>TK. <input type="text" id="id-6-c" disabled ></td>
 										</tr>
 										<tr>
+											<td><p class="mb-1"><b>Bkash-330:</b> TK. <input type="text" id="id-6-1" disabled ></p></td>
+											<td><center>1.2%</center></td>
+											<td>TK. <input type="text" id="id-6-c-1" disabled ></td>
+										</tr>
+										<tr>
 											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
+											<td><center>1.3%</center></td>
 											<td>TK. <input type="text" id="id-7-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p></td>
+											<td><center>2.0%</center></td>
 											<td>TK. <input type="text" id="id-11-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
+											<td><center>1.7%</center></td>
 											<td>TK. <input type="text" id="id-12-c" disabled ></td>
 										</tr>
 									</tboday>
@@ -660,11 +683,13 @@ $(function () {
 $(function () {
   $("#id-1, #id-2, #id-3, #id-8").keyup(function () {
 	$("#id-6").val((+$("#id-1").val()*.985 ));
+	$("#id-6-1").val((+$("#id-1").val()*.988 ));
     $("#id-7").val((+$("#id-1").val()*.987 ));
 	$("#id-11").val((+$("#id-1").val()*.980 ));
 	$("#id-12").val((+$("#id-1").val()*.983 ));
 
 	$("#id-6-c").val((+$("#id-1").val()*.015 ));
+	$("#id-6-c-1").val((+$("#id-1").val()*.012 ));
     $("#id-7-c").val((+$("#id-1").val()*.013 ));
 	$("#id-11-c").val((+$("#id-1").val()*.020 ));
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
@@ -676,7 +701,7 @@ $(function () {
 		//alert( this.value );
 		$("select[name='card_type']").val('');
 		$("select[name='card_type'] option").attr('disabled', 'disabled');
-		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+		$("select[name='card_type'] option").filter("."+this.value).removeAttr('disabled');
 	});
 
 });

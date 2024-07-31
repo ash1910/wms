@@ -13,7 +13,6 @@ else {
 }
 ?>
 
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -24,7 +23,7 @@ else {
 <main class="page-content">
 <!---Alert message----> 
 @if(session()->has('alert'))
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
@@ -100,8 +99,6 @@ and b.customer_id= c.customer_id
 and c.job_no = a.job_no
 AND a.confirm='0'
 AND d.job_no = a.job_no AND d.bank = a.bank AND a.chequeNo = d.chequeNo;
-
-;
 ");
 	$sl = '1'; 	$amount='0';		
 foreach($result as $item)

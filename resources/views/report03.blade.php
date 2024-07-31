@@ -1,4 +1,3 @@
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
 @extends("layouts.master")
 
@@ -102,6 +101,9 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Damage to work</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Adjustment with Supplier</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Adjustment with Customer</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Payable</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Ledger Refund</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Cash Refund</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Received</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sales Return</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Discount</th>
@@ -111,7 +113,9 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Work Type</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill Created By</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Engineer</th>
-
+							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Group</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Company</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Sister Companies</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -126,9 +130,9 @@ $user_list = array();
 		}  
 
 $result = DB::select("
-SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile, a.`job_no`, 
+SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
-sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due, sum(c.`sales_return`) sales_return, sum(c.`vat_pro`) vat_pro, sum(c.`complementary_work`) complementary_work, sum(c.`rework`) rework, sum(c.`damage_work`) damage_work, 
+sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due, sum(c.`sales_return`) sales_return, sum(c.`vat_pro`) vat_pro, sum(c.`complementary_work`) complementary_work, sum(c.`rework`) rework, sum(c.`damage_work`) damage_work, sum(advance_refund) advance_refund, 
 sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer, MIN(c.pay_type) pay_type 
 FROM `bill_mas` a, customer_info b, `pay` c
 WHERE a.`bill_dt` between '$from_dt' and '$to_dt'
@@ -136,7 +140,7 @@ and a.customer_id = b.customer_id
 AND a.`job_no` = c.job_no
 and a.bill_dt is not null 
  
-group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, a.`job_no`, 
+group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, b.customer_group, b.company, b.sister_companies, a.`job_no`, 
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer $where_billtype
 ;
 ");
@@ -154,12 +158,14 @@ foreach($result as $item)
 						AND bill = '$item->bill_no' 
 						group by `pay_type`;
 						");
-						$card_charge = 0; $bkash_charge = 0; $AdjCust = 0;
+						$card_charge = 0; $bkash_charge = 0; $AdjCust = 0; $LedgerRefund = 0;
 						foreach($result_charge as $item_charge)
 						{	
 							if( $item_charge->pay_type == 'card' ) $card_charge = $item_charge->charge;
 							elseif( $item_charge->pay_type == 'bkash' ) $bkash_charge = $item_charge->charge;
-							elseif( $item_charge->pay_type == 'Adj-Cust' ) $AdjCust = $item_charge->due;
+							
+							if( $item_charge->pay_type == 'Adj-Cust' ) $AdjCust = $item_charge->due;
+							if( $item_charge->pay_type == 'A/C Refund' ) $LedgerRefund = 1;
 						}
 
 						// vat provition collection calculate
@@ -202,6 +208,10 @@ foreach($result as $item)
 
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->supplier_adj), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format((-$AdjCust), 2, '.', ',')}}</td>
+
+						<td style="border: 1px solid black;text-align: center;">@if($item->due<0) {{number_format((-$item->due), 2, '.', ',')}} @else 0.00 @endif</td>
+						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 1) {{number_format((-$item->advance_refund), 2, '.', ',')}} @else 0.00 @endif</td>
+						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 0 && $item->advance_refund < 0) ({{number_format((-$item->advance_refund), 2, '.', ',')}}) @else 0.00 @endif</td>
 
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->sales_return), 2, '.', ',')}}</td>
@@ -290,12 +300,15 @@ echo 'Received';
 						<td style="border: 1px solid black;text-align: center;">{{$item->work}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{@$user_list[$item->user_id]}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->engineer}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->customer_group}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->company}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->sister_companies}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;
 		$total01 = $item->total;
 		$total02 = $total01+$total02;
-		$total03 = $total03+$item->net_bill;
+		$total03 = $total03+(float)$item->net_bill;
 
 		}  
 ?>

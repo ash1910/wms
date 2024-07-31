@@ -186,6 +186,17 @@ foreach($result as $item)
 <div id="dvBkash" style="display: none">
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
 	  <div style="width: 30%;">
+		<p class="mb-0">bKash Merchant No</p>
+	  </div>
+	  <div style="width: 70%;">
+		<select name="mer_bkash" class="form-select">
+			<option value='797'>bKash (01777781797)</option>
+			<option value='330'>bKash (01777781330)</option>
+		</select>		
+	  </div>
+	</div>
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
 		<p class="mb-0">Trix </p>
 	  </div>
 	  <div style="width: 70%;">
@@ -250,6 +261,7 @@ foreach($result as $item)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
@@ -345,6 +357,7 @@ foreach($result as $item)
 			<option value='Premier Bank Limited'>Premier Bank Limited</option>
 			<option value='Prime Bank Limited'>Prime Bank Limited</option>
 			<option value='Pubali Bank Limited'>Pubali Bank Limited</option>
+			<option value='Rupali Bank PLC'>Rupali Bank PLC</option>
 			<option value='SBAC Bank'>SBAC Bank</option>
 			<option value='Shahjalal Islami Bank Limited'>Shahjalal Islami Bank Limited</option>
 			<option value='Shimanto Bank Ltd'>Shimanto Bank Ltd</option>
@@ -376,8 +389,8 @@ foreach($result as $item)
 	  <div style="width: 70%;">
 		<select name="card_type" class="form-select">
 			<option value=""></option>
-			<option value="Master" class="MTBL">Master Card</option>
-			<option value="Visa" class="MTBL">Visa Card</option>
+			<option value="Master" class="MTBL CBL">Master Card</option>
+			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
@@ -454,8 +467,12 @@ foreach($result as $item)
 									</thead>
 									<tbody>
 										<tr>
-											<td><p class="mb-1"><b>Bkash:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td><p class="mb-1"><b>Bkash-797:</b> TK. <input type="text" id="id-6" disabled ></p></td>
 											<td>TK. <input type="text" id="id-6-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>Bkash-330:</b> TK. <input type="text" id="id-6-1" disabled ></p></td>
+											<td>TK. <input type="text" id="id-6-c-1" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
@@ -539,10 +556,12 @@ foreach($result as $item)
 $(function () {
   $("#id-1").keyup(function () {
 	$("#id-6").val((+$("#id-1").val()*.985 ));
+	$("#id-6-1").val((+$("#id-1").val()*.988 ));
     $("#id-7").val((+$("#id-1").val()*.987 ));
 	$("#id-11").val((+$("#id-1").val()*.980 ));
 	$("#id-12").val((+$("#id-1").val()*.983 ));
 	$("#id-6-c").val((+$("#id-1").val()*.015 ));
+	$("#id-6-c-1").val((+$("#id-1").val()*.012 ));
     $("#id-7-c").val((+$("#id-1").val()*.013 ));
 	$("#id-11-c").val((+$("#id-1").val()*.020 ));
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
@@ -553,7 +572,7 @@ $(function () {
 		//alert( this.value );
 		$("select[name='card_type']").val('');
 		$("select[name='card_type'] option").attr('disabled', 'disabled');
-		$("select[name='card_type'] option[class=" + this.value + "]").removeAttr('disabled');
+		$("select[name='card_type'] option").filter("."+this.value).removeAttr('disabled');
 	});
 });
 </script>

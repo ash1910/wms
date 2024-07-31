@@ -8,8 +8,8 @@
 $bill_no = $bill;
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, c.user_name, `net_bill` ,a.flag flag, bill_dt, a.work
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, est_no, 
+b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, cartridge, c.user_name, `net_bill` ,a.flag flag, bill_dt, a.work
 FROM `bill_mas` a, `customer_info` b, `user` c
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id
@@ -37,7 +37,8 @@ AND a.user_id=c.user_id;
 				 $bill_dt = $post->bill_dt;
 				 $flag = $post->flag; 
 				 $user_name = $post->user_name;
-				 
+				 $cartridge = $post->cartridge;
+				 $est_no = $post->est_no;
 			}
 ?>
 		<main class="page-content">
@@ -215,6 +216,8 @@ if($flag!='0')
                        <strong class="text-inverse">Technician: </strong>{{$technician}}<br>
                        <strong class="text-inverse">Job No.:  </strong>{{$job_no}}<br>
                        <strong class="text-inverse">Bill Create By:  </strong>{{$user_name}}<br>
+					   <strong class="text-inverse">Cartridge No:  </strong>{{$cartridge}}<br>
+					   @if($est_no)<strong class="text-inverse">Estimate No:  </strong>{{$est_no}}<br>@endif
 					</table>
 					</address>
 				   </div>
@@ -346,6 +349,13 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 							{$ac_refund='1';}
 						}
 
+					$AdjCustDue = 0;
+					$AdjCust01 = DB::select("SELECT sum(`due`)due FROM `pay` WHERE `bill`='$bill_no' AND `pay_type` = 'Adj-Cust';");
+					foreach($AdjCust01 as $AdjCustItem01)
+						{ 					
+							$AdjCustDue = $AdjCustItem01->due;
+						}
+
 
 						
 					?>
@@ -424,6 +434,13 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 			?>	   
 				   </strong><br>
 <?php if($supplier_name01!=''){?><strong class="text-inverse">Supplier Adj:</b> Tk: {{$supplier_adj}} [{{$supplier_name01}}]</strong><?php } ?>
+<?php if($AdjCustDue != 0){
+	
+	$customer_id_adj = DB::table('pay')->where('job_no', $job_no."[adj]")->first()->customer_id;
+	$customer_nm_adj = DB::table('customer_info')->where('customer_id', $customer_id_adj)->first()->customer_nm;
+	
+	
+	?><strong class="text-inverse">Customer Adj:</b> Tk: {{$AdjCustDue}} [{{$customer_nm_adj}}]</strong><?php } ?>
 				   
 				</address>
 			</div>			
@@ -442,13 +459,14 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 						<th scope="col" style="text-align: center;">Received Amount(Tk.)</th>
 						<th scope="col" style="text-align: center;">Settle Amount(Tk.)</th>
 						<th scope="col" style="text-align: center;">Method</th>
+						<th scope="col" style="text-align: center;">Debit A/C</th>
 						<th scope="col" style="text-align: center;">Bkash</th>
 						<th scope="col" style="text-align: center;">Cheque</th>
 						<th scope="col" style="text-align: center;">Card</th>
 					</tr>
 <?php
 					$data = DB::select("SELECT a.id,`received`,`pay_type`,`dt`,
-					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`
+					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`, `merchant_bank`, `mer_bkash`  
 					FROM `pay` a, bill_mas b
 					WHERE a.job_no = b.job_no AND a.`job_no` = '$job_no' and a.pay_type<>'SYS'
 					and a.pay_type<>'due'
@@ -541,6 +559,10 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 						
 						
 <?php } ?>					
+						</td>
+						<td>
+						@if($item->merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($item->merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+						@if($item->pay_type == 'bkash') bKash-01777781{{$item->mer_bkash}} @endif
 						</td>
 <?php if($item->pay_type=='bkash'){?>
 						<td style="text-align: left;"><b>TRIX:</b>{{$item->trix}}<br>
@@ -685,7 +707,7 @@ else { echo "<td></td>";}?>
 
 						</div>
 <!---------BOM TAB-------------->
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
 						<div class="tab-pane fade" id="primarybom" role="tabpanel">
 
 
@@ -736,7 +758,7 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
 
 						</div>
 <!---------Sales Commission TAB-------------->
-<link href="assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
 					<div class="tab-pane fade" id="primarySale" role="tabpanel">
 						
 						

@@ -16,8 +16,8 @@
   <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="assets/css/style.css" rel="stylesheet" />
   <link href="assets/css/icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="assets/css/font-roboto.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
   <!--Theme Styles-->
   <link href="assets/css/dark-theme.css" rel="stylesheet" />
   <link href="assets/css/light-theme.css" rel="stylesheet" />
@@ -132,7 +132,7 @@ $result01 = DB::select("
 SELECT a.`id`, a.`bill`, a.`job_no`, a.`customer_id`, a.`bill_dt`, a.`net_bill`, a.`received`, a.`pay_type`, 
 a.`dt`, a.`user_id`,  a.`trix`, a.`send`, a.`bank`, a.`chequeNo`, a.`chequeDt`, a.due,
 b.customer_nm, b.customer_mobile, b.customer_address, b.customer_reg, b.customer_chas,`charge`,`card_bank`, 
-`card_no`, `card_type`, `merchant_bank`
+`card_no`, `card_type`, `merchant_bank`, mer_bkash 
 FROM `pay` a, customer_info b 
 WHERE  a.customer_id='$customer_id' 
 AND a.bill = 'Advance' and a.`id` = '$id'
@@ -179,6 +179,7 @@ if($pay_type=="cheque")
 				$customer_address = $post01->customer_address;
 				$customer_reg = $post01->customer_reg;
 				$customer_chas = $post01->customer_chas;
+        $mer_bkash = $post01->mer_bkash;
 			}
 
 ?>
@@ -263,8 +264,15 @@ if($pay_type=="card")
 
 
 <tr>
-	<td>
-	<b>In words Tk:&nbsp;</b><?php echo AmountInWords($received); ?>
+	<td> 
+		<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
+		
+		<?php if($pay_type=="bkash"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
+		<?php } ?>	
+		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+		<?php } ?>
 	</td>
 </tr>
 </table>
@@ -284,8 +292,8 @@ if($pay_type=="card")
 <!-- <button id="cmd">generate PDF</button> -->
 
 <script src="assets/js/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script type="text/javascript" src="assets/js/jspdf.min.js"></script>
+<script type="text/javascript" src="assets/js//html2canvas.js"></script>
 
 
 <script type="text/javascript">

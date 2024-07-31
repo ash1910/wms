@@ -601,6 +601,17 @@ if($check == '')
 		'supplier_id'=>$supplier_id
 		]);	
 	}	
+	public function supplierReport04(Request $r)
+	{
+		$dt01=$r->input('dt01');//post input
+		$dt02=$r->input('dt02');//post input
+		$paid=$r->input('paid');//post input
+		return view ('supplierReport04',[
+		'dt01'=>$dt01,
+		'dt02'=>$dt02,
+		'paid'=>$paid
+		]);	
+	}
 	public function changeCustomer(Request $r)
 	{
 		$bill=$r->input('bill_no');//post input

@@ -22,11 +22,13 @@
             </div>
             <!--end breadcrumb-->
 
+
 	<div class="card border shadow-none">
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
-                    <div class="col-12 col-lg-6">
-                      <h5 class="mb-0">Supplier Report [From: {{date('d-M-Y', strtotime($dt01))}} To: {{date('d-M-Y', strtotime($dt02))}}]</h5>
+                    <div class="col-12 col-lg-12">
+                      <h5 class="mb-0">Supplier:  
+					  Partial Payment [From: {{date('d-M-Y', strtotime($dt01))}} To: {{date('d-M-Y', strtotime($dt02))}}]</h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>
@@ -37,80 +39,76 @@
 		
             <div class="card-body">
               <div class="table-responsive">
-                
-				<table id="example2" class="table table-bordered mb-0" style="width: 50%;">
+			  
+				<table id="example2" class="table table-bordered mb-0" style="width: 70%;">
 					<thead>
 						<tr>
-							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Supplier</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Amount(summary)</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Amount(details)</th>
+							<th scope="col" style="text-align: center;border: 1px solid black;">#</th>
+							<th scope="col" style="text-align: center;border: 1px solid black;">Date</th>
+							<th scope="col" style="text-align: center;border: 1px solid black;">Ref</th>
+							<th scope="col" style="text-align: center;border: 1px solid black;">Total Buy</th>
+              <th scope="col" style="text-align: center;border: 1px solid black;">Payment Status</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>	
 <?php
 
 $result = DB::select("
-SELECT  sum(a.`amount`) buytp, a.`supplier_id`, b.supplier_name
-FROM `purchase_mas` a, suppliers b 
+SELECT  distinct purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name, sum(a.amount) buypp, Min(a.paid) paid 
+FROM `purchase_mas` a, suppliers b
 WHERE a.`purchase_dt` between '$dt01' and '$dt02'
+and a.`paid` = '$paid' 
 and a.supplier_id = b.supplier_id 
-group by a.`supplier_id`, b.supplier_name
-order by b.supplier_name
-;");
-	$sl = '1'; 			
+group BY purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name
+order by purchase_dt
+");
+	$sl = '1'; $tbuy = ''; $t_paid = ''; $t_partial = ''; $t_due = '';
+	$buy = '';	$payment_status = "Due";
 foreach($result as $item)
 		{		
-?>					<tr>
-						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;">{{$item->supplier_name}}</td>
-						<td style="border: 1px solid black;text-align: right;">
-						<a href="/supplierReport03?supplier_id={{$item->supplier_id}}&&dt01={{$dt01}}&&dt02={{$dt02}}">
-						{{number_format(($item->buytp), 2, '.', ',')}}</a></td>
-						<td style="border: 1px solid black;text-align: right;">
-						<a href="/supplierReport02?supplier_id={{$item->supplier_id}}&&dt01={{$dt01}}&&dt02={{$dt02}}">
-						{{number_format(($item->buytp), 2, '.', ',')}}</a></td>
+      $buy = ($item->buypp);
+      $tbuy = ((float)$buy + (float)$tbuy);
+
+     if( $item->paid == '1' ){
+      $payment_status = "Paid";
+      $t_paid = ((float)$buy + (float)$t_paid);
+     }
+     elseif( $item->paid == '2' ){
+      $payment_status = "Partial";
+      $t_partial = ((float)$buy + (float)$t_partial);
+     }
+     else{
+      $payment_status = "Due";
+      $t_due = ((float)$buy + (float)$t_due);
+     }
+?>		
+				<tr>
+						<th scope="row" style="border: 1px solid black;">{{$sl}}</th>
+						<td style="border: 1px solid black;">{{date('d-M-Y', strtotime($item->purchase_dt))}}</td>
+						<td style="border: 1px solid black;">{{$item->supplier_ref}}</td>
+						<td style="border: 1px solid black;">{{number_format(floatval(($item->buypp)), 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; text-align: center;">{{$payment_status}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;
-
 		}  
 ?>
-						<!--tr>
-							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
-						</tr-->
+
 					</tbody>
-				</table>	
-
-<?php
-$result = DB::select("
-SELECT  sum(`amount`) amount, paid  
-FROM `purchase_mas`
-WHERE `purchase_dt` between '$dt01' and '$dt02' 
-group by paid
-;");
-$tbuy = ''; $t_paid = ''; $t_partial = ''; $t_due = '';
-foreach($result as $item)
-		{
-			if($item->paid == 0){
-        $t_due = $item->amount;
-      }
-      if($item->paid == 1){
-        $t_paid = $item->amount;
-      }
-      if($item->paid == 2){
-        $t_partial = $item->amount;
-      }
-      $tbuy = (float)$item->amount + (float)$tbuy;
-
-	}
-?>
-
-<br><br><br>
+				</table>
+      <br><br><br>
 			<p><strong>Total Purchase Amount Tk. {{number_format(floatval($tbuy), 2, '.', ',')}}</strong></p>
       <p><strong>Total Payment Amount Tk. {{number_format(floatval($t_paid), 2, '.', ',')}}</strong></p>
-      <p><strong>Total Partial Amount Tk. <a href='/supplierReport04?paid=2&dt01={{$dt01}}&dt02={{$dt02}}'>{{number_format(floatval($t_partial), 2, '.', ',')}}</a></strong></p>
+      <p><strong>Total Partial Amount Tk. {{number_format(floatval($t_partial), 2, '.', ',')}}</strong></p>
       <p><strong>Total Due Amount Tk. {{number_format(floatval($t_due), 2, '.', ',')}}</strong></p>
+	<br>			
+				
+			
+<br>				
+				
+			
+				
+				
 				
 				
 				

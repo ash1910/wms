@@ -57,8 +57,7 @@ WHERE a.`purchase_dt` between '$dt01' and '$dt02'
 and a.supplier_id = b.supplier_id 
 group by a.`supplier_id`, b.supplier_name
 order by b.supplier_name
-;
-");
+;");
 	$sl = '1'; 			
 foreach($result as $item)
 		{		
@@ -81,12 +80,37 @@ foreach($result as $item)
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
-				</table>
-<br>				
-				
-			
-				
-				
+				</table>	
+
+<?php
+$result = DB::select("
+SELECT  sum(`amount`) amount, paid  
+FROM `purchase_mas`
+WHERE `purchase_dt` between '$dt01' and '$dt02' 
+group by paid
+;");
+$tbuy = ''; $t_paid = ''; $t_partial = ''; $t_due = '';
+foreach($result as $item)
+		{
+			if($item->paid == 0){
+        $t_due = $item->amount;
+      }
+      if($item->paid == 1){
+        $t_paid = $item->amount;
+      }
+      if($item->paid == 2){
+        $t_partial = $item->amount;
+      }
+      $tbuy = (float)$item->amount + (float)$tbuy;
+
+	}
+?>
+
+<br><br><br>
+			<p><strong>Total Purchase Amount Tk. {{number_format(floatval($tbuy), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Payment Amount Tk. {{number_format(floatval($t_paid), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Partial Amount Tk. {{number_format(floatval($t_partial), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Due Amount Tk. {{number_format(floatval($t_due), 2, '.', ',')}}</strong></p>
 				
 				
 				

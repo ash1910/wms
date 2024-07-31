@@ -88,7 +88,7 @@ and a.supplier_id = b.supplier_id
 group BY purchase_dt,supplier_ref, a.`supplier_id`, b.supplier_name
 order by purchase_dt
 ");
-	$sl = '1'; $tbuy = '';
+	$sl = '1'; $tbuy = ''; $t_paid = ''; $t_partial = ''; $t_due = '';
 	$buy = '';	$payment_status = "Due";
 foreach($result as $item)
 		{		
@@ -100,33 +100,41 @@ foreach($result as $item)
     //   $payment_status = "Due";
     //  }
 
+      $buy = ($item->buypp);
+      $tbuy = ((float)$buy + (float)$tbuy);
+
      if( $item->paid == '1' ){
       $payment_status = "Paid";
+      $t_paid = ((float)$buy + (float)$t_paid);
      }
      elseif( $item->paid == '2' ){
       $payment_status = "Partial";
+      $t_partial = ((float)$buy + (float)$t_partial);
      }
      else{
       $payment_status = "Due";
+      $t_due = ((float)$buy + (float)$t_due);
      }
 ?>		
 				<tr>
 						<th scope="row" style="border: 1px solid black;">{{$sl}}</th>
 						<td style="border: 1px solid black;">{{date('d-M-Y', strtotime($item->purchase_dt))}}</td>
 						<td style="border: 1px solid black;">{{$item->supplier_ref}}</td>
-						<td style="border: 1px solid black;">{{number_format(intval(($item->buypp)), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;">{{number_format(floatval(($item->buypp)), 2, '.', ',')}}</td>
             <td style="border: 1px solid black; text-align: center;">{{$payment_status}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;
-		$buy = ($item->buypp);
-		$tbuy = ((int)$buy + (int)$tbuy);
 		}  
 ?>
 
 					</tbody>
 				</table>
-			<h4><strong>Total	Tk. {{number_format(intval($tbuy), 2, '.', ',')}}</strong></h4>
+      <br><br><br>
+			<p><strong>Total Purchase Amount Tk. {{number_format(floatval($tbuy), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Payment Amount Tk. {{number_format(floatval($t_paid), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Partial Amount Tk. {{number_format(floatval($t_partial), 2, '.', ',')}}</strong></p>
+      <p><strong>Total Due Amount Tk. {{number_format(floatval($t_due), 2, '.', ',')}}</strong></p>
 	<br>			
 				
 			

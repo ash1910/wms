@@ -45,6 +45,7 @@
 						<tr>
 							<th scope="col" style="text-align: center;border: 1px solid black;">#</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Date</th>
+              <th scope="col" style="border: 1px solid black;text-align: center;">Supplier</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Ref</th>
 							<th scope="col" style="text-align: center;border: 1px solid black;">Total Buy</th>
               <th scope="col" style="text-align: center;border: 1px solid black;">Payment Status</th>
@@ -85,6 +86,7 @@ foreach($result as $item)
 				<tr>
 						<th scope="row" style="border: 1px solid black;">{{$sl}}</th>
 						<td style="border: 1px solid black;">{{date('d-M-Y', strtotime($item->purchase_dt))}}</td>
+            <td style="border: 1px solid black;">{{$item->supplier_name}}</td>
 						<td style="border: 1px solid black;">{{$item->supplier_ref}}</td>
 						<td style="border: 1px solid black;">{{number_format(floatval(($item->buypp)), 2, '.', ',')}}</td>
             <td style="border: 1px solid black; text-align: center;">{{$payment_status}}</td>

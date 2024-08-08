@@ -46,7 +46,7 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Particulars</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Debit</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Credit</th>					
-							<th scope="col" style="border: 1px solid black;text-align: center;">Balance</th>					
+							<th scope="col" style="border: 1px solid black;text-align: center;">Balance</th>						
 						</tr>
 					</thead>
 					<tbody>				
@@ -76,16 +76,23 @@ FROM `suppliers_payment` s WHERE supplier_id='$supplier_id'
 ORDER BY `date`;
 ;
 ");
-	$sl = '1'; 	$total02 = '0';	$total04 = '0';		
+	$sl = '1'; 	$total02 = '0';	$total04 = '0';	$balance_n = 0;
 foreach($result as $item)
-		{		$total01 = '0';$total03 = '0';
+		{		$total01 = '0';$total03 = '0'; 
+      if($item->debit){
+        $balance_n = $balance_n - (float)$item->debit;
+      }
+      if($item->credit){
+        $balance_n = $balance_n + (float)$item->credit;
+      }
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->date))}}</td>
 						<td style="border: 1px solid black;text-align: center;"><a href="purchase02?id={{$item->pch}}">{{$item->particulars}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->debit), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->credit), 2, '.', ',')}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->balance), 2, '.', ',')}}</td>
+						<!-- <td style="border: 1px solid black;text-align: center;">{{number_format(($item->balance), 2, '.', ',')}}</td> -->
+            <td style="border: 1px solid black;text-align: center;">{{number_format(($balance_n), 2, '.', ',')}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;

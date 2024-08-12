@@ -104,6 +104,24 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 	  </a>
 <?php } ?>
 
+<?php 
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
+	||(session('role')=="Administrator")||(session('role')=="Store")){
+?>	  
+	  <a href="/supplierReport05">
+	  <div class="col">
+		<div class="card radius-10">
+		  <div class="card-body text-center" style="height: 175px;">
+			<div class="widget-icon mx-auto mb-3 bg-light-primary text-primary">
+			  <i class="lni lni-files"></i>
+			</div>
+			 <h3>Supplier Payable</h3>
+		  </div>
+		</div>
+	  </div>
+	  </a>
+<?php } ?>
+
 
 	</div>
 </div>  

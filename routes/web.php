@@ -150,6 +150,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('supplierReport02','App\Http\Controllers\billController@supplierReport02');
 	Route::get('supplierReport03','App\Http\Controllers\billController@supplierReport03');
 	Route::get('supplierReport04','App\Http\Controllers\billController@supplierReport04');
+	Route::get('supplierReport05','App\Http\Controllers\billController@supplierReport05');
 	Route::get('saleSummary','App\Http\Controllers\billController@saleSummary');
 	Route::get('saleSummary01','App\Http\Controllers\billController@saleSummary01');
 	Route::get('dueRef','App\Http\Controllers\billController@dueRef');

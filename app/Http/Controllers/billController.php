@@ -612,6 +612,10 @@ if($check == '')
 		'paid'=>$paid
 		]);	
 	}
+	public function supplierReport05(Request $r)
+	{
+		return view ('supplierReport05');	
+	}
 	public function changeCustomer(Request $r)
 	{
 		$bill=$r->input('bill_no');//post input

@@ -52,54 +52,67 @@
 					<tbody>				
 <?php
 
-$supp_list = []; $balance = 0;
-$supplier_payments = DB::select("SELECT (paid_amount+discount) AS debit, CONCAT(note, '(', bill_numbers, ')') AS detail, created_date AS date FROM `suppliers_payment` WHERE supplier_id =  $supplier_id;");
-
-$supplier_purchases = DB::select("SELECT amount AS credit, supplier_ref AS detail, purchase_dt AS date FROM `purchase_mas` WHERE supplier_id =  $supplier_id;");
-
-$supplier_leadgers = array_merge($supplier_purchases,$supplier_payments);
-usort($supplier_leadgers, fn($a, $b) => $a->date <=> $b->date);
-
-foreach($supplier_leadgers as $item){	
-  $debit = !empty($item->debit) ? $item->debit : 0;
-  $credit = !empty($item->credit) ? $item->credit : 0;
-  $balance += $credit - $debit;
-
-  $supp_list[] = array(
-    'date' => $item->date,
-    'detail' => $item->detail,
-    'debit' => $debit,
-    'credit' => $credit,
-    'balance' => $balance
-  );
-}
-
-//echo "<pre>";print_r($supplier_payments);echo "<pre>";print_r($supplier_purchases);echo "<pre>";print_r((array)$supp_list);exit;
-
-	$sl = '1'; 	$totaDebit = 0;	$totaCredit = 0;
-foreach($supp_list as $item)
-		{
+$result = DB::select("
+SELECT `date`,`pch`,`particulars`, `debit`,`credit`, @Balance := @Balance + `t`.`credit` - `t`.`debit` AS `balance`
+FROM
+(
+SELECT  p.purchase_dt AS`date`, p.purchase_id AS `pch`, CONCAT(CONCAT('PCH-', p.purchase_id),CONCAT(', Bill-', p.`supplier_ref`)) AS `particulars`, p.`amount` AS `credit`, '0.00' AS `debit`
+FROM `purchase_mas` p
+WHERE supplier_id='$supplier_id'
+UNION
+SELECT s.created_date AS`date`, 0 AS `pch`, 
+CASE 
+WHEN `mode_of_payment`='Cash' THEN CONCAT(CONCAT('Payment through Cash (', s.`bill_numbers`),')') 
+WHEN `mode_of_payment`='Cheque' THEN CONCAT(CONCAT(CONCAT('Payment through Bank (', s.`bill_numbers`),')'),'-',s.`bank_name`,'-',s.`cheque_number`,'-',s.`cheque_date`) 
+WHEN `mode_of_payment`='Service' THEN CONCAT(CONCAT('Adjustment With Job No. ',s.`note`,' (Ref Voucher:	', s.`bill_numbers`),')') 
+ELSE 'Discount'
+END AS `particulars`, '0.00' AS `credit`, s.`paid_amount` AS `debit` 
+FROM `suppliers_payment` s WHERE supplier_id='$supplier_id'
+UNION
+SELECT s.created_date AS`date`, 0 AS `pch`, 
+'Discount' AS `particulars`, '0.00' AS `credit`, IFNULL(s.`discount`,0) AS `debit` 
+FROM `suppliers_payment` s WHERE supplier_id='$supplier_id'
+) t, (SELECT @Balance := 0) AS variableInit
+ORDER BY `date`;
+;
+");
+	$sl = '1'; 	$total02 = '0';	$total04 = '0';	$balance_n = 0;
+foreach($result as $item)
+		{		$total01 = '0';$total03 = '0'; 
+      if($item->debit){
+        $balance_n = $balance_n - (float)$item->debit;
+      }
+      if($item->credit){
+        $balance_n = $balance_n + (float)$item->credit;
+      }
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item['date']))}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{$item['detail']}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item['debit']), 2, '.', ',')}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item['credit']), 2, '.', ',')}}</td>
-            <td style="border: 1px solid black;text-align: center;">{{number_format(($item['balance']), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->date))}}</td>
+						<td style="border: 1px solid black;text-align: center;"><a href="purchase02?id={{$item->pch}}">{{$item->particulars}}</a></td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->debit), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->credit), 2, '.', ',')}}</td>
+						<!-- <td style="border: 1px solid black;text-align: center;">{{number_format(($item->balance), 2, '.', ',')}}</td> -->
+            <td style="border: 1px solid black;text-align: center;">{{number_format(($balance_n), 2, '.', ',')}}</td>
 					</tr>
 		<?php
 		$sl = $sl+1;
-		$totaDebit += $item['debit'];
-    $totaCredit += $item['credit'];
+		$total01 = $item->debit;
+		$total02 = $total01+$total02;
+		$total03 = $item->credit;
+		$total04 = $total03+$total04;
 		}  
 ?>
+						<!---tr>
+							<td colspan="7"><strong>Total Draft Amount: Tk.</strong></td>
+							<td>{{$total02}}</td>
+						</tr--->
 						
 					</tbody>
 				</table>
 				
-<strong>Total Debit Amount: Tk. {{number_format(($totaDebit), 2, '.', ',')}}	</strong><br>
-<strong>Total Credit Amount: Tk. {{number_format(($totaCredit), 2, '.', ',')}}	</strong><br>
-<strong>Current Balance Amount: Tk. {{number_format((-$totaDebit+$totaCredit), 2, '.', ',')}}	</strong>
+<strong>Total Debit Amount: Tk. {{number_format(($total02), 2, '.', ',')}}	</strong><br>
+<strong>Total Credit Amount: Tk. {{number_format(($total04), 2, '.', ',')}}	</strong><br>
+<strong>Current Balance Amount: Tk. {{number_format(($total04-$total02), 2, '.', ',')}}	</strong>
 <br><br><br>				
 				
 			

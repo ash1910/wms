@@ -349,7 +349,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('productLedger01','App\Http\Controllers\bomController@productLedger01');
 	Route::get('productLedger02','App\Http\Controllers\bomController@productLedger02');
 	Route::get('supplierLedger','App\Http\Controllers\bomController@supplierLedger');
-	Route::post('supplierLedger01','App\Http\Controllers\bomController@supplierLedger01');
+	Route::any('supplierLedger01','App\Http\Controllers\bomController@supplierLedger01');
 	Route::get('vehicleLedger','App\Http\Controllers\bomController@vehicleLedger');
 	Route::post('vehicleLedger01','App\Http\Controllers\bomController@vehicleLedger01');
 	Route::post('vehicleLedger02','App\Http\Controllers\bomController@vehicleLedger02');

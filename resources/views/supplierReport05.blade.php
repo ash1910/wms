@@ -77,14 +77,14 @@ foreach($suppliers as $supplier){
 $sl = '1'; $total = 0;
 foreach($suppliers_list as $item)
 		{		
-      if($item['balance'] <= 0) continue;
+      if($item['balance'] == 0) continue;
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
             <td style="border: 1px solid black;">{{$item['supplier_id']}}</td>
             <td style="border: 1px solid black;">{{$item['supplier_name']}}</td>
             <td style="border: 1px solid black;">{{number_format(($item['debit']), 2, '.', ',')}}</td>
             <td style="border: 1px solid black;">{{number_format(($item['credit']), 2, '.', ',')}}</td>
-            <td style="border: 1px solid black;">{{number_format(($item['balance']), 2, '.', ',')}}</td>
+            <td style="border: 1px solid black;"><a href="/supplierLedger01?supplier={{$item['supplier_id']}} - {{$item['supplier_name']}}">{{number_format(($item['balance']), 2, '.', ',')}}</a></td>
 					</tr>
 		<?php
 		$sl = $sl+1;
@@ -92,11 +92,15 @@ foreach($suppliers_list as $item)
 		}  
 ?>
 						<tr>
-							<td colspan="5" style="border: 1px solid black;text-align: center;"><strong>Total Payable to Spare Parts Suppliers</strong></td>
-              <td style="border: 1px solid black;">{{number_format(($total), 2, '.', ',')}}</td>
+              <th style="border: 1px solid black;text-align: center;">{{$sl}}</th><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
+							<td colspan="4" style="border: 1px solid black;text-align: center;"><strong>Total Payable to Spare Parts Suppliers</strong></td>
+              <td style="border: 1px solid black;"><strong>{{number_format(($total), 2, '.', ',')}}</strong></td>
 						</tr>
 					</tbody>
 				</table>	
+
+        <br><br><br>
+			<p><strong>Total Payable to Spare Parts Suppliers Tk. {{number_format($total, 2, '.', ',')}} </strong></p>
 		
 				
              </div>

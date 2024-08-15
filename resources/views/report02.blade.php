@@ -3,18 +3,18 @@
 
 @section("content")
 
-<?php 
+<?php
 
 $bill_no = $bill;
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, est_no, 
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, est_no,
 b.customer_chas, `engineer`, `technician`, `job_no`, `job_dt`, cartridge, c.user_name, `net_bill` ,a.flag flag, bill_dt, a.work
 FROM `bill_mas` a, `customer_info` b, `user` c
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id
 AND a.user_id=c.user_id;
-");	
+");
 
 
 		$parts_info = DB::table('parts_info')->get();
@@ -35,7 +35,7 @@ AND a.user_id=c.user_id;
 				 $job_no = $post->job_no;
 				 $job_dt = $post->job_dt;
 				 $bill_dt = $post->bill_dt;
-				 $flag = $post->flag; 
+				 $flag = $post->flag;
 				 $user_name = $post->user_name;
 				 $cartridge = $post->cartridge;
 				 $est_no = $post->est_no;
@@ -50,11 +50,11 @@ AND a.user_id=c.user_id;
                   <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Daily Bill 
+                    <li class="breadcrumb-item active" aria-current="page">Daily Bill
 					&nbsp;
-				
-					
-<?php 
+
+
+<?php
 if(session('role')!="Service Engineer")
 {
 if(session('role')!="PRO")
@@ -66,41 +66,41 @@ if(session('role')!="PRO")
 				{
 			?>
 				<a href="/billMemo?bill={{$bill_no}}" class="btn btn-sm btn-success me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
-			<?php } 
+			<?php }
 			if($flag!='0')
 				{
 			?>
 				<a href="" class="btn btn-sm btn-secondary me-2"><i class="fadeIn animated bx bx-edit-alt"></i> Modify</a>
-			<?php } 
+			<?php }
 
 		}
 
-    }    
-}	
-?>	
+    }
+}
+?>
 
 
-				
+
 					<form  target="_blank" style="display: inline;" action="billPrintView" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> View</button>
 					</form>
-					
+
 					<form  target="_blank" style="display: inline;" action="billPrint_as" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 					</form>
-				
+
 					<form  target="_blank" style="display: inline;" action="billPrintRef" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Due Ref</button>
 					</form>
 
- 
-<?php 
+
+<?php
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator"))
 {
 	if($flag!='0')
@@ -112,20 +112,20 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Receipt</button>
 					</form>
-	
-	
-	
-	<?php } 
+
+
+
+	<?php }
 	if($flag=='0')
 		{
 	?>
 		<a href="" class="btn btn-sm btn-secondary me-2"><i class="fadeIn animated bx bx-printer"></i> Receipt</a>
-	<?php } 
-}	
+	<?php }
+}
 ?>
 
 
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
 ?>
@@ -142,14 +142,14 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
 					</form>
 
-					
+
 					</li>
                   </ol>
                 </nav>
               </div>
               <div class="ms-auto">
                 <div class="btn-group">
-                 
+
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -191,14 +191,14 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
                   <div class="">
                     <!--small>to</small-->
                     <address class="m-t-5 m-b-5">
-<?php 
+<?php
 if($flag!='0')
 		{?>
         <strong class="text-inverse">Bill Date: </strong>{{date('d-M-Y', strtotime($bill_dt))}}<br>
 <?php	}
-?> 
- 
- 
+?>
+
+
 					   <strong class="text-inverse">Registration No.: </strong>{{$customer_reg}}<br>
                        <strong class="text-inverse">Chassis No.: </strong>{{$customer_chas}}<br>
                        <strong class="text-inverse">Vehicle: </strong>{{$customer_vehicle}}<br>
@@ -221,21 +221,21 @@ if($flag!='0')
 					</table>
 					</address>
 				   </div>
-				</div>			
-                
+				</div>
+
                </div>
              </div>
-	
-	
-			 
-			 
+
+
+
+
 			<div class="card">
 				<div class="card-body">
 					<ul class="nav nav-tabs nav-primary" role="tablist">
-<?php					
+<?php
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")){?>					
-					
+	||(session('role')=="Administrator")){?>
+
 						<li class="nav-item" role="presentation">
 							<a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
 								<div class="d-flex align-items-center">
@@ -245,8 +245,8 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 								</div>
 							</a>
 						</li>
-<?php } ?>						
-						
+<?php } ?>
+
 						<li class="nav-item" role="presentation">
 							<a class="nav-link <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 	||(session('role')=="Administrator")){}else {echo 'active';}?>" data-bs-toggle="tab" href="#primarypart" role="tab" aria-selected="false">
@@ -258,8 +258,8 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 							</a>
 						</li>
 <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")||(session('role')=="Store")){?>					
-				
+	||(session('role')=="Administrator")||(session('role')=="Store")){?>
+
 						<li class="nav-item" role="presentation">
 							<a class="nav-link" data-bs-toggle="tab" href="#primarybom" role="tab" aria-selected="false">
 								<div class="d-flex align-items-center">
@@ -270,8 +270,8 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 							</a>
 						</li>
 <?php } ?>
-<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){?>					
-				
+<?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){?>
+
 						<li class="nav-item" role="presentation">
 							<a class="nav-link" data-bs-toggle="tab" href="#primarySale" role="tab" aria-selected="false">
 								<div class="d-flex align-items-center">
@@ -282,69 +282,69 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 							</a>
 						</li>
 <?php } ?>
-                       
+
 
 
 					</ul>
 					<div class="tab-content py-3">
-<?php 
+<?php
 
-	$data = DB::select("SELECT SUM(`net_bill`) net_bill, SUM(`total`) total, 
-	SUM(`parts`) parts, SUM(`service`) service  FROM `bill_mas` 
+	$data = DB::select("SELECT SUM(`net_bill`) net_bill, SUM(`total`) total,
+	SUM(`parts`) parts, SUM(`service`) service  FROM `bill_mas`
 	WHERE `bill_no`=$bill_no;");
-	foreach($data as $item){ 
+	foreach($data as $item){
 	$net_bill = $item->net_bill;$parts = $item->parts;$service = $item->service;
 	$total = $item->total; }
 
 if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
-	||(session('role')=="Administrator")){?>					
+	||(session('role')=="Administrator")){?>
 <!---------Summary TAB-------------->
 	<div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
         <div class="col-12 col-lg-12 d-flex">
 			<div class="col-3">
 				<address class="m-t-5 m-b-5">
-					<strong class="text-inverse">Total Amount: Tk. 
+					<strong class="text-inverse">Total Amount: Tk.
 					<?php
 					echo number_format(($net_bill), 2, '.', ',');
-								
+
 					$ref = '';
 					$stock02 = DB::select("
 					SELECT ref FROM `pay` WHERE `bill`='$bill_no' and ref<>'SYS'");
 					foreach($stock02 as $item02)
-						{ 					
+						{
 								$ref = $item02->ref;
-						}	
+						}
 
 
 					$stock01 = DB::select("
-					SELECT sum(`received`) received, sum(`bonus`) bonus, sum(`vat_wav`) vat_wav, 
+					SELECT sum(`received`) received, sum(`bonus`) bonus, sum(`vat_wav`) vat_wav,
 					sum(`ait`) ait, sum(`due`)due, sum(charge) charge, sum(vat_pro) vat_pro,
 					sum(sales_return) sales_return,sum(advance_refund) advance_refund,sum(complementary_work) complementary_work,
 					sum(rework) rework, sum(damage_work) damage_work, sum(supplier_adj) supplier_adj, sum(supplier_name) supplier_name
 					FROM `pay` WHERE `bill`='$bill_no';");
 					foreach($stock01 as $item01)
-						{ 					
-								$received = $item01->received;						
-								$discount = $item01->bonus;						
-								$vat_wav = $item01->vat_wav;						
-								$ait = $item01->ait;						
-								$due = $item01->due;						
-								$charge = $item01->charge;	
+						{
+								$received = $item01->received;
+								$discount = $item01->bonus;
+								$vat_wav = $item01->vat_wav;
+								$ait = $item01->ait;
+								$due = $item01->due;
+								$charge = $item01->charge;
 
-								$vat_pro = $item01->vat_pro;	
-								$sales_return = $item01->sales_return;	
-								$advance_refund = $item01->advance_refund;	
-								$complementary_work = $item01->complementary_work;	
-								$rework = $item01->rework;	
-								$damage_work = $item01->damage_work;	
-								$supplier_adj = $item01->supplier_adj;	
-								$supplier_name = $item01->supplier_name;	
+								$vat_pro = $item01->vat_pro;
+								$sales_return = $item01->sales_return;
+								$advance_refund = $item01->advance_refund;
+								$complementary_work = $item01->complementary_work;
+								$rework = $item01->rework;
+								$damage_work = $item01->damage_work;
+								$supplier_adj = $item01->supplier_adj;
+								$supplier_name = $item01->supplier_name;
 						}
 					$acrefund = ''; $ac_refund='0';
 					$stock03 = DB::select("SELECT `pay_type` FROM `pay` WHERE `bill`='$bill_no';");
 					foreach($stock03 as $item03)
-						{ 					
-							$acrefund = $item03->pay_type;						
+						{
+							$acrefund = $item03->pay_type;
 							if($acrefund=='A/C Refund')
 							{$ac_refund='1';}
 						}
@@ -352,19 +352,19 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 					$AdjCustDue = 0;
 					$AdjCust01 = DB::select("SELECT sum(`due`)due FROM `pay` WHERE `bill`='$bill_no' AND `pay_type` = 'Adj-Cust';");
 					foreach($AdjCust01 as $AdjCustItem01)
-						{ 					
+						{
 							$AdjCustDue = $AdjCustItem01->due;
 						}
 
 
-						
+
 					?>
 					<br>
 					</strong>
 					<strong class="text-inverse">Bill (Amount+VAT): Tk. {{number_format(($total), 2, '.', ',');}}</strong><br>
 					<strong class="text-inverse">Parts: Tk.  {{number_format(($parts), 2, '.', ',');}}</strong><br>
 				    <strong class="text-inverse">Service: Tk.  {{number_format(($service), 2, '.', ',');}}</strong><br>
-			   
+
 				</address>
 			</div>
 
@@ -391,7 +391,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 <?php if($vat_pro!=''){?><strong class="text-inverse">VAT Provision: Tk.</b> {{number_format(($vat_pro), 2, '.', ',');}}</strong><br><?php } ?>
 <?php if($sales_return!=''){?><strong class="text-inverse">Sales Return:</b> {{$sales_return}}</strong><br><?php } ?>
 <?php if($advance_refund!=''){?><strong class="text-inverse">
-					<?php 
+					<?php
 					if($ac_refund=='0'){echo 'Cash';}
 					if($ac_refund=='1'){echo 'Ledger';}
 					?>
@@ -399,21 +399,21 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 				   Refund:</b> {{$advance_refund}}</strong><br><?php } ?>
 <?php if($complementary_work!=''){?><strong class="text-inverse">Complementary Work:</b> {{$complementary_work}}</strong><br><?php } ?>
 				</address>
-			</div>			
+			</div>
 			<div class="col-3">
 				<address class="m-t-5 m-b-5">
 <?php if($rework!=''){?><strong class="text-inverse">Rework:</b> {{$rework}}</strong><br><?php } ?>
 <?php if($damage_work!=''){?><strong class="text-inverse">Damage Work:</b> {{$damage_work}}</strong><br><?php } ?>
-							<strong class="text-inverse">Cheque In Hand:</b> 
-				   
-				   
+							<strong class="text-inverse">Cheque In Hand:</b>
+
+
 <?php   $pay_type='';
 		$stock02 = DB::select("
 		SELECT `job_no` pay_type,received FROM `cheque_pending` WHERE `job_no`='$job_no' AND `flag`='0'
 		");
 		foreach($stock02 as $item02){  $received = $item02->received; echo '['.number_format(($received), 0, '.', ',').'] ';}
-		
-		
+
+
 		$pay_type='';
 		$stock02 = DB::select("
 		SELECT `job_no` pay_type, `denyImage`, `denyDt`, `received` FROM `cheque_pending` WHERE `job_no`='$job_no' AND `flag`='2'
@@ -422,34 +422,34 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 		if($pay_type!=''){$imageUrl = asset('upload/deny/'.$denyImage); ?>
 		<br>
 		{{$denyDt ? $denyDt : '0000-00-00'}} - {{$received}} - <a href="{{ $imageUrl }}" target="_blank">[Deny]</a>
-		
-		<?php } }						   
-				   
-			$supplier_name01='';	   
+
+		<?php } }
+
+			$supplier_name01='';
 			$stock03 = DB::select("SELECT `supplier_name` FROM `suppliers` WHERE `supplier_id` = '$supplier_name';");
 			foreach($stock03 as $item03)
-				{ 					
-					$supplier_name01 = $item03->supplier_name;						
+				{
+					$supplier_name01 = $item03->supplier_name;
 				}
-			?>	   
+			?>
 				   </strong><br>
 <?php if($supplier_name01!=''){?><strong class="text-inverse">Supplier Adj:</b> Tk: {{$supplier_adj}} [{{$supplier_name01}}]</strong><?php } ?>
 <?php if($AdjCustDue != 0){
-	
+
 	$customer_id_adj = DB::table('pay')->where('job_no', $job_no."[adj]")->first()->customer_id;
 	$customer_nm_adj = DB::table('customer_info')->where('customer_id', $customer_id_adj)->first()->customer_nm;
-	
-	
+
+
 	?><strong class="text-inverse">Customer Adj:</b> Tk: {{$AdjCustDue}} [{{$customer_nm_adj}}]</strong><?php } ?>
-				   
+
 				</address>
-			</div>			
+			</div>
 		</div>
         <div class="col-12 col-lg-12 d-flex">
 			<div class="col-12">
-			
-			
-			
+
+
+
 
 				<table class="table table-bordered mb-0">
 					<tr>
@@ -466,19 +466,19 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 					</tr>
 <?php
 					$data = DB::select("SELECT a.id,`received`,`pay_type`,`dt`,
-					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`, `merchant_bank`, `mer_bkash`  
+					`charge`,`trix`,`send`,`bank`,`chequeNo`,`chequeDt`,`post_dt`,`card_bank`,`card_no`,`card_type`,`distributed_from_pay_id`, `merchant_bank`, `mer_bkash`
 					FROM `pay` a, bill_mas b
 					WHERE a.job_no = b.job_no AND a.`job_no` = '$job_no' and a.pay_type<>'SYS'
 					and a.pay_type<>'due'
 					order by id desc");
 					$sl="1";
 					foreach($data as $item)
-					{ 
+					{
 ?>
 					<tr>
 						<th scope="row" style="text-align: center;">{{$sl}}</th>
 						<td style="text-align: center;">
-						
+
 	<form class="row g-3" action="moneyReceipt02" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col-12">
 		<input type="hidden" name="id" value="{{$item->id}}">
@@ -487,7 +487,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> {{$item->id}}</button>
 		</div>
-	</form>	
+	</form>
 	<br>
 	<form class="row g-3" action="moneyReceipt06" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col-12">
@@ -519,15 +519,15 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 					<i class="fadeIn animated bx bx-printer"></i> HNS Auto Solutions</button>
 		</div>
 	</form>
-						
-						
+
+
 						</td>
 						<td style="text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td style="text-align: right;">{{number_format(($item->received+$item->charge), 2, '.', ',');}}</td>
 						<td style="text-align: right;">{{number_format(($item->received), 2, '.', ',');}}</td>
 						<td style="text-align: center;">{{$item->pay_type}}
-						
-<?php 						
+
+<?php
 	if($item->pay_type=='cheque')
 	{
 		$pay_type='';
@@ -536,29 +536,29 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 		SELECT `dt`, job_no, chequeNo FROM `cheque_disorder` WHERE `job_no`='$job_no' AND `chequeNo`='$item->chequeNo'
 		");
 		foreach($stock04 as $item04)
-		{ 
+		{
 		    $date = $item04->dt;
-	
+
 		$stock05 = DB::select("
 		SELECT job_no, chequeNo,denyImage FROM `cheque_pending` WHERE `job_no`='$job_no' AND `chequeNo`='$item->chequeNo'
 		");
 		foreach($stock05 as $item05)
-		{ 
+		{
 		    $denyImage = $item05->denyImage;
-		}	 $imageUrl = asset('upload/deny/'.$denyImage);   
+		}	 $imageUrl = asset('upload/deny/'.$denyImage);
 		    ?>
 		    <a href="{{ $imageUrl }}" target="_blank">
 		    <b>Dishonor:</b></a>{{date('d-M-Y', strtotime($date))}}</br>
-		    
-		    
-		<?php    
+
+
+		<?php
 		}
 		 ?>
-		
-								
-						
-						
-<?php } ?>					
+
+
+
+
+<?php } ?>
 						</td>
 						<td>
 						@if($item->merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($item->merchant_bank == 'CBL') HAS-MTBL-7814 @endif
@@ -585,7 +585,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 if(($item->pay_type=='cash')&&($item->bank!='')){?>
 						<td style="text-align: left;"><b>Bank:</b>{{$item->bank}}<br>
 						<b>Cheque:</b>{{$item->chequeNo}}<br><b>Date:</b>{{$item->chequeDt}}</td>
-<?php } 
+<?php }
 
 
 else { echo "<td></td>";}?>
@@ -611,15 +611,15 @@ else { echo "<td></td>";}?>
 					$sl = $sl+1;
 					}
 ?>
-					
-					
-					
+
+
+
 				</table>
 			</div>
 		</div>
 	</div>
-	
-<?php } ?>	
+
+<?php } ?>
 <!---------Bill TAB-------------->
 						<div class="tab-pane fade <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 	||(session('role')=="Administrator")){}else {echo ' active show';}?>" id="primarypart" role="tabpanel">
@@ -632,9 +632,9 @@ else { echo "<td></td>";}?>
 		table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.dataTable tbody th, table#example4.table-bordered.dataTable tbody td {
     border-bottom-width: 1px;
 }
-	</style>			
-				
-				
+	</style>
+
+
 				<table class="table table-bordered mb-0" id="example4">
 					<thead>
 						<tr>
@@ -652,14 +652,14 @@ else { echo "<td></td>";}?>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 </tr>
-					
+
 <?php
 	$stock = DB::select("
 	SELECT `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
 	FROM `bill_det` WHERE type = '1' and `bill_no`=$bill_no;");
 	$sl="1";
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;">{{$sl}}</th>
 						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -669,8 +669,8 @@ else { echo "<td></td>";}?>
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  
-				
+		}
+
 ?>
 <tr><td colspan="5"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service</strong></td>
 	<td style="display: none;"></td>
@@ -684,7 +684,7 @@ else { echo "<td></td>";}?>
 	FROM `bill_det` WHERE type = '2' and `bill_no`=$bill_no;");
 	$sl="1";
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;">{{$sl}}</th>
 						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -694,9 +694,9 @@ else { echo "<td></td>";}?>
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  
-				
-?>							
+		}
+
+?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
@@ -715,6 +715,7 @@ else { echo "<td></td>";}?>
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
+                            <th scope="col" style="border: 1px solid black;text-align: center;">Issue Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Product</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Issued Req. No.</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Quantity</th>
@@ -723,16 +724,17 @@ else { echo "<td></td>";}?>
 						</tr>
 					</thead>
 					<tbody>
-					
+
 <?php
 	$stock = DB::select("
-	SELECT `prod_id`, `prod_name`, `qty`, `avg_price`, `amount`, `note`,`req`
+	SELECT `prod_id`, `prod_name`, `qty`, `avg_price`, `amount`, `note`,`req`,`dt`
 	FROM `issue` where job_no = '$job_no'");
 	$sl="1";$purchase='0';
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
+                        <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td style="border: 1px solid black;text-align: left;">
 						<a href="productLedger02?id={{$item->prod_id}} - {{$item->prod_name}}">{{$item->prod_id}} - {{$item->prod_name}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->req}}</td>
@@ -743,8 +745,8 @@ else { echo "<td></td>";}?>
 		<?php
 		$sl = $sl+1;
 		$purchase= $item->amount+$purchase;
-		}  
-				
+		}
+
 ?>
 
 
@@ -760,32 +762,32 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
 <!---------Sales Commission TAB-------------->
 
 					<div class="tab-pane fade" id="primarySale" role="tabpanel">
-						
-						
-						
+
+
+
 					</div>
-						
-						
-						
-						
-						
-						
-						
+
+
+
+
+
+
+
 					</div>
 				</div>
-			</div>	
+			</div>
 
 
-			
 
-           
+
+
            </div>
 
         </main>
 
 
 
- 
+
 @endsection
 
 

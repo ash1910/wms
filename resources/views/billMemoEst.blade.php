@@ -3,12 +3,12 @@
 
 @section("content")
 
-<?php 
+<?php
 $est_no = $_GET["est_no"];
 
 
 $result = DB::select("
-SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, year, car_colour, 
+SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, year, car_colour,
 b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `user_id`, `net_bill` ,`km`, a.flag
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
@@ -36,12 +36,12 @@ AND a.customer_id = b.customer_id;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
 			}
-			
+
 if($flag!='0')
 {
 //return redirect('home');
 }
-			
+
 ?>
 		<main class="page-content">
             <!--breadcrumb-->
@@ -58,7 +58,7 @@ if($flag!='0')
               </div>
               <div class="ms-auto">
                 <div class="btn-group">
-                 
+
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -74,14 +74,14 @@ if($flag!='0')
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
-                      <h5 class="mb-0">Create Estimate [Estimate No: {{$est_no}}] 
-					  
+                      <h5 class="mb-0">Create Estimate [Estimate No: {{$est_no}}]
+
 					<form  target="_blank" style="display: inline;" action="billPrint_asEst" method="post">{{ csrf_field() }}
 					<input type="hidden" name="est_no" value="{{$est_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
-					</form>		
-					
+					</form>
+
 					<form style="display: inline;" action="changeCustomerEst" method="post">{{ csrf_field() }}
 					<input type="hidden" name="est_no" value="{{$est_no}}">
 					<input type="hidden" name="days" value="{{$days}}">
@@ -90,8 +90,17 @@ if($flag!='0')
 					<input type="hidden" name="technician" value="{{$technician}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated lni lni-reload"></i> Modify</button>
-					</form>	
-					  
+					</form>
+<?php
+if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Store")||(session('role')=="PRO")){
+?>
+                    <form style="display: inline;" action="cloneEst" method="post">{{ csrf_field() }}
+                        <input type="hidden" name="est_no" value="{{$est_no}}">
+                        <button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+                        <i class="fadeIn animated lni lni-reload"></i> Clone</button>
+					</form>
+<?php } ?>
+
 					  </h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
@@ -138,14 +147,14 @@ if($flag!='0')
 					</table>
 					</address>
 				   </div>
-				</div>			
-                
+				</div>
+
                </div>
              </div>
-	
-	
-			 
-			 
+
+
+
+
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
@@ -169,8 +178,8 @@ if($flag!='0')
 								</a>
 							</li>
 						</ul>
-						<div class="tab-content py-3  col-lg-4">	
-						<!----------------parts--------------------->							
+						<div class="tab-content py-3  col-lg-4">
+						<!----------------parts--------------------->
 							<div class="tab-pane fade active show" id="parts" role="tabpanel">
 								<div class="col-12 d-flex">
 									<div class="card border shadow-none w-100">
@@ -199,7 +208,7 @@ if($flag!='0')
 									</div>
 								</div>
 							</div>
-						<!----------------service--------------------->							
+						<!----------------service--------------------->
 							<div class="tab-pane fade" id="service" role="tabpanel">
 								<div class="col-12 d-flex">
 									<div class="card border shadow-none w-100">
@@ -236,33 +245,33 @@ if($flag!='0')
                     </form-->
 									</center>
 
-							
-						</div>					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-						
+
+						</div>
+
+
+
+
+
+
+
+
+
+
 	<div class="col-12 col-lg-8 d-flex">
 		<div class="card border shadow-none w-100">
 			<div class="card-body">
 				<div class="table-responsive">
-			
+
 
 
 					<div class="col-7">
 						<div class="">
 							<!--small>from</small-->
 							<address class="m-t-5 m-b-5">
-							   <strong class="text-inverse">Total Amount: Tk. 
+							   <strong class="text-inverse">Total Amount: Tk.
 							   <?php
 								$data = DB::select("SELECT SUM(`net_bill`) net_bill, SUM(`total`) total  FROM `est_mas` WHERE `est_no`=$est_no;");
-								foreach($data as $item){ 
+								foreach($data as $item){
 								$net_bill = $item->net_bill;
 								$total = $item->total; }
 								echo number_format(intval($net_bill), 2, '.', ',');
@@ -272,13 +281,13 @@ if($flag!='0')
 							</address>
 						</div>
 					 </div>
-				
-				
+
+
 <style>
 table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.dataTable tbody th, table#example4.table-bordered.dataTable tbody td {
     border-bottom-width: 1px;
 }
-</style>				
+</style>
 				<table id="example4" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -292,33 +301,33 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 						</tr>
 					</thead>
 					<tbody>
-					
+
 <tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parts</strong></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
-	<td style="display: none;"></td> 
+	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 </tr>
-					
+
 <?php
 	$stock = DB::select("
 	SELECT `id`,`est_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`, id
 	FROM `est_det` WHERE type = '1' and `est_no`=$est_no;");
 	$sl="1";
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<td style="text-align: center;" class="sorting_1">
-						
-						
+
+
 							<form style="display: inline;" action="billMemoEditEst" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<input type="hidden" name="est_no" value="{{$item->est_no}}">
 							<button class="btn btn-sm btn-sucess me-2" type="submit" name="" value=""><i class="lni lni-pencil-alt"></i></button>
 							</form>
-						
+
 						</td>
 						<td scope="row">{{$sl}}</th>
 						<td>{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -335,13 +344,13 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  
-				
+		}
+
 ?>
 <tr><td colspan="7"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service</strong></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
-	<td style="display: none;"></td> 
+	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
 	<td style="display: none;"></td>
@@ -352,17 +361,17 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 	FROM `est_det` WHERE type = '2' and `est_no`=$est_no;");
 	$sl="1";
 	foreach($stock as $item)
-		{		
+		{
 ?>					<tr>
 						<td style="text-align: center;" class="sorting_1">
-						
-						
+
+
 							<form style="display: inline;" action="billMemoEditEst" method="post">{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<input type="hidden" name="est_no" value="{{$item->est_no}}">
 							<button class="btn btn-sm btn-sucess me-2" type="submit" name="" value=""><i class="lni lni-pencil-alt"></i></button>
 							</form>
-						
+
 						</td>
 						<td scope="row">{{$sl}}</th>
 						<td>{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -379,9 +388,9 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  
-				
-?>							
+		}
+
+?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
@@ -389,36 +398,36 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 				</table>
 
 
-							
+
                           </div>
-                         
+
                         </div>
                       </div>
                     </div>
 					</div><!--end row-->
                 </div>
-			</div>	
+			</div>
 
 
-						
-			 
-			 
-		 
-			 
-			 
-			
-            
-			
-			
 
-           
+
+
+
+
+
+
+
+
+
+
+
            </div>
 
           </main>
 
 
 
- 
+
 @endsection
 
 
@@ -432,9 +441,9 @@ table#example4.table-bordered.dataTable thead th,table#example4.table-bordered.d
 
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($parts_info as $p) 
+foreach ($parts_info as $p)
 {
 echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
 }
@@ -445,13 +454,13 @@ echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
     });
   } );
   </script>
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($service_info as $p) 
+foreach ($service_info as $p)
 {
 echo '"'.$p->service_id.' - '.$p->service_name.'",';
 }
@@ -464,7 +473,7 @@ echo '"'.$p->service_id.' - '.$p->service_name.'",';
   </script>
 
  @endsection
- 
+
  @section("dataTable")
 
   <script src="assets/js/table-datatable.js"></script>

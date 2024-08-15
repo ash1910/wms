@@ -44,7 +44,7 @@ class estimateController extends Controller
 
 	public function est()
 	{
-		return view ('est');	
+		return view ('est');
 	}
 
 	public function searchClientEst(Request $r)
@@ -52,7 +52,7 @@ class estimateController extends Controller
 		$search=$r->input('search');//post input
 		$register=$r->input('register');//post input
 		$chas=$r->input('chas');//post input
-		
+
 	    $customer_id = '';
 	    $customer_nm = '';
 	    $customer_reg = '';
@@ -64,7 +64,7 @@ class estimateController extends Controller
 		$customer_group = '';
 		$company = '';
 		$sister_companies = '';
-		
+
 		if($register=='register')
 		{
 			$result = DB::table('customer_info')->where('customer_reg', $search)
@@ -78,8 +78,8 @@ class estimateController extends Controller
 			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
-			
-			
+
+
 			if($result=="[]")
 				{
 				return redirect ('customer')->with('alert', 'Thanks For Subscribe!');
@@ -93,7 +93,7 @@ class estimateController extends Controller
 			'customer_group' => $customer_group,
 			'company' => $company,
 			'sister_companies' => $sister_companies
-			]);			
+			]);
 		}
 		if($chas=='chas')
 		{
@@ -108,12 +108,12 @@ class estimateController extends Controller
 			}
 			$parts_info = DB::table('parts_info')->get();
 			$service_info = DB::table('service_info')->get();
-			
+
 			if($result=="[]")
 				{
 				return redirect ('customer')->with('alert', 'Thanks For Subscribe!');
 				}
-			
+
 			return view('billformEst', [
 			'result' => $result,
 			'parts_info' => $parts_info,
@@ -121,9 +121,9 @@ class estimateController extends Controller
 			'customer_group' => $customer_group,
 			'company' => $company,
 			'sister_companies' => $sister_companies
-			]);			
-		}		
-		
+			]);
+		}
+
 	}
 
 	public function	billcardEst(Request $r)
@@ -142,13 +142,13 @@ class estimateController extends Controller
 
 
 		if($register=="register01")
-		{		
-			DB::insert('INSERT INTO `est_mas`(`customer_id`, `engineer`, `technician`, `days`, 
+		{
+			DB::insert('INSERT INTO `est_mas`(`customer_id`, `engineer`, `technician`, `days`,
 			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?)',[$customer_id,$engineer,$technician,$days,$est_dt,
 			$user_id,'',$work, $km,$customer_nm]);
 			$est_no = DB::getPdo()->lastInsertId();
 			$est_no = str_pad($est_no, 5, '0', STR_PAD_LEFT);
-			
+
 			return redirect('/billMemoEst?est_no='.$est_no.'');
 		}
 
@@ -159,14 +159,14 @@ class estimateController extends Controller
 	{
 		$est_no=$r->input('est_no');//post input
 		$data = DB::select("SELECT flag FROM `est_mas` WHERE `est_no`=$est_no;");
-		foreach($data as $item){ $flag = $item->flag; }	
-		
+		foreach($data as $item){ $flag = $item->flag; }
+
 		return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
-		
+
 		if($flag=='0')
 		{
 			return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
-		}		
+		}
 		if($flag=='1')
 		{
 			return view ('billPrint03_asEst',['est_no'=>$est_no]);
@@ -179,7 +179,7 @@ class estimateController extends Controller
 		{
 			return view ('billPrint03_asEst',['est_no'=>$est_no]);
 		}
-		
+
 	}
 
 	public function billMemoOneEst(Request $r)
@@ -198,21 +198,21 @@ class estimateController extends Controller
 		$check = '';
 		// Check
 		$data02 = DB::select("
-		SELECT est_no from est_det where est_no = '$est_no' and type = '1' 
-		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and 
+		SELECT est_no from est_det where est_no = '$est_no' and type = '1'
+		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and
 		user_id = '$user_id'
 		");
 		foreach($data02 as $item02)
-		{ 
-		$check = $item02->est_no;  
+		{
+		$check = $item02->est_no;
 		}
-		if($check == '') 
+		if($check == '')
 			{
-				//insert 
+				//insert
 				DB::insert('INSERT INTO `est_det`(`est_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,
 				`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,'1',$prod_id,$prod_name,$qty,$unit_rate,
-				$amount, $dt, $user_id]);	
-			
+				$amount, $dt, $user_id]);
+
 				// netbill
 				$data = DB::select("
 				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
@@ -221,8 +221,8 @@ class estimateController extends Controller
 				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '2')b;
 				");
 				foreach($data as $item)
-				{ 
-					$parts = $item->parts;  
+				{
+					$parts = $item->parts;
 					$service = $item->service;
 					$net_bill = $item->net_bill;
 					$total_bill = number_format((float)$item->total, 2, '.', '');
@@ -240,16 +240,16 @@ class estimateController extends Controller
 					{
 						$total_bill = $net_bill;
 					}
-				}		
-				
+				}
+
 				//update netbill
 				DB::table('est_mas')->where('est_no', $est_no)
 				->update(['net_bill' => $net_bill,'parts' => $parts,'service' => $service,
 				'total' => round($total_bill,2), 'user_id' => session('user_id')]);
 			}
-			return back();		
+			return back();
 	}
-	
+
 	public function billMemoTwoEst(Request $r)
 	{
 		$product=$r->input('prod');//post input
@@ -266,22 +266,22 @@ class estimateController extends Controller
 		$check = '';
 		// Check
 		$data02 = DB::select("
-		SELECT est_no from est_det where est_no = '$est_no' and type = '2' 
-		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and 
+		SELECT est_no from est_det where est_no = '$est_no' and type = '2'
+		and prod_id = '$prod_id' and qty = '$qty' and unit_rate = '$unit_rate' and
 		user_id = '$user_id'
 		");
 		foreach($data02 as $item02)
-		{ 
-		$check = $item02->est_no;  
+		{
+		$check = $item02->est_no;
 		}
-		if($check == '') 
+		if($check == '')
 			{
 				//insert
 				DB::insert('INSERT INTO `est_det`(`est_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,
 				`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no,'2',$prod_id,$prod_name,$qty,$unit_rate,
-				$amount, $dt, $user_id]);	
+				$amount, $dt, $user_id]);
 				//net_bill
-			
+
 				$data = DB::select("
 				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 				from
@@ -289,10 +289,10 @@ class estimateController extends Controller
 				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
 				");
 				foreach($data as $item)
-				{ 
-					$parts = $item->parts;  
+				{
+					$parts = $item->parts;
 					$service = $item->service;
-					$net_bill = $item->net_bill;  
+					$net_bill = $item->net_bill;
 					$total_bill = number_format((float)$item->total, 2, '.', '');
 
 					$data01 = DB::select("
@@ -309,14 +309,14 @@ class estimateController extends Controller
 						$total_bill = $net_bill;
 					}
 				}
-				
+
 				//update net_bill
 				DB::table('est_mas')->where('est_no', $est_no)
-				->update(['net_bill' => $net_bill,'parts' => $parts, 'service' => $service, 
+				->update(['net_bill' => $net_bill,'parts' => $parts, 'service' => $service,
 				'total' => round($total_bill,2), 'user_id' => session('user_id')]);
 			}
-			return back();		
-	}	
+			return back();
+	}
 
 	public function billMemoEditEst(Request $r)
 	{
@@ -325,7 +325,7 @@ class estimateController extends Controller
 		return view('billMemoEditEst', [
 			'id' => $id,
 			'est_no' => $est_no
-			]);	
+			]);
 	}
 	public function billMemoEditOneEst(Request $r)
 	{
@@ -338,7 +338,7 @@ class estimateController extends Controller
 		$result = DB::table('est_det')
 		->where('id', $id)
 		->update(['qty' => $qty,'unit_rate' => $unit_rate,'amount' => $amount]);
-		
+
 		$data = DB::select("
 		SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 		from
@@ -348,10 +348,10 @@ class estimateController extends Controller
 
 		//echo "<pre>";print_r($data );exit;
 
-		foreach($data as $item){ 
-		$parts = $item->parts;  
+		foreach($data as $item){
+		$parts = $item->parts;
 		$service = $item->service;
-		$net_bill = $item->net_bill;  
+		$net_bill = $item->net_bill;
 		$total_bill =  number_format((float)$item->total, 2, '.', '');
 		}
 
@@ -373,7 +373,7 @@ class estimateController extends Controller
 		$result = DB::table('est_mas')
 		->where('est_no', $est_no)
 		->update(['parts' => $parts,'service' => $service,'net_bill' => $net_bill,'total' => $total_bill]);
-		return redirect('/billMemoEst?est_no='.$est_no.'');	
+		return redirect('/billMemoEst?est_no='.$est_no.'');
 
 	}
 
@@ -409,24 +409,71 @@ class estimateController extends Controller
 		if($type=='1')
 		{
 		DB::table('est_mas')->where('est_no', $est_no)
-		->update(['net_bill' => $net_bill,'parts' => $parts, 'total' => $total_bill, 
+		->update(['net_bill' => $net_bill,'parts' => $parts, 'total' => $total_bill,
 		'user_id' => session('user_id')]);
 		}
 		if($type=='2')
 		{
 		DB::table('est_mas')->where('est_no', $est_no)
-		->update(['net_bill' => $net_bill,'service' => $service, 'total' => $total_bill, 
+		->update(['net_bill' => $net_bill,'service' => $service, 'total' => $total_bill,
 		'user_id' => session('user_id')]);
-		}		
+		}
 		//del
 		$result = DB::table('est_det')->delete($id);
-		return back();	
-		
+		return back();
+
 	}
+
+    public function cloneEst(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$today = date("Y-m-d");
+		$est_dt = date("Y-m-d");
+		$user_id = session('user_id');
+
+		$result = DB::select("SELECT * FROM `est_mas` WHERE est_no= '$est_no'");
+		foreach($result as $item)
+		{
+			$customer_id = $item->customer_id;
+			$customer_nm = $item->customer_nm;
+			$engineer = $item->engineer;
+			$technician = $item->technician;
+			$km = $item->km;
+			$days = $item->days;
+			$parts = $item->parts;
+			$service = $item->service;
+			$net_bill = $item->net_bill;
+			$total = $item->total;
+		}
+
+		DB::insert('INSERT INTO `est_mas`( `customer_id`, `customer_nm`, `engineer`, `technician`, `days`,`km`,
+		`est_dt`, `user_id`,`parts`,`service`,`total`,`net_bill`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_id,$customer_nm,$engineer,$technician,$days,$km, $est_dt,
+		$user_id,$parts,$service, $total, $net_bill]);
+
+        $est_no_clone = DB::getPdo()->lastInsertId();
+		$est_no_clone = str_pad($est_no_clone, 5, '0', STR_PAD_LEFT);
+
+		$result = DB::select("SELECT * FROM `est_det` WHERE est_no= '$est_no'");
+		foreach($result as $item)
+		{
+			$type = $item->type;
+			$prod_id = $item->prod_id;
+			$prod_name = $item->prod_name;
+			$qty = $item->qty;
+			$unit_rate = $item->unit_rate;
+			$amount = $item->amount;
+
+			DB::insert('INSERT INTO `est_det`(`est_no`, `type`, `prod_id`, `prod_name`, `qty`, `unit_rate`,`amount`, `dt`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?)',[$est_no_clone,$type,$prod_id,$prod_name,$qty,$unit_rate,$amount, $today, $user_id]);
+		}
+
+
+
+		return redirect('/billMemoEst?est_no='.$est_no_clone.'');
+    }
 
 	public function approvalEst()
 	{
-		return view ('approvalEst');	
+		return view ('approvalEst');
 	}
 	public function approval01Est(Request $r)
 	{
@@ -436,11 +483,11 @@ class estimateController extends Controller
 		$bill_no = date("ymdHis");
 		$today = date("Y-m-d");
 		$job_dt = date("Y-m-d");
-	
+
 		$user_id = session('user_id');
 		$result = DB::select("SELECT * FROM `est_mas` WHERE est_no= '$est_no' and `flag` = '0'");
 		foreach($result as $item)
-		{	
+		{
 			$est_no = $item->est_no;
 			$customer_id = $item->customer_id;
 			$customer_nm = $item->customer_nm;
@@ -462,13 +509,13 @@ class estimateController extends Controller
 			$total = $net_bill;
 		}
 
-		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`, `est_no`, 
+		DB::insert('INSERT INTO `bill_mas`(`bill_no`, `customer_id`, `customer_nm`, `engineer`, `technician`, `job_no`,`km`, `work`, `est_no`,
 		`job_dt`, `user_id`,`parts`,`service`,`total`,`net_bill`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill_no,$customer_id,$customer_nm,$engineer,$technician,$job_no,$km, $work, $est_no, $job_dt,
 		$user_id,$parts,$service, $total, $net_bill]);
 
 		$result = DB::select("SELECT * FROM `est_det` WHERE est_no= '$est_no'");
 		foreach($result as $item)
-		{	
+		{
 			$type = $item->type;
 			$prod_id = $item->prod_id;
 			$prod_name = $item->prod_name;
@@ -481,9 +528,9 @@ class estimateController extends Controller
 
 
 		$result = DB::table('est_mas')->where('est_no', $est_no)->update(['flag' => '1', 'bill_dt' => $today]);
-		
-		
-		return back();		
+
+
+		return back();
 	}
 
 	public function changeCustomerEst(Request $r)
@@ -521,11 +568,11 @@ class estimateController extends Controller
 					foreach($result as $item1)
 					{$customer_id = $item1->customer_id;$customer_nm = $item1->customer_nm;}
 		}
-		
+
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['customer_id' => $customer_id,'customer_nm' => $customer_nm]);
 		return redirect('/billMemoEst?est_no='.$est_no.'');
-		
+
 	}
 	public function changeCustomerEst02(Request $r)
 	{
@@ -533,7 +580,7 @@ class estimateController extends Controller
 		$change_dt=$r->input('change_dt');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['est_dt' => $change_dt]);
-		
+
 		//$r->session()->put('bill_no',$bill_no);
 		//return redirect('billMemo');
 		return redirect('/billMemoEst?est_no='.$est_no.'');
@@ -544,7 +591,7 @@ class estimateController extends Controller
 		$days=$r->input('days');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['days' => $days]);
-		
+
 		//$r->session()->put('bill_no',$bill_no);
 		//return redirect('billMemo');
 		return redirect('/billMemoEst?est_no='.$est_no.'');
@@ -555,31 +602,31 @@ class estimateController extends Controller
 		$km=$r->input('km');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['km' => $km]);
-		
+
 		//$r->session()->put('bill_no',$bill_no);
 		//return redirect('billMemo');
 		return redirect('/billMemoEst?est_no='.$est_no.'');
-		
-	}	
+
+	}
 	public function changeCustomerEst05(Request $r)
 	{
 		$est_no=$r->input('est_no');//post input
 		$engineer=$r->input('engineer');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['engineer' => $engineer]);
-		
+
 		return redirect('/billMemoEst?est_no='.$est_no.'');
-		
-	}	
+
+	}
 	public function changeCustomerEst06(Request $r)
 	{
 		$est_no=$r->input('est_no');//post input
 		$technician=$r->input('technician');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['technician' => $technician]);
-		
+
 		return redirect('/billMemoEst?est_no='.$est_no.'');
-		
+
 	}
 
 }

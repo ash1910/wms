@@ -39,7 +39,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('jobModifyDel','App\Http\Controllers\jobController@jobModifyDel');
 	Route::get('jobModifyOneBack','App\Http\Controllers\jobController@jobModifyOneBack');
 	Route::get('jobCancel','App\Http\Controllers\jobController@jobCancel');
-	
+
 	Route::get('jobSample','App\Http\Controllers\jobController@jobSample');
 	Route::post('jobSampleOne','App\Http\Controllers\jobController@jobSampleOne');
 	// Stock
@@ -84,7 +84,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('ModifyBillDt','App\Http\Controllers\billController@ModifyBillDt');
 	Route::post('ModifyBillDt01','App\Http\Controllers\billController@ModifyBillDt01');
 
-	
+
 
 	// Estimate
 	Route::get('est','App\Http\Controllers\estimateController@est');
@@ -108,7 +108,8 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('changeCustomerEst05','App\Http\Controllers\estimateController@changeCustomerEst05');
 	Route::post('changeCustomerEst06','App\Http\Controllers\estimateController@changeCustomerEst06');
 	Route::post('changeCustomerEst07','App\Http\Controllers\estimateController@changeCustomerEst07');
-	
+    Route::post('cloneEst','App\Http\Controllers\estimateController@cloneEst');
+
 	// Bill report
 	Route::get('reports','App\Http\Controllers\billController@reports');
 	Route::get('form01','App\Http\Controllers\billController@form01');
@@ -126,7 +127,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 
 	Route::get('allDueReport','App\Http\Controllers\billController@allDueReport');
 	Route::post('allDueReport01','App\Http\Controllers\billController@allDueReport01');
-	
+
 	Route::get('report01','App\Http\Controllers\billController@report01');
 	Route::get('report02','App\Http\Controllers\billController@report02');
 	Route::get('report03','App\Http\Controllers\billController@report03');
@@ -172,13 +173,13 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('form07','App\Http\Controllers\cashController@form07');
 	Route::post('multiPay','App\Http\Controllers\cashController@multiPay');
 	Route::post('payAdvance','App\Http\Controllers\cashController@payAdvance')->name('payAdvance');
-	
+
 	Route::post('adjustment','App\Http\Controllers\cashController@adjustment');
 	Route::post('adjustment01','App\Http\Controllers\cashController@adjustment01');
 	Route::post('adjustment02','App\Http\Controllers\cashController@adjustment02');
 	Route::post('adjustment03','App\Http\Controllers\cashController@adjustment03');
 	Route::view('wip01','wip01');
-	
+
 	// setup
 	Route::get('service','App\Http\Controllers\setupController@service');
 	Route::get('serviceAdd','App\Http\Controllers\setupController@serviceAdd');
@@ -233,7 +234,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('payAdvance05','App\Http\Controllers\approvalController@payAdvance05');
 	Route::post('payAdvance06','App\Http\Controllers\approvalController@payAdvance06');
 	Route::post('payAdvance07','App\Http\Controllers\approvalController@payAdvance07');
-	
+
 
 	// DAY END
 	Route::get('dayEnd','App\Http\Controllers\dayEndController@dayEnd');
@@ -341,7 +342,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('creditor','App\Http\Controllers\cashOutController@creditor');
 	Route::post('creditor01','App\Http\Controllers\cashOutController@creditor01');
 	Route::get('creditor02','App\Http\Controllers\cashOutController@creditor02');
-	
+
 
 	//Product ledger
 	Route::get('ledger','App\Http\Controllers\bomController@ledger');
@@ -380,8 +381,8 @@ Route::group(['middleware'=>['UserAuth']],function()
     Route::get('masTogroup02/{id}', 'App\Http\Controllers\ledgerController@masTogroup02');
     Route::get('masTogroup03/{id}', 'App\Http\Controllers\ledgerController@masTogroup03');
     Route::get('masTogroup04/{id}', 'App\Http\Controllers\ledgerController@masTogroup04');
-	
-	
+
+
 	Route::get('led_tree','App\Http\Controllers\ledgerController@led_tree');
 
 
@@ -408,13 +409,13 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::view('paymentReport','paymentReport');
 	Route::get('paymentReport01','App\Http\Controllers\ledgerController@paymentReport01');
 	Route::get('paymentReport02','App\Http\Controllers\ledgerController@paymentReport02');
-	
-	
+
+
 	// DAY END
 	Route::get('dayEnd','App\Http\Controllers\dayEndController@dayEnd');
 	Route::post('dayEnd01','App\Http\Controllers\dayEndController@dayEnd01');
 	Route::post('dayEnd02','App\Http\Controllers\dayEndController@dayEnd02');
-	
+
 
 });
 

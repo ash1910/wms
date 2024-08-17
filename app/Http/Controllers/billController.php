@@ -534,6 +534,13 @@ if($check == '')
 		
 	}
 
+	public function billPDF_as(Request $r)
+	{
+		$bill_no=$r->input('bill_no');//post input
+
+		return view ('billPDF_as',['bill_no'=>$bill_no]);
+	}
+
 	public function billPrintView(Request $r)
 	{
 		$bill_no=$r->input('bill_no');//post input

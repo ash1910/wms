@@ -66,6 +66,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('billMemoTwo','App\Http\Controllers\billController@billMemoTwo');
 	Route::post('billPrint','App\Http\Controllers\billController@billPrint');
 	Route::post('billPrint_as','App\Http\Controllers\billController@billPrint_as');
+	Route::post('billPDF_as','App\Http\Controllers\billController@billPDF_as');
 	Route::post('billPrintView','App\Http\Controllers\billController@billPrintView');
 	Route::post('billPrintRef','App\Http\Controllers\billController@billPrintRef');
 	Route::post('billModi','App\Http\Controllers\billController@billModi');

@@ -25,9 +25,9 @@
   <link href="assets/css/header-colors.css" rel="stylesheet" />
   <title>Workshop Management System</title>
   <style>
-@media print 
+@media print
 {
-	.watermark 
+	.watermark
 	{
 	position: fixed !important;
 	top: 300px;
@@ -45,33 +45,33 @@
 }
 
 
-@media print 
+@media print
 {
 
-  div.divHeader 
+  div.divHeader
   {
     position: fixed;
     top: 0;
   }
-  div.divMid 
+  div.divMid
   {
   position: relative;
-  
+
   }
-  
- 
+
+
 }
 
 
-@page 
+@page
 {
   size: A4;
   margin: 30px;
   margin-bottom: 10px;
-  
-}   
- 
- 
+
+}
+
+
 table td {
 word-wrap:break-word;
 white-space: normal;
@@ -79,8 +79,8 @@ white-space: normal;
 address.add-info td {
     font-size: 10px;
 }
- 
-</style> 
+
+</style>
 </head>
 <script type="text/javascript">
 window.print();
@@ -115,14 +115,14 @@ function AmountInWords(float $amount)
       if ($amount) {
        $add_plural = (($counter = count($string)) && $amount > 9) ? ' ' : null;
        $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
-       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.' 
-       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. ' 
+       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.'
+       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. '
        '.$here_digits[$counter].$add_plural.' '.$amt_hundred;
         }
    else $string[] = null;
    }
    $implode_to_Rupees = implode('', array_reverse($string));
-   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . " 
+   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . "
    " . $change_words[$amount_after_decimal % 10]) . ' Paise' : '';
    return ($implode_to_Rupees ? $implode_to_Rupees . 'Taka Only. ' : '') . $get_paise;
 }
@@ -157,11 +157,11 @@ function AmountInWords(float $amount)
 <br><br>
 
 <?php
-$today=date("d-M-Y");		
+$today=date("d-M-Y");
 
 $result = DB::select("
-SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, b.contact_person, 
-b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, est_no, year, car_colour  
+SELECT `bill_no`, b.customer_id, b.customer_nm, b.car_user, b.customer_eng, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, b.contact_person,
+b.customer_chas, `engineer`, `technician`, `job_no`,`job_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, est_no, year, car_colour
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill_no
 AND a.customer_id = b.customer_id;
@@ -193,7 +193,7 @@ AND a.customer_id = b.customer_id;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
 			}
-			
+
 $result01 = DB::select("
 SELECT `full_name` FROM `user` WHERE user_id = $user_id
 ");
@@ -211,14 +211,14 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 if (strlen(strstr($agent, 'Chrome')) > 0) {
     $browser = 'Chrome';
 }
-		
+
 ?>
 
 <p style="text-align:center; margin: 0;"> @if($est_no)<b style="float: left;">EST:{{$est_no}}</b>@else &emsp;&emsp;&emsp; @endif&emsp;&emsp;<b>Bill:{{$bill_no}}</b><b style="float: right;">BIN: 004882855-0203</b></p>
 <center></center>
 
                <div class="row row-cols-1 row-cols-lg-3">
-			   
+
                  <div style="width: 300px;padding-right: 2px;">
                     <!--small>from</small-->
                     <address class="m-t-5 m-b-5 add-info" style="border-style: solid;border-width: thin;height: 150px;">
@@ -227,13 +227,13 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Name </strong></td><td style="font-style: MS Gothic;">: {{$customer_nm}}</td></tr>
 					   @if($car_user)<tr><td><strong class="text-inverse" style="font-family: Arial;">User</strong></td><td style="font-style: MS Gothic;">: {{$car_user}}</td></tr> @endif
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Address </strong></td><td style="font-style: MS Gothic;">:{{$customer_address}}</td></tr>
-                    <?php if($customer_mobile!=""){?>   
+                    <?php if($customer_mobile!=""){?>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Contact </strong></td><td style="font-style: MS Gothic;">: {{$customer_mobile}}</td></tr>
-					<?php } ?> 
-                   <?php if($email!=""){?>   
+					<?php } ?>
+                   <?php if($email!=""){?>
 					   <tr><td><strong class="text-inverse" style="font-family: Arial;">Email </strong></td><td style="font-style: MS Gothic;">: {{$email}}</td></tr>
-					<?php } ?>                
-					<?php if($driver_mobile!=""){?>   
+					<?php } ?>
+					<?php if($driver_mobile!=""){?>
 					   <tr><td><strong class="text-inverse" style="font-family: Arial;">Attend </strong></td><td style="font-style: MS Gothic;">: {{$driver_mobile}}</td></tr>
 					<?php } ?>
 					@if($contact_person)<tr><td><strong class="text-inverse" style="font-family: Arial;">C/P</strong></td><td style="font-style: MS Gothic;">: {{$contact_person}}</td></tr> @endif
@@ -264,7 +264,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Job Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($job_dt))}}</td></tr>
 					</table>
                    </address>
-                </div>                
+                </div>
                </div>
 </div>
 
@@ -272,39 +272,39 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 
 <div class="col-12 col-lg-8 d-flex">
 	<div class="table-responsive" style="width:707px">
-			
+
 <?php
 	$stock01 = DB::select("
-	SELECT sum(`received`) received, sum(`bonus`) bonus, sum(`vat_wav`) vat_wav, 
-	sum(`ait`) ait, sum(`due`)due, sum(charge) charge,sum(vat_pro) vat_pro, 
+	SELECT sum(`received`) received, sum(`bonus`) bonus, sum(`vat_wav`) vat_wav,
+	sum(`ait`) ait, sum(`due`)due, sum(charge) charge,sum(vat_pro) vat_pro,
 	sum(sales_return) sales_return,sum(advance_refund) advance_refund,sum(complementary_work) complementary_work,
 	sum(rework) rework, sum(damage_work) damage_work, sum(supplier_adj) supplier_adj
 	FROM `pay` WHERE `bill`=$bill_no;");
 	foreach($stock01 as $item01)
-		{ 					
-				$received = $item01->received;						
-				$discount = $item01->bonus;						
-				$vat_wav = $item01->vat_wav;						
-				$ait = $item01->ait;						
-				$vat_pro = $item01->vat_pro;						
-				$due = $item01->due;						
-				$charge = $item01->charge;	
+		{
+				$received = $item01->received;
+				$discount = $item01->bonus;
+				$vat_wav = $item01->vat_wav;
+				$ait = $item01->ait;
+				$vat_pro = $item01->vat_pro;
+				$due = $item01->due;
+				$charge = $item01->charge;
 
-				$sales_return = $item01->sales_return;	
-				$advance_refund = $item01->advance_refund;	
-				$complementary_work = $item01->complementary_work;	
-				$rework = $item01->rework;	
-				$damage_work = $item01->damage_work;	
-				$supplier_adj = $item01->supplier_adj;	
-		} 
-?>					
-				
-				
-				
+				$sales_return = $item01->sales_return;
+				$advance_refund = $item01->advance_refund;
+				$complementary_work = $item01->complementary_work;
+				$rework = $item01->rework;
+				$damage_work = $item01->damage_work;
+				$supplier_adj = $item01->supplier_adj;
+		}
+?>
+
+
+
 	<table  style="font-size: small;"><div class="watermark"><center><b>
 			<?php if($due>1){	?>
 				DUE
-				
+
 				<?php  $pay_type='';
 				$stock02 = DB::select("
 				SELECT `job_no` pay_type FROM `cheque_pending` WHERE `job_no`='$job_no' AND `flag`='0'
@@ -312,14 +312,14 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				foreach($stock02 as $item02){$pay_type = $item02->pay_type;}
 				if($pay_type!=''){echo '<br>Cheque In Hand';}
 				?>
-				
+
 			<?php }?>
 			<?php if($due<1){	?>
 				Paid
 			<?php }?>
 
 				</b></center></div>
-					
+
 						<tr style="background: darkgrey;">
 							<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 							<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
@@ -327,11 +327,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 							<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 							<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
 						</tr>
-					
+
 					<tbody>
-					
+
 <tr><td colspan="5" style="border: 1px solid black;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parts</strong></td></tr>
-					
+
 <?php
 	$stock = DB::select("SELECT count(*) count FROM `bill_det` WHERE `bill_no`='$bill_no';");
     foreach($stock as $item)
@@ -347,7 +347,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 	FROM `bill_det` WHERE type = '1' and `bill_no`='$bill_no';");
 	$row='0'; $sl="1"; $subtotal="0";
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;border: 1px solid black;">{{$sl}}</th>
 						<td style="border: 1px solid black;">{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -355,7 +355,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 						<td style="text-align: center;border: 1px solid black;">{{number_format(($item->unit_rate), 2, '.', ',')}}</td>
 						<td style="text-align: right;border: 1px solid black;">{{number_format(($item->amount), 2, '.', ',')}}</td>
 					</tr>
-			<?php   
+			<?php
 			if($sl=='24')
 			{
 					echo '<tr><td colspan="5" style="text-align: center;">Page 1 of '.$page_no.' </td></tr>';
@@ -366,19 +366,19 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 470px;"></td></tr>';
-				}			
+				}
 				?>
-						
+
 							<tr style="background: darkgrey;">
 								<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 								<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
 								<th scope="col" style="width: 2%;border: 1px solid black;">Quantity</th>
 								<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 								<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
-							</tr>					
-					
+							</tr>
+
 	<?php   }
 			if($sl=='50')
 			{
@@ -390,27 +390,27 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 470px;"></td></tr>';
-				}			
+				}
 				?>
-						
+
 							<tr style="background: darkgrey;">
 								<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 								<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
 								<th scope="col" style="width: 2%;border: 1px solid black;">Quantity</th>
 								<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 								<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
-							</tr>					
-					
-	<?php   }	
-	
-	
+							</tr>
+
+	<?php   }
+
+
 		$row = $sl;
 		$sl = $sl+1;
 		$subtotal=$subtotal+$item->amount;
-		}  
-				
+		}
+
 ?>
 <tr><td colspan="2" style="border: 1px solid black;"></td>
 <td colspan="2" style="text-align: center;"><strong>Sub-Total</strong></td><td style="border: 1px solid black;text-align: right;"><strong> {{number_format(($subtotal), 2, '.', ',')}}</strong></td></tr>
@@ -422,7 +422,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 	FROM `bill_det` WHERE type = '2' and `bill_no`=$bill_no;");
 	$row1=$row+1; $sl="1"; $subtotal01="0";
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;border: 1px solid black;">{{$sl}}</th>
 						<td style="border: 1px solid black;">{{$item->prod_id}} - {{$item->prod_name}}</td>
@@ -430,7 +430,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 						<td style="text-align: center;border: 1px solid black;">{{number_format(($item->unit_rate), 2, '.', ',')}}</td>
 						<td style="text-align: right;border: 1px solid black;">{{number_format(($item->amount), 2, '.', ',')}}</td>
 					</tr>
-		<?php 
+		<?php
 		$row1 = $sl+$row;
 		if($row1=='24')
 		{
@@ -442,11 +442,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 470px;"></td></tr>';
-				}			
+				}
 			?>
-					
+
 						<tr style="background: darkgrey;">
 							<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 							<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
@@ -454,10 +454,10 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 							<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 							<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
 						</tr>
-					
+
 		<?php
 		}
-		
+
 		if($row1=='46')
 		{
 					echo '<tr><td colspan="5" style="text-align: center;">Page 2 of '.$page_no.' </td></tr>';
@@ -468,11 +468,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 470px;"></td></tr>';
-				}			
+				}
 			?>
-					
+
 						<tr style="background: darkgrey;">
 							<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 							<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
@@ -480,9 +480,9 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 							<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 							<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
 						</tr>
-					
+
 		<?php
-		}		
+		}
 		if($row1=='75')
 		{
 					echo '<tr><td colspan="5" style="text-align: center;">Page 3 of '.$page_no.' </td></tr>';
@@ -493,11 +493,11 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 470px;"></td></tr>';
-				}			
+				}
 			?>
-					
+
 						<tr style="background: darkgrey;">
 							<th scope="col" style="width: 3%;border: 1px solid black;">SL No.</th>
 							<th scope="col" style="width: 80%;border: 1px solid black;">Description</th>
@@ -505,22 +505,22 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 							<th scope="col" style="width: 5%;border: 1px solid black;">Unit Rate</th>
 							<th scope="col" style="width: 10%;border: 1px solid black;">Amount(Tk.)</th>
 						</tr>
-					
+
 		<?php
-		}		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		}
+
+
+
+
+
+
+
+
+
 		$sl = $sl+1;
 		$subtotal01=$subtotal01+$item->amount;
-		}  
-		?>			
+		}
+		?>
 
 
 
@@ -533,17 +533,17 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 
 
 
-			
+
 <tr><td colspan="2" style="border: 1px solid black;"></td>
 <td colspan="2" style="border: 1px solid black;text-align: center;"><strong>Sub-Total</strong></td><td style="border: 1px solid black;text-align: right;"><strong> {{number_format(($subtotal01), 2, '.', ',')}}</strong></td></tr>
 
-				
-						<tr><td colspan="2" style="max-width: 200px;font-size: smaller;">IN WORDS: <?php 
+
+						<tr><td colspan="2" style="max-width: 200px;font-size: smaller;">IN WORDS: <?php
 						 $total = $subtotal+$subtotal01;
 						 $vat= $total/10;
-						 
-							
-						 
+
+
+
 						echo AmountInWords($total+$vat-$discount-$vat_wav)?></td>
 							<td colspan="2"><strong>Total TK:</strong></td><td style="text-align: right;"><strong>
 							<?php echo number_format(($total), 2, '.', ','); ?>
@@ -558,10 +558,10 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 						</tr>
 						<tr><td colspan="2" >
 <strong>Now this vehicle is okey & I am satisfy with this service.</strong>
-						    
+
 						</td>
 							<td colspan="2"><strong>Bill Tk.: </strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($total+$vat), 2, '.', ',');
 							?></td>
 							</strong></td>
@@ -570,60 +570,60 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Discount: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($discount+$vat_wav), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
-						
-<?php if($sales_return>0){ ?>						
+						</tr>
+
+<?php if($sales_return>0){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Sale Return: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($sales_return), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
+						</tr>
 <?php } ?>
 
-<?php if($complementary_work>0){ ?>						
+<?php if($complementary_work>0){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Complementary Work: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($complementary_work), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
+						</tr>
 <?php } ?>
-<?php if($rework>0){ ?>						
+<?php if($rework>0){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Rework: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($rework), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
+						</tr>
 <?php } ?>
-<?php if($damage_work>0){ ?>						
+<?php if($damage_work>0){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Damage Work: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($damage_work), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
-<?php } 
+						</tr>
+<?php }
 
     $pay_type_refund='';
 	$stock04 = DB::select("SELECT sum(due) due FROM `pay` WHERE `bill`='$bill_no' and pay_type = 'A/C Refund' AND ref is not null;");
 	foreach($stock04 as $item04)
-		{ 					
-			$pay_type_refund = $item04->due;						
-		}			
+		{
+			$pay_type_refund = $item04->due;
+		}
 
 if($pay_type_refund!='')
 {?>
@@ -631,8 +631,8 @@ if($pay_type_refund!='')
 							<td colspan="2" style="white-space: unset;"><strong>
 
 					 A/C Refund: </strong></td><td style="text-align: right;"><strong>
-							
-							<?php 
+
+							<?php
 							echo number_format(($pay_type_refund), 2, '.', ',');
 							?></td>
 							</strong></td>
@@ -643,113 +643,113 @@ if($pay_type_refund!='')
 
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Net Bill: </strong></td><td style="text-align: right;border-top: 1px solid black;"><strong>
-							<?php 
+							<?php
 							echo number_format(($total+$vat-$discount-$vat_wav+$pay_type_refund), 2, '.', ',');
 							?></td>
 							</strong></td>
 						</tr>
-						
-<?php		$pay_type='';$pay_type_adj='';				
+
+<?php		$pay_type='';$pay_type_adj='';
 			$stock03 = DB::select("SELECT `pay_type` FROM `pay` WHERE `bill`='$bill_no';");
 			foreach($stock03 as $item03)
-				{ 					
-					$pay_type = $item03->pay_type;						
+				{
+					$pay_type = $item03->pay_type;
 					if($pay_type=='Adj-Cust')
 					{$pay_type_adj='2';}
 				}
 				if($pay_type_adj=='2'){
-					
+
 			$stock04 = DB::select("SELECT `pay_type`, due FROM `pay` WHERE `bill`='$bill_no' and pay_type='Adj-Cust'");
 			foreach($stock04 as $item04)
-				{ 					
-					
-					
-					
-?>						
-						
+				{
+
+
+
+?>
+
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Adj with Automobile: </strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($item04->due), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
+						</tr>
 				<?php } } ?>
-						
-						
-						
+
+
+
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Paid Tk.: </strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($received+$charge+$pay_type_refund), 2, '.', ',');
 							?></td>
 							</strong></td>
 						</tr>
-						
-<?php if($supplier_adj>0){ ?>						
+
+<?php if($supplier_adj>0){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>Adj. with Supplier: </strong></td><td style="text-align: right;"><strong>
 							-
-							<?php 
+							<?php
 							echo number_format(($supplier_adj), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
-<?php } ?>						
+						</tr>
+<?php } ?>
 
 <?php if($ait!='0'){ ?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2"><strong>AIT Tk.: </strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($ait), 2, '.', ',');
 							?></td>
 							</strong></td>
 						</tr>
 <?php } ?>
 
-<?php if($vat_pro!='0'){ 
+<?php if($vat_pro!='0'){
 		$checkVat = '';
 		$data01 = DB::select("SELECT `job_no` FROM `vat_pro` WHERE job_no='$job_no' and flag='1'");
-		foreach($data01 as $item05){ $checkVat = $item05->job_no; }		 
+		foreach($data01 as $item05){ $checkVat = $item05->job_no; }
 ?>
 						<tr><td colspan="2" ></td>
-							<td colspan="2"><strong style="font-size: smaller;">VAT 
+							<td colspan="2"><strong style="font-size: smaller;">VAT
 							<?php if($checkVat==''){ echo 'Provision:';}
 							 if($checkVat!=''){ echo 'Collect:';} ?>
 
 							</strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($vat_pro), 2, '.', ',');
 							?></td>
 							</strong></td>
 						</tr>
 <?php } ?>
 
-<?php if($advance_refund<0){ 
+<?php if($advance_refund<0){
 
 			$acrefund = ''; $ac_refund='0';
 			$stock03 = DB::select("SELECT `pay_type` FROM `pay` WHERE `bill`='$bill_no';");
 			foreach($stock03 as $item03)
-				{ 					
-					$acrefund = $item03->pay_type;						
+				{
+					$acrefund = $item03->pay_type;
 					if($acrefund=='A/C Refund')
 					{$ac_refund='1';}
 				}
 
 
-?>						
+?>
 						<tr><td colspan="2" ></td>
 							<td colspan="2" style="white-space: unset;"><strong>
-							<?php 
+							<?php
 					if($ac_refund=='0'){echo 'Cash';}
 					if($ac_refund=='1'){echo 'Ledger';}
 					?> Refund: </strong></td><td style="text-align: right;"><strong>
-							
-							<?php 
+
+							<?php
 							echo number_format(($advance_refund), 2, '.', ',');
 							?></td>
 							</strong></td>
-						</tr>	
+						</tr>
 <?php } ?>
 
 
@@ -762,14 +762,14 @@ if($pay_type_refund!='')
 							Due
 <?php } ?>
 							: </strong></td><td style="text-align: right;"><strong>
-							<?php 
+							<?php
 							echo number_format(($due), 2, '.', ',');
 							?></td>
 							</strong></td>
 						</tr>
 
 
-						
+
 					</tbody>
 				</table>
 
@@ -798,19 +798,19 @@ Approved By <br>
 <br>
 <center>
 <font style="font-size: xx-small;">
-*This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations (TMC) 
+*This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations (TMC)
 </font>
 </center>
-							
+
                           </div>
-                         
+
                     </div>
 				</div>
-				
-				
-				
-				
+
+<script type="text/javascript">
+var fileName = `{{$job_no}},{{$customer_reg}},{{$customer_chas}},{{$customer_vehicle}},{{$customer_nm}}`;
+document.title = fileName;
+</script>
 
 
 
- 

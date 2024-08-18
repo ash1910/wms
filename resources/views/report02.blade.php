@@ -142,11 +142,11 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
 					</form>
 
-					<form  target="_blank" style="display: inline;" action="billPDF_as" method="post">{{ csrf_field() }}
+					<!-- <form  target="_blank" style="display: inline;" action="billPDF_as" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> PDF</button>
-					</form>
+					</form> -->
 
 
 					</li>

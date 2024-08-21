@@ -33,7 +33,7 @@
                 <div class="col-lg-6">
                   <div class="card-body p-4 p-sm-5">                  
 				 <center>
-				 <img src="assets/images/logo-icon.png" style="width: 50%;">
+				 <img src="assets/images/logo-icon4.png" style="width: 50%;">
 				 </center>
                     <form class="form-body" action="check" method="post">
                       {{ csrf_field() }}

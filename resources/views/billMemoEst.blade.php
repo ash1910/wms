@@ -101,6 +101,13 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
 					</form>
 <?php } ?>
 
+
+                    <form  target="_blank" style="display: inline;" action="billPrint_asEst?detail=1" method="post">{{ csrf_field() }}
+					<input type="hidden" name="est_no" value="{{$est_no}}">
+					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+					<i class="fadeIn animated bx bx-printer"></i> Print in Detail</button>
+					</form>
+
 					  </h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">

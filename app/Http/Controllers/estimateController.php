@@ -158,27 +158,14 @@ class estimateController extends Controller
 	public function billPrint_asEst(Request $r)
 	{
 		$est_no=$r->input('est_no');//post input
-		$data = DB::select("SELECT flag FROM `est_mas` WHERE `est_no`=$est_no;");
-		foreach($data as $item){ $flag = $item->flag; }
+        $detail=$r->input('detail');//post input
 
-		return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
+		if($detail== 1)
+		{
+			return view ('billPrint_asEst',['est_no'=>$est_no]);
+		}
 
-		if($flag=='0')
-		{
-			return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
-		}
-		if($flag=='1')
-		{
-			return view ('billPrint03_asEst',['est_no'=>$est_no]);
-		}
-		if($flag=='2')
-		{
-			return view ('billPrint03_asEst',['est_no'=>$est_no]);
-		}
-		if($flag=='3')
-		{
-			return view ('billPrint03_asEst',['est_no'=>$est_no]);
-		}
+        return view ('billPrintDraft_asEst',['est_no'=>$est_no]);
 
 	}
 

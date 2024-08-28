@@ -9,7 +9,7 @@
 
 
 
-<!---Alert message----> 
+<!---Alert message---->
 @if (Session::get('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
@@ -19,13 +19,13 @@ Invalid Customer, Please Signup the Entry Form
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
 </script>
 @endif
-<!---Alert message----> 
+<!---Alert message---->
 
 		<div class="col-xl-6 mx-auto">
 			<div class="card">
@@ -34,12 +34,12 @@ $(document).ready(function () {
                 <h6 class="mb-0 text-uppercase">New Parts Entry Form</h6>
                 <hr>
                 <form class="row g-3" action="partsAddOne" method="post">{{ csrf_field() }}
-                 				
+
                   <div class="col-12">
                     <label class="form-label">Parts Name</label>
                     <input id="tags01" placeholder="e.g: Oil Filter" type="text" class="form-control" name="parts_name" required>
                   </div>
-                  
+
                   <div class="col-12">
                     <label class="form-label">Category</label>
                     <input id="tags02" placeholder="e.g: lubricant" type="text" class="form-control" name="cat" >
@@ -50,7 +50,7 @@ $(document).ready(function () {
                   </div>
                   <div class="col-12">
                     <label class="form-label">Parts Type</label>
-                    <select class="form-control" name="section" >
+                    <select class="form-control" name="section" required>
                       <option value="">Select</option>
                       <option value="General Repair" >General Repair</option>
                       <option value="A.C & Electric">A.C & Electric</option>
@@ -59,7 +59,7 @@ $(document).ready(function () {
                       <option value="CNG & LPG">CNG & LPG</option>
                     </select>
                   </div>
-				  
+
                   <div class="col-12">
                     <div class="form-check d-flex justify-content-center gap-2">
                       <input placeholder="Example: Nishan" class="form-check-input" type="checkbox" id="gridCheck1" required>
@@ -81,8 +81,8 @@ $(document).ready(function () {
 
 
 
-  
-</main>  
+
+</main>
 @endsection
 
 
@@ -96,15 +96,15 @@ $(document).ready(function () {
   <script src="assets/js/jquery-3.6.0.js"></script>
   <script src="assets/js/jquery-ui.js"></script>
 
-  
-  
-  
+
+
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($parts_info as $p) 
+foreach ($parts_info as $p)
 {
 echo '"'.$p->parts_name.'",';
 }
@@ -115,13 +115,13 @@ echo '"'.$p->parts_name.'",';
     });
   } );
   </script>
- 
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($company as $p) 
+foreach ($company as $p)
 {
 echo '"'.$p->cat.'",';
 }
@@ -132,13 +132,13 @@ echo '"'.$p->cat.'",';
     });
   } );
   </script>
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($sister_companies as $p) 
+foreach ($sister_companies as $p)
 {
 echo '"'.$p->sub_cat.'",';
 }
@@ -148,6 +148,6 @@ echo '"'.$p->sub_cat.'",';
       source: availableTags
     });
   } );
-  </script> 
- 
+  </script>
+
  @endsection

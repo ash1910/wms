@@ -16,7 +16,7 @@ $section = $item->section ;}
                 <h6 class="mb-0 text-uppercase">Service Modification</h6>
                 <hr>
                 <form class="row g-3" action="serviceEditOne" method="post">{{ csrf_field() }}
-                 				
+
                   <div class="col-12">
                     <label class="form-label">Service Name</label>
                     <input value="{{$service_id}} - {{$service_name}}" disabled type="text" class="form-control" >
@@ -25,7 +25,7 @@ $section = $item->section ;}
 
                   <div class="col-12">
                     <label class="form-label">Service Type</label>
-                    <select class="form-control" name="section" >
+                    <select class="form-control" name="section" required>
                       <option value="">Select</option>
                       <option value="General Repair" @if($section == "General Repair")selected @endif>General Repair</option>
                       <option value="A.C & Electric" @if($section == "A.C & Electric")selected @endif>A.C & Electric</option>
@@ -35,7 +35,7 @@ $section = $item->section ;}
 
                     </select>
                   </div>
-				  
+
 
                   <div class="col-12">
                     <div class="d-grid">
@@ -50,8 +50,8 @@ $section = $item->section ;}
 
 
 
-  
-</main>  
+
+</main>
 @endsection
 
 

@@ -9,7 +9,7 @@
 
 
 
-<!---Alert message----> 
+<!---Alert message---->
 @if (Session::get('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
 <div class="alert alert-danger">
@@ -19,13 +19,13 @@ Invalid Customer, Please Signup the Entry Form
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
 </script>
 @endif
-<!---Alert message----> 
+<!---Alert message---->
 
 		<div class="col-xl-6 mx-auto">
 			<div class="card">
@@ -34,14 +34,14 @@ $(document).ready(function () {
                 <h6 class="mb-0 text-uppercase">New Service Entry Form</h6>
                 <hr>
                 <form class="row g-3" action="serviceAddOne" method="post">{{ csrf_field() }}
-                 				
+
                   <div class="col-12">
                     <label class="form-label">Service Name</label>
                     <input id="tags01" placeholder="e.g: Brake System Service" type="text" class="form-control" name="service_name" required>
                   </div>
                   <div class="col-12">
                     <label class="form-label">Service Type</label>
-                    <select class="form-control" name="section" >
+                    <select class="form-control" name="section" required>
                       <option value="">Select</option>
                       <option value="General Repair" >General Repair</option>
                       <option value="A.C & Electric">A.C & Electric</option>
@@ -50,8 +50,8 @@ $(document).ready(function () {
                       <option value="CNG & LPG">CNG & LPG</option>
                     </select>
                   </div>
-                  
-				  
+
+
                   <div class="col-12">
                     <div class="form-check d-flex justify-content-center gap-2">
                       <input placeholder="Example: Nishan" class="form-check-input" type="checkbox" id="gridCheck1" required>
@@ -73,8 +73,8 @@ $(document).ready(function () {
 
 
 
-  
-</main>  
+
+</main>
 @endsection
 
 
@@ -88,15 +88,15 @@ $(document).ready(function () {
   <script src="assets/js/jquery-3.6.0.js"></script>
   <script src="assets/js/jquery-ui.js"></script>
 
-  
-  
-  
+
+
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($service_info as $p) 
+foreach ($service_info as $p)
 {
 echo '"'.$p->service_name.'",';
 }
@@ -107,5 +107,5 @@ echo '"'.$p->service_name.'",';
     });
   } );
   </script>
-  
+
  @endsection

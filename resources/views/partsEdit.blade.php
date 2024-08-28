@@ -16,13 +16,13 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
                 <h6 class="mb-0 text-uppercase">Parts Modification</h6>
                 <hr>
                 <form class="row g-3" action="partsEditOne" method="post">{{ csrf_field() }}
-                 				
+
                   <div class="col-12">
                     <label class="form-label">Parts Name</label>
                     <input value="{{$parts_id}} - {{$parts_name}}" disabled type="text" class="form-control" >
 					<input name="id" value="{{$parts_id}}" type="hidden">
                   </div>
-                  
+
                   <div class="col-12">
                     <label class="form-label">Category</label>
                     <input value="{{$cat}}" id="tags02" placeholder="e.g: lubricant" type="text" class="form-control" name="cat" >
@@ -34,7 +34,7 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
 
                   <div class="col-12">
                     <label class="form-label">Parts Type</label>
-                    <select class="form-control" name="section" >
+                    <select class="form-control" name="section" required>
                       <option value="">Select</option>
                       <option value="General Repair" @if($section == "General Repair")selected @endif>General Repair</option>
                       <option value="A.C & Electric" @if($section == "A.C & Electric")selected @endif>A.C & Electric</option>
@@ -44,7 +44,7 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
 
                     </select>
                   </div>
-				  
+
 
                   <div class="col-12">
                     <div class="d-grid">
@@ -59,8 +59,8 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
 
 
 
-  
-</main>  
+
+</main>
 @endsection
 
 
@@ -77,9 +77,9 @@ $cat = $item->cat ;$sub_cat = $item->sub_cat ;$section = $item->section ;}
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($company as $p) 
+foreach ($company as $p)
 {
 echo '"'.$p->cat.'",';
 }
@@ -90,13 +90,13 @@ echo '"'.$p->cat.'",';
     });
   } );
   </script>
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($sister_companies as $p) 
+foreach ($sister_companies as $p)
 {
 echo '"'.$p->sub_cat.'",';
 }
@@ -106,6 +106,6 @@ echo '"'.$p->sub_cat.'",';
       source: availableTags
     });
   } );
-  </script> 
- 
+  </script>
+
  @endsection

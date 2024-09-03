@@ -4,8 +4,8 @@
 @section("content")
 
 <?php
-$data = DB::select("SELECT `prod_id`,`prod_name`,`qty`,`note` FROM `issue` WHERE `id` = '$id';");
-foreach($data as $item){ $prod_id = $item->prod_id ;$prod_name = $item->prod_name;
+$data = DB::select("SELECT `prod_id`,`prod_name`,`qty`,`note`,`avg_price` FROM `issue` WHERE `id` = '$id';");
+foreach($data as $item){ $prod_id = $item->prod_id ;$prod_name = $item->prod_name; $avg_price = $item->avg_price;
 $qty = $item->qty;$note = $item->note;}
 ?>
 
@@ -24,22 +24,23 @@ $qty = $item->qty;$note = $item->note;}
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
               <div class="card">
-                
+
                 <div class="card-body">
                    <div class="row">
                      <div class="col-12 col-lg-4 d-flex">
                        <div class="card border shadow-none w-100">
                          <div class="card-body">
                            <form action="issueReturn03" method="post" class="row g-3">{{ csrf_field() }}
+                            <input name="avg_price" required type="hidden" class="form-control" value="{{$avg_price}}">
  							<div class="col-12">
 							  <label class="form-label">Job No</label>
 							  <input disabled  type="text" class="form-control" placeholder="{{$job_no}}">
-                            </div>                            
+                            </div>
                             <div class="col-12">
                                <label class="form-label">Product</label>
                                <input disabled  type="text" class="form-control" placeholder="{{$prod_id}}-{{$prod_name}}">
@@ -63,8 +64,8 @@ $qty = $item->qty;$note = $item->note;}
 							<input type="hidden" name="note" value="{{$note}}">
 							<input type="hidden" name="prod_id" value="{{$prod_id}}">
 							<input type="hidden" name="prod_name" value="{{$prod_name}}">
-                            
-                            
+
+
                             <div class="col-12">
                               <div class="d-grid">
                                 <button class="btn btn-success" >Add Issue Return</button>
@@ -73,7 +74,7 @@ $qty = $item->qty;$note = $item->note;}
                             <div class="col-12">
                               <div class="d-grid">
 								<a href="/issueReturn" class="btn btn-danger">Exit</a> </div>
-                            </div>							
+                            </div>
                            </form>
                          </div>
                        </div>
@@ -82,7 +83,7 @@ $qty = $item->qty;$note = $item->note;}
                       <div class="card border shadow-none w-100">
                         <div class="card-body">
                           <div class="table-responsive">
-                            
+
 
 
 				<div class="col-7">
@@ -94,9 +95,9 @@ $qty = $item->qty;$note = $item->note;}
 
                    </div>
                  </div>
-				
-				
-				
+
+
+
 				<table class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -110,10 +111,10 @@ $qty = $item->qty;$note = $item->note;}
 					</thead>
 					<tbody>
 <?php
-	$stock = DB::table('issue')->where('job_no', $job_no)->get(); 
+	$stock = DB::table('issue')->where('job_no', $job_no)->get();
 	$sl = '1';
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<td><center>
 							<form style="display: inline;" action="issueReturn02" method="post">{{ csrf_field() }}
@@ -128,12 +129,12 @@ $qty = $item->qty;$note = $item->note;}
 						<td>{{$item->prod_name}}</td>
 						<td>{{$item->qty}}</td>
 						<td>{{$item->note}}</td>
-						
+
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  				
-?>						
+		}
+?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
@@ -141,9 +142,9 @@ $qty = $item->qty;$note = $item->note;}
 				</table>
 
 
-							
+
                           </div>
-                         
+
                         </div>
                       </div>
                     </div>
@@ -155,8 +156,8 @@ $qty = $item->qty;$note = $item->note;}
 
 
 
-		  
-@endsection		  
+
+@endsection
 
 
 

@@ -7,7 +7,7 @@
     <div class="alert alert-success">
         {{ session()->get('success') }}
     </div>
-@endif	   
+@endif
 
 
 
@@ -22,7 +22,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
 
 <div style="background-color: gainsboro;padding-top: 20px;padding-left: 20px;padding-right: 20px;">
@@ -32,7 +32,7 @@
 
 
 
- <?php 
+ <?php
 if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")||(session('role')=="Administrator")){
 ?>
 	  <a href="/stock">
@@ -48,8 +48,8 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </div>
 	  </a>
  <?php } ?>
- 
- <?php 
+
+ <?php
 if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
 ?>
 	  <a href="/purchase">
@@ -65,7 +65,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </div>
 	  </a>
  <?php } ?>
-  <?php 
+  <?php
 if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
 ?>
 	  <a href="/purchaseReturn">
@@ -81,8 +81,8 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </div>
 	  </a>
  <?php } ?>
- 
-   <?php 
+
+   <?php
 if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
 ?>
 	  <a href="/issue">
@@ -98,7 +98,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </div>
 	  </a>
  <?php } ?>
-   <?php 
+   <?php
 if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
 ?>
 	  <a href="/issueReturn">
@@ -115,15 +115,32 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 	  </a>
  <?php } ?>
 
+ <?php
+if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=="Super Administrator")){
+?>
+	  <a href="/stock_wip">
+	  <div class="col">
+		<div class="card radius-10">
+		  <div class="card-body text-center" style="height: 175px;">
+			<div class="widget-icon mx-auto mb-3 bg-light-primary text-primary">
+			  <i class="lni lni-files"></i>
+			</div>
+			 <h3>WIP Stock</h3>
+		  </div>
+		</div>
+	  </div>
+	  </a>
+ <?php } ?>
+
 
 
 
 
 	</div>
-</div>  
-  
-  
-  
-  
-</main>  
+</div>
+
+
+
+
+</main>
 @endsection

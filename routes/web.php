@@ -53,6 +53,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('purchaseWithSupplier','App\Http\Controllers\stockController@purchaseWithSupplier');
 	Route::post('purchaseWithSupplier01','App\Http\Controllers\stockController@purchaseWithSupplier01');
 	Route::post('printPurchase02','App\Http\Controllers\stockController@printPurchase02');
+    Route::get('stock_wip','App\Http\Controllers\stockController@stock_wip');
 
 	// Bill
 	Route::get('bill','App\Http\Controllers\billController@bill');

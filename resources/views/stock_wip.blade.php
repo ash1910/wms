@@ -81,7 +81,11 @@ SELECT a.prod_id, a.prod_name, SUM(a.qty) AS stock_qty, SUM(a.amount) AS amount 
 						<td><a href="productLedger02?id={{$item->prod_id}} - {{$item->prod_name}}">{{$item->prod_id}}</a></td>
 						<td>{{$item->prod_name}}</td>
 						<td>{{$item->stock_qty}}</td>
-						<td>{{$item->amount/$item->stock_qty}}</td>
+						<td>
+                            @if( !empty($item->stock_qty) )
+                            {{$item->amount/$item->stock_qty}}
+                            @endif
+                        </td>
 						<td>{{$item->amount}}</td>
 					</tr>
 		<?php

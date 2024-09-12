@@ -18,7 +18,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -30,10 +30,10 @@
                     </div>
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0" style="width: 50%;">
 					<thead>
 						<tr>
@@ -45,12 +45,12 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Payable Amount</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $suppliers_list = []; $supplier_payments_list = []; $supplier_purchases_list = []; $supplier_final_list = [];
 
-$suppliers = DB::select("SELECT supplier_id, supplier_name FROM suppliers;");
+$suppliers = DB::select("SELECT supplier_id, supplier_name FROM suppliers WHERE supplier_name <> 'Opening Balance';");
 
 $supplier_payments = DB::select("SELECT SUM(paid_amount+discount) AS debit, supplier_id FROM `suppliers_payment` GROUP BY supplier_id;");
 
@@ -60,7 +60,7 @@ foreach($supplier_payments as $supplier_payment){	$supplier_payments_list[$suppl
 
 foreach($supplier_purchases as $supplier_purchase){	$supplier_purchases_list[$supplier_purchase->supplier_id] = $supplier_purchase->credit; }
 
-foreach($suppliers as $supplier){	
+foreach($suppliers as $supplier){
   $debit = !empty($supplier_payments_list[$supplier->supplier_id]) ? $supplier_payments_list[$supplier->supplier_id] : 0;
   $credit = !empty($supplier_purchases_list[$supplier->supplier_id]) ? $supplier_purchases_list[$supplier->supplier_id] : 0;
   $suppliers_list[] = array(
@@ -76,7 +76,7 @@ foreach($suppliers as $supplier){
 
 $sl = '1'; $total = 0;
 foreach($suppliers_list as $item)
-		{		
+		{
       if($item['balance'] == 0) continue;
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
@@ -89,7 +89,7 @@ foreach($suppliers_list as $item)
 		<?php
 		$sl = $sl+1;
     $total += $item['balance'];
-		}  
+		}
 ?>
 						<tr>
               <th style="border: 1px solid black;text-align: center;">{{$sl}}</th><td style="display: none;"></td><td style="display: none;"></td><td style="display: none;"></td>
@@ -97,12 +97,12 @@ foreach($suppliers_list as $item)
               <td style="border: 1px solid black;"><strong>{{number_format(($total), 2, '.', ',')}}</strong></td>
 						</tr>
 					</tbody>
-				</table>	
+				</table>
 
         <br><br><br>
 			<p><strong>Total Payable to Spare Parts Suppliers Tk. {{number_format($total, 2, '.', ',')}} </strong></p>
-		
-				
+
+
              </div>
 
              <!--end row-->
@@ -110,25 +110,25 @@ foreach($suppliers_list as $item)
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

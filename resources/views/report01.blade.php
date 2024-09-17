@@ -18,7 +18,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -34,19 +34,20 @@
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Date</th>
+                            <th scope="col" style="border: 1px solid black;text-align: center;">Customer ID</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Reg.No</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Chas.No</th>					
-							<th scope="col" style="border: 1px solid black;text-align: center;">Vehicle</th>					
+							<th scope="col" style="border: 1px solid black;text-align: center;">Chas.No</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Vehicle</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Mobile</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No</th>
@@ -62,11 +63,11 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sister Companies</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
-SELECT `job_dt`,`bill_no`, a.work, a.customer_id, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, `job_no`, 
+SELECT `job_dt`,`bill_no`, a.work, a.customer_id, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, `job_no`,
 `user_id`, `net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service, engineer
 FROM `bill_mas` a, customer_info b
 WHERE `job_dt` between '$from_dt' and '$to_dt'
@@ -74,12 +75,13 @@ and a.customer_id = b.customer_id
 and a.flag='0'
 ;
 ");
-	$sl = '1'; 	$total02 = '0';		
+	$sl = '1'; 	$total02 = '0';
 foreach($result as $item)
 		{		$total01 = '0';$net_bill = $item->net_bill; $vat= (int)$net_bill*.1;
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{$item->job_dt}}</td>
+                        <td style="border: 1px solid black;text-align: center;">{{$item->customer_id}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_nm}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_reg}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_chas}}</td>
@@ -102,27 +104,27 @@ foreach($result as $item)
 		$sl = $sl+1;
 		$total01 = $item->total;
 		$total02 = $total01+$total02;
-		}  
+		}
 ?>
 						<!---tr>
 							<td colspan="7"><strong>Total Draft Amount: Tk.</strong></td>
 							<td>{{$total02}}</td>
 						</tr--->
-						
+
 					</tbody>
 				</table>
-				
+
 <strong>Total Draft Amount: Tk. {{number_format(intval($total02), 2, '.', ',')}}	</strong>
-<br><br><br>				
-				
-			
-				
-				
-				
-				
-				
-				
-				
+<br><br><br>
+
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -130,25 +132,25 @@ foreach($result as $item)
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

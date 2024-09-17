@@ -3,10 +3,10 @@
 
 @section("content")
 
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 session('role');
 }
 else {
@@ -14,7 +14,7 @@ else {
   <script>
     window.location = "/home";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -36,7 +36,7 @@ else {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
 
             <!--end breadcrumb-->
@@ -53,15 +53,15 @@ else {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
-						
-						 
+
+
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Received date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Info</th>
@@ -72,7 +72,7 @@ else {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Refund By</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
@@ -83,15 +83,16 @@ WHERE a.customer_id = b.customer_id
 and a.user_id =  c.user_id;
 ;
 ");
-	$sl = '1'; 	$amount='0';		
+	$sl = '1'; 	$amount='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->received_dt))}}</td>
 
-						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
+						<td style="border: 1px solid black;text-align: left;"><b>Customer ID:</b> {{$item->customer_id}}
+                        <br><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
 						<br><b>Car Chas.:</b> {{$item->customer_chas}}
 						<br><b>Car Name:</b> {{$item->customer_vehicle}}
@@ -102,32 +103,32 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->payment_type}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->user_name}}</td>
-						
-					
-					
+
+
+
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}  
+		}
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
-<br>				
-				
-				
-			
-				
-				
-				
-				
-				
-				
-				
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
+<br>
+
+
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -135,25 +136,25 @@ foreach($result as $item)
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

@@ -53,7 +53,7 @@ elseif( $billtype == "intercompany_received"){
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -69,19 +69,20 @@ elseif( $billtype == "intercompany_received"){
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example3" class="table table-bordered mb-0">
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Date</th>
+                            <th scope="col" style="border: 1px solid black;text-align: center;">Customer ID</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Reg.No</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Chas.No</th>					
-							<th scope="col" style="border: 1px solid black;text-align: center;">Vehicle</th>					
+							<th scope="col" style="border: 1px solid black;text-align: center;">Chas.No</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Vehicle</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Mobile</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Bill No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No</th>
@@ -125,22 +126,22 @@ $user_list = array();
 	$users_db = DB::select("
 	SELECT user_id, user_name FROM `user`");
 	foreach($users_db as $user_db)
-		{ 					
-				$user_list[$user_db->user_id] = $user_db->user_name;	
-		}  
+		{
+				$user_list[$user_db->user_id] = $user_db->user_name;
+		}
 
 $result = DB::select("
-SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, a.`job_no`, 
+SELECT `job_dt`,`bill_no`, a.customer_id, MIN(a.work) work, b.customer_nm, b.customer_mobile , b.customer_group , b.company , b.sister_companies, a.`job_no`,
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt,
-sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due, sum(c.`sales_return`) sales_return, sum(c.`vat_pro`) vat_pro, sum(c.`complementary_work`) complementary_work, sum(c.`rework`) rework, sum(c.`damage_work`) damage_work, sum(advance_refund) advance_refund, 
-sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer, MIN(c.pay_type) pay_type 
+sum(c.`received`) received, sum(c.`bonus`) bonus, sum(c.`vat_wav`) vat_wav, sum(c.`ait`) ait,sum(c.`due`) due, sum(c.`sales_return`) sales_return, sum(c.`vat_pro`) vat_pro, sum(c.`complementary_work`) complementary_work, sum(c.`rework`) rework, sum(c.`damage_work`) damage_work, sum(advance_refund) advance_refund,
+sum(c.`charge`) charge, sum(c.`supplier_adj`) supplier_adj, sum(supplier_name) supplier_name, engineer, MIN(c.pay_type) pay_type
 FROM `bill_mas` a, customer_info b, `pay` c
 WHERE a.`bill_dt` between '$from_dt' and '$to_dt'
 and a.customer_id = b.customer_id
 AND a.`job_no` = c.job_no
-and a.bill_dt is not null 
- 
-group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, b.customer_group, b.company, b.sister_companies, a.`job_no`, 
+and a.bill_dt is not null
+
+group by `job_dt`,`bill_no`, a.customer_id, b.customer_nm, b.customer_mobile, b.customer_group, b.company, b.sister_companies, a.`job_no`,
 a.`user_id`, a.`net_bill` ,customer_reg,customer_chas,customer_vehicle, total, parts, service,a.bill_dt, engineer $where_billtype
 ;
 ");
@@ -151,38 +152,39 @@ foreach($result as $item)
 
 						// charge calculate
 						$result_charge = DB::select("
-						SELECT sum(`charge`) charge, pay_type, sum(`due`) due  
-						FROM `pay` 
-						WHERE customer_id = '$item->customer_id' 
-						AND job_no = '$item->job_no' 
-						AND bill = '$item->bill_no' 
+						SELECT sum(`charge`) charge, pay_type, sum(`due`) due
+						FROM `pay`
+						WHERE customer_id = '$item->customer_id'
+						AND job_no = '$item->job_no'
+						AND bill = '$item->bill_no'
 						group by `pay_type`;
 						");
 						$card_charge = 0; $bkash_charge = 0; $AdjCust = 0; $LedgerRefund = 0;
 						foreach($result_charge as $item_charge)
-						{	
+						{
 							if( $item_charge->pay_type == 'card' ) $card_charge = $item_charge->charge;
 							elseif( $item_charge->pay_type == 'bkash' ) $bkash_charge = $item_charge->charge;
-							
+
 							if( $item_charge->pay_type == 'Adj-Cust' ) $AdjCust = $item_charge->due;
 							if( $item_charge->pay_type == 'A/C Refund' ) $LedgerRefund = 1;
 						}
 
 						// vat provition collection calculate
 						$result_vat_pro = DB::select("
-						SELECT flag, vat_pro 
-						FROM `vat_pro` WHERE 
+						SELECT flag, vat_pro
+						FROM `vat_pro` WHERE
 						job_no = '$item->job_no';
 						");
 						$vat_provision = 0; $vat_collection = 0;
 						foreach($result_vat_pro as $item_vat_pro)
-						{	
+						{
 							if( $item_vat_pro->flag == '0' ) $vat_provision = $item->vat_pro;
 							elseif( $item_vat_pro->flag == '1' ) $vat_collection = $item_vat_pro->vat_pro;
 						}
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-m-Y',strtotime($item->bill_dt))}}</td>
+                        <td style="border: 1px solid black;text-align: center;">{{$item->customer_id}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_nm}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_reg}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->customer_chas}}</td>
@@ -225,77 +227,77 @@ if((number_format(($item->total-($item->received+$item->bonus+$item->vat_wav+$it
     SELECT `ref` FROM `pay` WHERE `job_no` = '$item->job_no' AND pay_type<>'sys' GROUP by ref
     ");
     foreach($result01 as $item01)
-		{  
+		{
 		    if($item01->ref!='Advance')
 		    {
 		    echo $item01->ref;
 		    }
 		}
-}		
-?>						    
+}
+?>
 						</td>
 						<td style="border: 1px solid black;text-align: center;">
 <?php if(($item->due)>'0')
 {
 	echo 'DUE';
-	
-	
+
+
 
 		$pay_type='';
 		$stock02 = DB::select("
 		SELECT `job_no` pay_type,received FROM `cheque_pending` WHERE `job_no`='$item->job_no' AND `flag`='0'
 		");
 		foreach($stock02 as $item02){  $received = $item02->received; echo ' CIH['.number_format(($received), 0, '.', ',').'] ';}
-		
-		
+
+
 		$pay_type='';
 		$stock02 = DB::select("
 		SELECT `job_no` pay_type, `denyImage` FROM `cheque_pending` WHERE `job_no`='$item->job_no' AND `flag`='2'
 		");
 		foreach($stock02 as $item02){$pay_type = $item02->pay_type;$denyImage = $item02->denyImage;}
 		if($pay_type!=''){$imageUrl = asset('upload/deny/'.$denyImage); ?>
-		
-		<a href="{{ $imageUrl }}" target="_blank">[Deny]</a>
-		
-		
-		<?php } 
 
-	
-	
-	
+		<a href="{{ $imageUrl }}" target="_blank">[Deny]</a>
+
+
+		<?php }
+
+
+
+
 }
-else { 
+else {
 if($item->supplier_adj!='')
 {
-$supplier_name = $item->supplier_name;	
-$supplier_name01='';	   
+$supplier_name = $item->supplier_name;
+$supplier_name01='';
 $stock03 = DB::select("SELECT `supplier_name` FROM `suppliers` WHERE `supplier_id` = '$supplier_name';");
 foreach($stock03 as $item03)
-	{ 					
-		$supplier_name01 = $item03->supplier_name;						
-	}	
-echo 'Adjusted With Supplier ['.$supplier_name01.']'; 
+	{
+		$supplier_name01 = $item03->supplier_name;
+	}
+echo 'Adjusted With Supplier ['.$supplier_name01.']';
 }
 
 if($item->supplier_adj=='')
 {
-echo 'Received'; 
+echo 'Received';
 }
     $complementary_work = '';
 	$stock01 = DB::select("
 	SELECT sum(complementary_work) complementary_work
 	FROM `pay` WHERE `job_no`='$item->job_no';");
 	foreach($stock01 as $item01)
-		{ 					
-				$complementary_work = $item01->complementary_work;	
-		}  
+		{
+				$complementary_work = $item01->complementary_work;
+		}
 	if($complementary_work!='')
 	{
 	    echo ' with Adjustment';
 	}
 
 }
-	?>						
+	?>
 						</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->work}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{@$user_list[$item->user_id]}}</td>
@@ -310,23 +312,23 @@ echo 'Received';
 		$total02 = $total01+$total02;
 		$total03 = $total03+(float)$item->net_bill;
 
-		}  
+		}
 ?>
 						<!---tr>
 							<td colspan="7"><strong>Total Draft Amount: Tk.</strong></td>
 							<td>{{$total02}}</td>
 						</tr--->
-						
+
 					</tbody>
 				</table>
-				
+
 <strong>Total Amount: Tk. {{number_format(($total03), 2, '.', ',')}}	</strong><br>
 <strong>Total Amount (10% vat): Tk. {{number_format(($total02), 2, '.', ',')}}	</strong>
-			
+
 <?php if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 	||(session('role')=="Administrator")){
 ?>
-				
+
 				<table class="table table-bordered mb-0"style="width: 700px;">
 					<thead>
 						<tr>
@@ -336,7 +338,7 @@ echo 'Received';
 							<th scope="col" style="border: 1px solid black;text-align: center;">Service</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Parts</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sale Amount</th>
-						
+
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sale Return</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sale Discount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Re-work</th>
@@ -347,27 +349,27 @@ echo 'Received';
 
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $data = DB::select("SELECT sum(sale_amount) sale_amount,sum(sales_return) sales_return,sum(bonus) bonus,
 sum(rework) rework,sum(damage_work) damage_work,sum(complementary_work) complementary_work,
 sum(advance_refund) advance_refund
 from
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no
 FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' GROUP by work) a
 left JOIN
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work, 
-SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund 
-FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus, 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work,
+SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund
+FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus,
 SUM(rework) rework, sum(damage_work)damage_work, SUM(complementary_work)complementary_work,
-SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' 
+SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt'
 GROUP by bill )b WHERE a.bill_no=b.bill GROUP by work) b
 on a.sales_segment = b.sales_segment
 UNION
@@ -375,24 +377,24 @@ SELECT sum(sale_amount) sale_amount,sum(sales_return) sales_return,sum(bonus) bo
 sum(rework) rework,sum(damage_work) damage_work,sum(complementary_work) complementary_work,
 sum(advance_refund) advance_refund
 from
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no
 FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' GROUP by work) a
 right JOIN
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work, 
-SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund 
-FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus, 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work,
+SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund
+FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus,
 SUM(rework) rework, sum(damage_work)damage_work, SUM(complementary_work)complementary_work,
-SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' GROUP by bill )b 
+SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' GROUP by bill )b
 WHERE a.bill_no=b.bill GROUP by work) b
 on a.sales_segment = b.sales_segment;");
 $totalAmount = '0';
-foreach($data as $item){ 
+foreach($data as $item){
 $totalAmount = $item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work+$item->advance_refund) ;
 }
 
@@ -403,48 +405,48 @@ $result = DB::select("
 SELECT a.sales_segment,service,parts,sale_amount,job_no,
 sales_return,bonus,rework,damage_work,complementary_work,advance_refund
 from
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no
 FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' and a.`flag` <> '0' GROUP by work) a
 left JOIN
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work, 
-SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund 
-FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus, 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work,
+SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund
+FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus,
 SUM(rework) rework, sum(damage_work)damage_work, SUM(complementary_work)complementary_work,
-SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' 
+SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt'
 GROUP by bill )b WHERE a.bill_no=b.bill GROUP by work) b
 on a.sales_segment = b.sales_segment
 UNION
 SELECT b.sales_segment,service,parts,sale_amount,job_no,
 sales_return,bonus,rework,damage_work,complementary_work,advance_refund
 from
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(`service`) service, sum(`parts`) parts, sum(a.`net_bill`) sale_amount,COUNT(a.`job_no`)job_no
 FROM `bill_mas` a WHERE a.`bill_dt` BETWEEN '$from_dt' and '$to_dt' and a.`flag` <> '0' GROUP by work) a
 right JOIN
-(SELECT CASE WHEN work='engineering' THEN 'Engineering' 
-WHEN work='intercompany' THEN 'Inter-Company' 
-WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`, 
-sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work, 
-SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund 
-FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus, 
+(SELECT CASE WHEN work='engineering' THEN 'Engineering'
+WHEN work='intercompany' THEN 'Inter-Company'
+WHEN work='automobile' THEN 'Automobiles' END as `sales_segment`,
+sum(b.sales_return)sales_return, SUM(b.bonus) bonus, SUM(b.rework) rework, sum(b.damage_work)damage_work,
+SUM(b.complementary_work)complementary_work,SUM(b.advance_refund)advance_refund
+FROM `bill_mas` a, ( SELECT DISTINCT bill, sum(sales_return)sales_return, SUM(bonus) bonus,
 SUM(rework) rework, sum(damage_work)damage_work, SUM(complementary_work)complementary_work,
-SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' GROUP by bill )b 
+SUM(advance_refund)advance_refund from pay where dt BETWEEN '$from_dt' and '$to_dt' GROUP by bill )b
 WHERE a.bill_no=b.bill GROUP by work) b
 on a.sales_segment = b.sales_segment;
 ");
-	$sl = '1';$service = '0';$parts = '0';$sale_amount = '0';$job_no = '0';		
+	$sl = '1';$service = '0';$parts = '0';$sale_amount = '0';$job_no = '0';
 	$sales_return = '0';$bonus = '0';$rework = '0';$damage_work = '0';
 	$complementary_work = '0';$advance_refund = '0';$Net_Sales = '0';
 foreach($result as $item)
-		{	
+		{
 			if($item->sales_segment!='')
 			{
 ?>					<tr>
@@ -476,7 +478,7 @@ foreach($result as $item)
 		round((($item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work))/$totalAmount)*100,2)
 						;}}%</td>
 <?php } ?>
-						
+
 
 					</tr>
 		<?php
@@ -486,7 +488,7 @@ foreach($result as $item)
 		$parts = $item->parts+$parts;
 		$sale_amount = $item->sale_amount+$sale_amount;
 		$job_no = $item->job_no+$job_no;
-		
+
 		$sales_return = $item->sales_return+$sales_return;
 		$bonus = $item->bonus+$bonus;
 		$rework = $item->rework+$rework;
@@ -495,8 +497,8 @@ foreach($result as $item)
 		$advance_refund = $item->advance_refund+$advance_refund;
 
 		$Net_Sales = $item->sale_amount-($item->sales_return+$item->bonus+$item->rework+$item->damage_work+$item->complementary_work)+$Net_Sales;
-		
-		}  
+
+		}
 ?>
 					<tr>
 						<td style="border: 1px solid black;text-align: center;"></td>
@@ -505,26 +507,26 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($service), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($parts), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($sale_amount), 2, '.', ',')}}</td>
-					
+
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($sales_return), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($bonus), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($rework), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($damage_work), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($complementary_work), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($Net_Sales), 2, '.', ',')}}</td>
-					
+
 					</tr>
 					</tbody>
 				</table>
-<?php } ?>				
-<br><br><br>				
-				
-				
-				
-				
-				
-				
-				
+<?php } ?>
+<br><br><br>
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -532,25 +534,25 @@ foreach($result as $item)
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

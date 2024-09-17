@@ -12,9 +12,13 @@
                 <hr>
                 <form class="row g-3" action="customerEditTwo" method="post">{{ csrf_field() }}
 				          <input type="hidden" name="id" value="{{$item->customer_id}}">
-                  <div class="col-12">
+                  <div class="col-8">
                     <label class="form-label">Customer Name</label>
                     <input value="{{$item->customer_nm}}" type="text" class="form-control" name="customer_nm" required>
+                  </div>
+                  <div class="col-4">
+                    <label class="form-label">Customer ID</label>
+                    <input value="{{$item->customer_id}}" type="text" class="form-control" readonly>
                   </div>
                   <div class="col-8">
                     <label class="form-label">Car User Name</label>
@@ -61,17 +65,17 @@
                     <label class="form-label">Address</label>
                     <textarea class="form-control" rows="4" cols="4" name="customer_address">{{$item->customer_address}}</textarea>
                   </div>
- 
+
                   <div class="col-12">
                     <label class="form-label">Driver Contact</label>
                     <input value="{{$item->driver_mobile}}" type="text" class="form-control" name="driver_mobile">
-                  </div>		
-                  
+                  </div>
+
                   <div class="col-12">
                     <label class="form-label">Customer Group</label>
                     <input id="tags04" placeholder="e.g: Individual Customer" type="text" class="form-control" name="customer_group" value="{{$item->customer_group}}">
                   </div>
- 
+
                   <div class="col-12">
                     <label class="form-label">Company</label>
                     <input id="tags02" placeholder="e.g: HNS Group" type="text" class="form-control" name="company" value="{{$item->company}}">
@@ -89,8 +93,8 @@
                     <center><label class="form-label"><h3>Bank Information</h3></label></center>
                     <center><label class="form-label">Company Account Information</label></center>
                   </div>
-				  
-				  
+
+
                   <div class="col-6">
                     <label class="form-label">AC Name</label>
                     <input style="background: lavender;" value="{{$item->ac_name}}" placeholder="e.g: ABCD" type="text" class="form-control" name="ac_name" >
@@ -117,7 +121,7 @@
                   </div>
 
 
-				
+
                   <div class="col-12">
                     <center><label class="form-label">Personal Account Information</label></center>
                   </div>
@@ -149,7 +153,7 @@
                   <div class="col-12">
                     <center><label class="form-label"><h3>Contact Person Information</h3></label></center>
                   </div>
-                
+
                 <div class="row" style="border: 2px solid #0b5ed7; margin: 15px 0px 10px 0px; padding: 15px;">
                   <div class="col-12">
                     <center><label class="form-label"><b>Contact Person 1</b></label></center>
@@ -240,7 +244,7 @@
                     <input style="background: blanchedalmond;" value="{{$item->contact4_purpose}}" type="text" class="form-control" name="contact4_purpose" >
                   </div>
                 </div>
- 
+
                   <div class="col-12">
                     <div class="d-grid">
                       <button type="submit" class="btn btn-primary">Update</button>
@@ -254,8 +258,8 @@
 	@endforeach
 
 
-  
-</main>  
+
+</main>
 @endsection
 
 
@@ -266,13 +270,13 @@
   <script src="assets/js/jquery-3.6.0.js"></script>
   <script src="assets/js/jquery-ui.js"></script>
 
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($company as $p) 
+foreach ($company as $p)
 {
 echo '"'.$p->company.'",';
 }
@@ -283,13 +287,13 @@ echo '"'.$p->company.'",';
     });
   } );
   </script>
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($sister_companies as $p) 
+foreach ($sister_companies as $p)
 {
 echo '"'.$p->sister_companies.'",';
 }
@@ -299,7 +303,7 @@ echo '"'.$p->sister_companies.'",';
       source: availableTags
     });
   } );
-  </script>  
+  </script>
 
 <script>
   $( function() {
@@ -307,6 +311,6 @@ echo '"'.$p->sister_companies.'",';
       source: ["Individual Customer","HNS Automobiles","Inter-Company"]
     });
   } );
-  </script>  
-  
+  </script>
+
  @endsection

@@ -1,7 +1,7 @@
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 //echo session('role');
 }
 else {
@@ -9,7 +9,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -22,24 +22,24 @@ else {
 
 
 <main class="page-content">
-<!---Alert message----> 
+<!---Alert message---->
 @if(session()->has('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-	
+
 <script type="text/javascript">
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
-</script>	
-@endif	
-<!---Alert message---->  
+</script>
+@endif
+<!---Alert message---->
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -53,7 +53,7 @@ $(document).ready(function () {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -69,10 +69,10 @@ $(document).ready(function () {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -85,7 +85,7 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
@@ -96,13 +96,15 @@ WHERE a.customer_id = b.customer_id
 AND a.job_no = 'Advance'
 order by a.`id` desc;
 ");
-	$sl = '1'; 	$amount='0';		
+	$sl = '1'; 	$amount='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
+						<td style="border: 1px solid black;text-align: left;">
+                        <b>Customer ID:</b> {{$item->customer_id}}
+                        <br><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
 						<br><b>Car Chas.:</b> {{$item->customer_chas}}
 						<br><b>Car Name:</b> {{$item->customer_vehicle}}
@@ -110,10 +112,10 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}
-				
-		<?php				
+
+		<?php
 		$pay_type='';$job_no='';
-		$stock02 = DB::select("SELECT `job_no` pay_type, `denyImage` 
+		$stock02 = DB::select("SELECT `job_no` pay_type, `denyImage`
 		FROM `cheque_pending` WHERE `flag`='2' and `customer_id`='$item->customer_id'
 		and chequeNo='$item->chequeNo' and chequeDt='$item->chequeDt'");
 		foreach($stock02 as $item02)
@@ -122,14 +124,14 @@ foreach($result as $item)
 			$denyImage = $item02->denyImage;
 			$imageUrl = asset('upload/deny/'.$denyImage); ?>
 			<a href="{{ $imageUrl }}" target="_blank">[Deny]</a>
-	<?php 
+	<?php
 		}
 		?>
-						
+
 						</td>
-						
+
 						<td style="border: 1px solid black;text-align: center;">
-							
+
 		<form class="row g-3" action="payAdvance01" method='post' target="_blank">{{ csrf_field() }}
 			<div class="col-12">
 				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
@@ -137,7 +139,7 @@ foreach($result as $item)
 				<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 						<i class="fadeIn animated bx bx-printer"></i> Print</button>
 			</div>
-		</form>		
+		</form>
 		<form class="row g-3" action="payAdvance06?image=1" method='post' target="_blank">{{ csrf_field() }}
 			<div class="col-12">
 				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
@@ -146,7 +148,7 @@ foreach($result as $item)
 						<i class="fadeIn animated bx bx-printer"></i> M.R-ESL</button>
 			</div>
 		</form>
-		
+
 		<form class="row g-3" action="payAdvance07?image=1" method='post' target="_blank">{{ csrf_field() }}
 			<div class="col-12">
 				<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
@@ -155,53 +157,53 @@ foreach($result as $item)
 						<i class="fadeIn animated bx bx-printer"></i> M.R-HAS</button>
 			</div>
 		</form>
-						</td>							
-						
-						
+						</td>
+
+
 						<td style="border: 1px solid black;text-align: center;">
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-?>					
+?>
 					<form style="display: inline;" action="payAdvance02" method="post">{{ csrf_field() }}
 					<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
 					<input type="hidden" name="customer_nm" value="{{$item->customer_nm}}">
 					<input type="hidden" name="id" value="{{$item->id}}">
-					<button class="btn btn-outline-success px-3" type="submit" name="" value="" 
+					<button class="btn btn-outline-success px-3" type="submit" name="" value=""
 					<?php if($item->received=='0'){echo 'disabled';} ?>
 					>
 					 Settlement</button>
-					</form>	
-<?php } else {?>	
+					</form>
+<?php } else {?>
 					<form style="display: inline;" action="" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<button class="btn btn-outline-secondary px-3" type="submit" name="" value="" disabled>
 					 Settlement</button>
-					</form>	
-<?php } ?>						
-					</td>	
-						
+					</form>
+<?php } ?>
+					</td>
+
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}  
+		}
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
-<br>				
-			
-				
-				
-				
-				
-				
-				
-				
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
+<br>
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -209,25 +211,25 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

@@ -3,10 +3,10 @@
 
 @section("content")
 
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Administrator")||(session('role')=="Accounts")||(session('role')=="PRO"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 echo session('role');
 }
 else {
@@ -14,7 +14,7 @@ else {
   <script>
     window.location = "/home";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -24,8 +24,8 @@ else {
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-@endif	
- 
+@endif
+
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -39,7 +39,7 @@ else {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -55,22 +55,23 @@ else {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job Date</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No.</th>
+                            <th scope="col" style="border: 1px solid black;text-align: center;">Customer ID</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Info</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Total</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Approval</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
@@ -82,65 +83,65 @@ and a.flag = '0'
 order by job_dt desc
 ;
 ");
-	$sl = '1'; 			
+	$sl = '1';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{date('d-M-Y', strtotime($item->job_dt))}}</a></td>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->job_no}}</a></td>
-						
+						<td style="border: 1px solid black;text-align: center;">{{$item->customer_id}}</td>
 						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
 						<br><b>Car Chasis.:</b> {{$item->customer_chas}}
 						<br><b>Car Name:</b> {{$item->customer_vehicle}}
 						</td>
 
-						
+
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{number_format(intval($item->total), 2, '.', ',')}}</a></td>
 						<td style="border: 1px solid black;text-align: center;">
-						
-<?php 
+
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="PRO"))
 {
-?>					
+?>
 					<form style="display: inline;" action="approval01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$item->bill_no}}">
 					<input type="hidden" name="job_dt" value="{{$item->job_dt}}">
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Approval</button>
-					</form>						
-<?php } else {?>						
+					</form>
+<?php } else {?>
 					<form style="display: inline;" action="approval01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$item->bill_no}}">
 					<input type="hidden" name="job_dt" value="{{$item->job_dt}}">
 					<button class="btn btn-secondary px-3" type="submit" name="" value="" disabled>
 					 Approval</button>
-					</form>						
-<?php } ?>			
+					</form>
+<?php } ?>
 					</td>
 					</tr>
 		<?php
 		$sl = $sl+1;
 
-		}  
+		}
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<br>				
-				
-			
-				
-				
-				
-				
-				
-				
-				
+<br>
+
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -148,25 +149,25 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(se
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

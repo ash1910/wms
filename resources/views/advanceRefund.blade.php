@@ -64,6 +64,7 @@ else {
 
 							<th scope="col" style="border: 1px solid black;text-align: center;">#</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Received date</th>
+                            <th scope="col" style="border: 1px solid black;text-align: center;">Customer ID</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Info</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job no</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Money receipt</th>
@@ -90,9 +91,8 @@ foreach($result as $item)
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->received_dt))}}</td>
-
-						<td style="border: 1px solid black;text-align: left;"><b>Customer ID:</b> {{$item->customer_id}}
-                        <br><b>C/N:</b> {{$item->customer_nm}}
+                        <td style="border: 1px solid black;text-align: center;">{{$item->customer_id}}</td>
+						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
 						<br><b>Car Chas.:</b> {{$item->customer_chas}}
 						<br><b>Car Name:</b> {{$item->customer_vehicle}}

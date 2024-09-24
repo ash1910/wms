@@ -138,7 +138,7 @@ $today=date("d-M-Y");
 
 $result = DB::select("
 SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour
+b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `est_ref`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
@@ -165,6 +165,7 @@ AND a.customer_id = b.customer_id;
 				 $user_id = $post->user_id;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
+                 $est_ref = $post->est_ref;
 			}
 
 $result01 = DB::select("
@@ -222,6 +223,7 @@ SELECT `full_name` FROM `user` WHERE user_id = $user_id
                        @if($customer_vehicle)<tr><td><strong class="text-inverse" style="font-family: Arial;">Model </strong></td><td style="font-style: MS Gothic;line-height: 0.8;">: {{$customer_vehicle}}</td></tr> @endif
 					   @if($year)<tr><td><strong class="text-inverse" style="font-family: Arial;">Year</strong></td><td style="font-style: MS Gothic;">: {{$year}}</td></tr> @endif
 					   @if($car_colour)<tr><td><strong class="text-inverse" style="font-family: Arial;">Colour</strong></td><td style="font-style: MS Gothic;">: {{$car_colour}}</td></tr> @endif
+                       @if($est_ref)<tr><td><strong class="text-inverse" style="font-family: Arial;">Reference</strong></td><td style="font-style: MS Gothic;">: {{$est_ref}}</td></tr> @endif
 					</table>
                    </address>
                 </div>

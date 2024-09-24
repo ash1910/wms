@@ -17,19 +17,19 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
 <div class="col-11">
 <link rel="stylesheet" href="assets/css/fontawesome-all-v5.6.3.css" >
-	
+
 	<div class="card">
 	<div class="row">
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">
 		<div class="card-body">
-	
+
 	<form class="row g-3" action="changeCustomerEst01" method='post'>
 	{{ csrf_field() }}
 	<input type="hidden" name="est_no" value="{{$est_no}}">
@@ -41,9 +41,9 @@
 		<div class="col-md-12">
 			<button class="btn btn-success" type="submit" name="register" value="register"><i class="fadeIn animated bx bx-edit-alt"></i>Change Registration No.</button>
 			<button class="btn btn-success" type="submit" name="register" value="register01"><i class="fadeIn animated bx bx-edit-alt"></i>Change Chasis No.</button>
-			
+
 		</div>
-	</form>	
+	</form>
 		</div>
 		</div>
 		</div>
@@ -57,7 +57,7 @@
 			<div class="col-md-12">
 				<label class="form-label">Change Estimate Date:</label>
 				<input  autofocus type="date" class="form-control" name='change_dt' >
-			</div>		
+			</div>
 		<div class="col-12">
 			<button class="btn btn-success" type="submit">
 			<i class="lni lni-reload"></i> Change Date</button>
@@ -69,14 +69,14 @@
 
 	</div>
 	</div>
-			
+
 
 	<div class="card">
 	<div class="row">
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">
 		<div class="card-body">
-			
+
 	<form class="row g-3" action="changeCustomerEst05" method='post'>
 	{{ csrf_field() }}
 	<input type="hidden" name="est_no" value="{{$est_no}}">
@@ -122,7 +122,7 @@
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">
 		<div class="card-body">
-			
+
 	<form class="row g-3" action="changeCustomerEst03" method='post'>
 	{{ csrf_field() }}
 	<input type="hidden" name="est_no" value="{{$est_no}}">
@@ -137,8 +137,9 @@
 		</div>
 	</form>
 		</div>
-		</div> 
 		</div>
+		</div>
+
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">
 		<div class="card-body">
@@ -159,16 +160,36 @@
 		</div>
 		</div>
 
+		<div class="col-6">
+		<div class="card shadow-none border radius-15">
+		<div class="card-body">
+            <form class="row g-3" action="changeCustomerEst07" method='post'>
+                {{ csrf_field() }}
+                <input type="hidden" name="est_no" value="{{$est_no}}">
+                <div class="col-md-12">
+                    <label for="validationDefault01" class="form-label">Reference</label>
+                    <input value="{{$est_ref}}" type="text" class="fas form-control" name='est_ref' required>
+                </div>
+
+                <div class="col-12">
+                    <button class="btn btn-success" type="submit" name="register" value="register">
+                    <i class="fadeIn animated bx bx-edit-alt"></i>Change Reference</button>
+                </div>
+            </form>
+		</div>
+		</div>
+		</div>
+
 
 
 	</div>
 	</div>
-			
-			
-			
+
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection

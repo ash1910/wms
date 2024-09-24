@@ -9,7 +9,7 @@ $est_no = $_GET["est_no"];
 
 $result = DB::select("
 SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, year, car_colour,
-b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `user_id`, `net_bill` ,`km`, a.flag
+b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `est_ref`, `user_id`, `net_bill` ,`km`, a.flag
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
@@ -35,6 +35,7 @@ AND a.customer_id = b.customer_id;
 				 $days = $post->days;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
+                 $est_ref = $post->est_ref;
 			}
 
 if($flag!='0')
@@ -88,6 +89,7 @@ if($flag!='0')
 					<input type="hidden" name="km" value="{{$km}}">
 					<input type="hidden" name="engineer" value="{{$engineer}}">
 					<input type="hidden" name="technician" value="{{$technician}}">
+                    <input type="hidden" name="est_ref" value="{{$est_ref}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated lni lni-reload"></i> Modify</button>
 					</form>
@@ -151,6 +153,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
                        <strong class="text-inverse">Technician: </strong>{{$technician}}<br>
                        <strong class="text-inverse">KM:  </strong>{{$km}}<br>
                        <strong class="text-inverse">Time Required:  </strong>{{$days}} Working Days<br>
+                       <strong class="text-inverse">Reference:  </strong>{{$est_ref}} <br>
 					</table>
 					</address>
 				   </div>

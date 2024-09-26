@@ -7,14 +7,14 @@
 
 
 $data = DB::select("SELECT a.purchase_id, b.supplier_name,b.supplier_id, a.amount, a.supplier_ref FROM `purchase_mas` a, suppliers b
-WHERE a.`supplier_id` = $supplier_id AND a.`supplier_ref`= $supplier_ref AND a.supplier_id= b.supplier_id;");
+WHERE a.`supplier_id` = $supplier_id AND a.`supplier_ref`= '$supplier_ref' AND a.supplier_id= b.supplier_id;");
 foreach($data as $item){ $supplier_name = $item->supplier_name ;$amount = $item->amount;
 $supplier_ref = $item->supplier_ref;$supplier_id = $item->supplier_id;$purchase_id = $item->purchase_id;}
 
 
-$stock01 = DB::table('purchase_det')->where('id', $id)->get(); 
+$stock01 = DB::table('purchase_det')->where('id', $id)->get();
 	foreach($stock01 as $item01)
-		{ 
+		{
 		$prod_id = $item01->prod_id;
 		$prod_name = $item01->prod_name;
 		$qty = $item01->qty;
@@ -41,19 +41,19 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
               <div class="card">
-                
+
                 <div class="card-body">
                    <div class="row">
                      <div class="col-12 col-lg-4 d-flex">
                        <div class="card border shadow-none w-100">
                          <div class="card-body">
                            <form action="purchaseReturn04" method="post" class="row g-3">{{ csrf_field() }}
-                             
+
                             <div class="col-12">
                                <label class="form-label">Product</label>
                                <input disabled value="{{$prod_name}}" required id="tags" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
@@ -62,11 +62,11 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 								<div >
 								  <label class="form-label">Quantity</label>
 								  <input value="{{$qty}}" id="id-1" required name="qty" type="text" class="form-control" placeholder="e.g.- 1">
-								</div>  
+								</div>
 								<div >
 								   <label class="form-label">Buy (Per Unit)</label>
 								   <input disabled value="{{$rate}}" id="id-2" required name="rate" type="text" class="form-control" placeholder="e.g.- 25000">
-								</div>  
+								</div>
 							</div>
 							<div class="col-12">
 							  <label class="form-label">Buy (Total)</label>
@@ -80,9 +80,9 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
                                <label class="form-label">Req. No.</label>
                                <input disabled value="{{$req}}" required name="req" type="text" class="form-control" placeholder="e.g.- 1111" maxlength="4">
                             </div>
-                             
-                            
-                            
+
+
+
                             <div class="col-12">
                               <div class="d-grid">
                                 <button class="btn btn-primary">Return Product</button>
@@ -91,8 +91,8 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
                             <div class="col-12">
                               <div class="d-grid">
 								<a href="javascript:void(0)" class="btn btn-danger">Exit</a> </div>
-                            </div>	
-	
+                            </div>
+
 
 							<input type="hidden" name="purchase_id" value="{{$purchase_id}}">
 							<input type="hidden" name="prod_id" value="{{$prod_id}}">
@@ -104,7 +104,7 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 							<input type="hidden" name="supplier_id" value="{{$supplier_id}}"></input>
 							<input type="hidden" name="supplier_ref" value="{{$supplier_ref}}"></input>
 							<input type="hidden" name="id" value="{{$id}}"></input>
-							
+
                            </form>
                          </div>
                        </div>
@@ -113,7 +113,7 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
                       <div class="card border shadow-none w-100">
                         <div class="card-body">
                           <div class="table-responsive">
-                            
+
 
 
 				<div class="col-7">
@@ -124,16 +124,16 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
                     </address>
                     <address class="m-t-5 m-b-5">
                        <strong class="text-inverse">Supplier's Bill No.: </strong>{{$supplier_ref}}<br>
-                    </address>					
+                    </address>
                     <address class="m-t-5 m-b-5">
                        <strong class="text-inverse">Total Amount: Tk. {{$amount}}<br>
 					   </strong>
                     </address>
                    </div>
                  </div>
-				
-				
-				
+
+
+
 				<table class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -150,10 +150,10 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 					</thead>
 					<tbody>
 <?php
-	$stock = DB::table('purchase_det')->where('purchase_id', $purchase_id)->get(); 
+	$stock = DB::table('purchase_det')->where('purchase_id', $purchase_id)->get();
 	$sl = '1';
 	foreach($stock as $item)
-		{ 					
+		{
 ?>					<tr>
 						<td><center>
 							<form style="display: inline;" action="purchaseReturn03" method="post">{{ csrf_field() }}
@@ -172,12 +172,12 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 						<td>{{$item->qty}}</td>
 						<td>{{$item->rate}}</td>
 						<td>{{$item->amount}}</td>
-						
+
 					</tr>
 		<?php
 		$sl = $sl+1;
-		}  				
-?>						
+		}
+?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
@@ -185,9 +185,9 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 				</table>
 
 
-							
+
                           </div>
-                         
+
                         </div>
                       </div>
                     </div>
@@ -199,8 +199,8 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
 
 
 
-		  
-@endsection		  
+
+@endsection
 
 
 
@@ -216,11 +216,11 @@ $stock01 = DB::table('purchase_det')->where('id', $id)->get();
   <script>
   $( function() {
     var availableTags = [
- 
+
  <?php
 $parts_info = DB::table('parts_info')->get();
- 
-foreach ($parts_info as $p) 
+
+foreach ($parts_info as $p)
 {
 echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
 }
@@ -231,13 +231,13 @@ echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
     });
   } );
   </script>
-  
- 
+
+
  @endsection
- 
- 
- 
-<script src="assets/jquery.min.js"></script> 
+
+
+
+<script src="assets/jquery.min.js"></script>
  <script>
 $(function () {
   $("#id-1, #id-2").keyup(function () {

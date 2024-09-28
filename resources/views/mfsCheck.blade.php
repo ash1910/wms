@@ -1,7 +1,7 @@
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 //echo session('role');
 }
 else {
@@ -9,7 +9,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -21,24 +21,24 @@ else {
 
 
 <main class="page-content">
-<!---Alert message----> 
+<!---Alert message---->
 @if(session()->has('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-	
+
 <script type="text/javascript">
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
-</script>	
-@endif	
-<!---Alert message---->  
+</script>
+@endif
+<!---Alert message---->
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -52,7 +52,7 @@ $(document).ready(function () {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -68,10 +68,10 @@ $(document).ready(function () {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -89,26 +89,24 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
-SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,charge, `mer_bkash`, 
-b.customer_reg,b.customer_vehicle, c.bill_no, a.dt, a.charge
-FROM `pay` a, customer_info b, bill_mas c 
+SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,charge, `mer_bkash`,
+b.customer_reg,b.customer_vehicle, a.bill, a.dt, a.charge
+FROM `pay` a, customer_info b
 WHERE a.customer_id = b.customer_id
-and b.customer_id= c.customer_id
-and c.job_no = a.job_no
 AND a.`pay_check`='0' and a.`pay_type` = 'bkash'
 order by a.`id` desc;
 ");
-	$sl = '1'; 	$amount='0';		
+	$sl = '1'; 	$amount='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->job_no}}</a></td>
+						<td style="border: 1px solid black;text-align: center;"><a href="@if($item->bill != 'Advance')report02?bill={{$item->bill}}@endif">{{$item->job_no}}</a></td>
 						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
 						<br><b>Car Name:</b> {{$item->customer_vehicle}}
@@ -122,46 +120,46 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-?>					
+?>
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="date" class="form-control" name='approval_dt'>
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Settlement</button>
-					</form>	
-<?php } else {?>	
+					</form>
+<?php } else {?>
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<button class="btn btn-outline-secondary px-3" type="submit" name="" value="" disabled>
 					 Settlement</button>
-					</form>	
-<?php } ?>						
-					</td>	
-						
+					</form>
+<?php } ?>
+					</td>
+
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}  
+		}
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
-<br>				
-			
-				
-				
-				
-				
-				
-				
-				
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
+<br>
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -169,25 +167,25 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

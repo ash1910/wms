@@ -307,10 +307,10 @@ class approvalController extends Controller
 
 
 		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $today, $my_bk_acc1, $customer_nm, $received, '0', $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $approval_dt ? $approval_dt : $today, $my_bk_acc1, $customer_nm, $received, '0', $customer_id, $job_no]);
 
 		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $today, $my_bk_acc2, $customer_nm, '0', $received, $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $approval_dt ? $approval_dt : $today, $my_bk_acc2, $customer_nm, '0', $received, $customer_id, $job_no]);
 
 		/// End Code
 
@@ -382,13 +382,13 @@ class approvalController extends Controller
 		}
 
 		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $today, $my_ChargeAcc1, $customer_nm, $my_ChargeAmt1, '0', $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $approval_dt ? $approval_dt : $today, $my_ChargeAcc1, $customer_nm, $my_ChargeAmt1, '0', $customer_id, $job_no]);
 
 		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $today, $my_bk_acc2, $customer_nm, $received, '0', $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $approval_dt ? $approval_dt : $today, $my_bk_acc2, $customer_nm, $received, '0', $customer_id, $job_no]);
 
 		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $today, 'Receivable against Card', $customer_nm, '0', $my_total_RecAmt, $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $approval_dt ? $approval_dt : $today, 'Receivable against Card', $customer_nm, '0', $my_total_RecAmt, $customer_id, $job_no]);
 
 		/// End Code
 

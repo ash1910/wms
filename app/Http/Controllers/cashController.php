@@ -21,6 +21,9 @@ class cashController extends Controller
 		$bill_no=$r->input('bill_no');//post input
 		return view ('adjustment',['bill_no' => $bill_no]);	
 	}
+
+
+
 	public function adjustment01(Request $r)
 	{
 		$submit=$r->input('submit');//due left
@@ -69,8 +72,191 @@ class cashController extends Controller
 		$customer_id,round(-$due,2),'0','0','0', round($due,2),$dt,$user_id,$pay_type,'0','0','0',
 	'0','0','0','Refund From Job No: '.$job_no,'Advance']);
 		}
+
+
+
+		/// HAPS Code  ---For Sales Adjustment--- 30-08-24
+
+		if($sales_return > 0 || $complementary_work > 0 || $rework > 0 || $damage_work > 0){
+
+
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+			foreach($my_Data as $item)
+		{	
+			
+			$work = $item->work;
+			$parts = $item->parts;
+			$service= $item->service;
+			$total = $item->total;
+			$bill_dt = $item->bill_dt;
+			$customer_nm = $item->customer_nm;
+			
+			
+		} 
+
+			
+		if ($work =='engineering'){
+
+			$myCustomerAcc = 'Workshop Customer';
+		}
+		if ($work =='intercompany'){
+
+			$myCustomerAcc = 'Intercompany Customer';
+		}
+		if ($work =='automobile'){
+
+			$myCustomerAcc = 'Automobile Customer';
+		}
+	
+		$vat = $total-$parts-$service;
+
+		// Partital sales Adjustment-> amount to be deducted proportionately
+		if ($due != $total){
+
+			$vat = ($vat / $total) * $due;
+			$parts = ($parts / $total) * $due;
+			$service = ($service / $total) * $due;
+		}
+		//******* */
+		$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' ");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$Ref = 'SAJ-'.$RefNo;
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+		$myData1 = '( Sales Refund :'.$sales_return ;
+		$myData2 = ', Comp. Work :'.$complementary_work;
+		$myData3 = ', Rework:'.$rework ;
+		$myData4 = ', Damage:'.$damage_work;
+		$myData5 = ' )';
+
+		$narration = $customer_nm . ' '. $myData1 . ' ' . $myData2 . ' '. $myData3 . ' '. $myData4 .' '. $myData5;
+			
+		// if ($vat!=0){
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat,'0', $customer_id, $job_no]);	
+		// }
+				
+		if ($parts!=0){
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, 'Parts Revenue',$customer_nm, $parts+$vat,'0', $customer_id, $job_no]);	
+
+		}
+	
+		if ($service!=0){
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, 'Service Revenue',$customer_nm,  $service+$vat, '0', $customer_id, $job_no]);	
+		}
+		
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $narration, '0', $due, $customer_id, $job_no]);	
+	
+
+		}
+
+		if( $advance_refund < 0){
+
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+				foreach($my_Data as $item)
+			{	
+				$work = $item->work;
+			} 
+
+			if ($work =='engineering'){
+
+				$myCustomerAcc = 'Workshop Customer';
+			}
+			if ($work =='intercompany'){
+
+				$myCustomerAcc = 'Intercompany Customer';
+			}
+			if ($work =='automobile'){
+
+				$myCustomerAcc = 'Automobile Customer';
+			}
+
+
+			$my_refund_type=$r->input('refund01');
+
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+			foreach($my_Data as $item)
+			{	
+				$customer_nm = $item->customer_nm;
+				
+			} 
+
+			$CashBankAcc = $r->input('CashankAcc');
+
+			$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
+			foreach($myRef as $item){$RefNo = $item->id;}
+			
+
+
+			$myNarration = $customer_id.'-'.$customer_nm;
+
+			if($submit=='Adjustment'){
+
+				if($my_refund_type == 'Advance Refund' || $my_refund_type == 'Receivable Refund'){
+
+					$Ref = 'ADR-'.$RefNo;
+					
+					if($my_refund_type == 'Advance Refund'){
+	
+						DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+						VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $myNarration, -$advance_refund, '0', $customer_id, $job_no]);
+	
+					}
+					
+					if($my_refund_type == 'Receivable Refund'){
+						DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+						VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $myNarration, -$advance_refund, '0', $customer_id, $job_no]);
+					}
+					
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $CashBankAcc, $myNarration, '0', -$advance_refund, $customer_id, $job_no]);
+	
+	
+	
+				}
+			}
+			
+
+			if($my_refund_type == 'Advance Transfer'){
+
+				$Ref = 'ADT-'.$RefNo;
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, 'Advance from Customer', $myNarration, -$advance_refund, '0', $customer_id, $job_no]);
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $myNarration, '0', -$advance_refund, $customer_id, $job_no]);
+
+			}
+			
+
+
+		}
+
+
+		//// End HAPS Code ---
+
 		return redirect(route("pay"), 307);
 	}
+
+
+
+
+
+
+
 	public function adjustment02(Request $r)
 	{
 		$pay_type='Service';//post input
@@ -93,8 +279,89 @@ class cashController extends Controller
 		DB::insert('INSERT INTO `suppliers_payment`(`supplier_id`,`bill_numbers`,`paid_amount`,
 		`created_date`,`mode_of_payment`,`due`,`note`)VALUES (?,?,?,?,?,?,?)',
 		[$supplier_id,$supplier_ref,$supplier_adj,$dt,$pay_type,'0',$job_no]);
+
+
+
+		/// HAPS Code  ---For Supplier Adjustment--30-08-24
+
+		$supplier_nm = $pieces[1];
+					
+		$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		foreach($my_Data as $item)
+		{	
+
+		$work = $item->work;
+		$parts = $item->parts;
+		$service= $item->service;
+		$total = $item->total;
+		$bill_dt = $item->bill_dt;
+		$customer_nm = $item->customer_nm;
+
+
+		} 
+
+	
+		if ($work =='engineering'){
+
+			$myCustomerAcc = 'Workshop Customer';
+		}
+		if ($work =='intercompany'){
+	
+			$myCustomerAcc = 'Intercompany Customer';
+		}
+		if ($work =='automobile'){
+	
+			$myCustomerAcc = 'Automobile Customer';
+		}
+
+	
+		$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' ");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$Ref = 'SUA-'.$RefNo;
+
+		//dd($Ref);
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+		$check_ref->delete();
+
+		}
+
+
+		$mySInfo = $supplier_id.'-'.$supplier_nm;
+		$myCInfo = $customer_id.'-'.$customer_nm;
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, 'Supplier Accounts',$mySInfo, $supplier_adj,'0', $supplier_id, $job_no]);	
+		
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $myCInfo, '0', $supplier_adj, $customer_id, $job_no]);	
+
+
+		//dd($supplier_adj);
+
+		// End of Code
+
+
+
+
+
+
+
+
+
+
+
 		return redirect(route("pay"), 307);
 	}
+
+
+
+
+
 	public function adjustment03(Request $r)
 	{
 		$bill=$r->input('bill_no');//post input
@@ -138,8 +405,108 @@ class cashController extends Controller
 		VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$bill.$s,$job_no.'[adj]',$customer_id,'0','0','0','0', 
 		round($due,2),$dt,$user_id,'SYS']);
 
+
+		/// HAPS Code  ---For Customer Adjustment--30-08-24
+
+		///********** for 1 Customer */
+		$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+		foreach($my_Data as $item)
+		{	
+
+		$work = $item->work;
+		$parts = $item->parts;
+		$service= $item->service;
+		$total = $item->total;
+		$bill_dt = $item->bill_dt;
+		$customer_nm = $item->customer_nm;
+
+
+		} 
+
+	
+		if ($work =='engineering'){
+
+			$myCustomerAcc = 'Workshop Customer';
+		}
+		if ($work =='intercompany'){
+	
+			$myCustomerAcc = 'Intercompany Customer';
+		}
+		if ($work =='automobile'){
+	
+			$myCustomerAcc = 'Automobile Customer';
+		}
+
+		///********** for 2 Customer */
+		$my_Data2 = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$vcustomer_id'");
+		foreach($my_Data2 as $item)
+		{	
+
+		$work2 = $item->work;
+		$parts2 = $item->parts;
+		$service2= $item->service;
+		$total2 = $item->total;
+		$bill_dt2 = $item->bill_dt;
+		$customer_nm2 = $item->customer_nm;
+
+
+		} 
+
+
+		if ($work2 =='engineering'){
+
+			$myCustomerAcc2 = 'Workshop Customer';
+		}
+		if ($work2 =='intercompany'){
+
+			$myCustomerAcc2 = 'Intercompany Customer';
+		}
+		if ($work2 =='automobile'){
+
+			$myCustomerAcc2 = 'Automobile Customer';
+		}
+
+		$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' ");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$Ref = 'CuAdj-'.$RefNo;
+
+		//dd($Ref);
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+		$check_ref->delete();
+
+		}
+
+
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc, $customer_nm, $due, '0', $customer_id, $job_no]);	
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $dt, $myCustomerAcc2,$customer_nm2, '0', $due, $vcustomer_id, $job_no]);		
+
+
+
+
 		return redirect(route("pay"), 307);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public function pay01(Request $r)
 	{
 		$advance=$r->input('advance');//post input
@@ -205,6 +572,17 @@ $pay_type,$ref,$note]);
 }
 if($pay_type=="cheque")
 {
+
+		//HAPS Code
+
+		$find_Ch_No = DB::select("SELECT `chequeNo` FROM `pay` WHERE `chequeNo`='$chequeNo'");
+
+		if ( count($find_Ch_No) != 0){
+
+			return redirect ('/chequeApproval')->with('danger', 'Duplicate Cheque Number!');
+			
+		}
+		// End Code
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`vat_pro`,`ait`,
 		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`, `merchant_bank`) 
 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$bill,$job_no,$customer_id,'0',round($bonus,2)
@@ -276,6 +654,255 @@ if($vat_pro!='0')
 		DB::insert('INSERT INTO `vat_pro`(`job_no`) VALUES (?)',[$job_no]);
 }
 
+
+
+	
+	
+	/// HAPS Code   -- Collection from Customer--30-08-24
+
+	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		foreach($my_Data as $item)
+	{	
+		
+		$work = $item->work;
+		$parts = $item->parts;
+		$service= $item->service;
+		$total = $item->total;
+		$bill_dt = $item->bill_dt;
+		$customer_nm = $item->customer_nm;
+		
+		
+	} 
+
+
+	
+	if ($work =='engineering'){
+
+		$myCustomerAcc = 'Workshop Customer';
+	}
+	if ($work =='intercompany'){
+
+		$myCustomerAcc = 'Intercompany Customer';
+	}
+	if ($work =='automobile'){
+
+		$myCustomerAcc = 'Automobile Customer';
+	}
+
+	//dd($myCustomerAcc);
+
+	//******************* */
+
+	if ($pay_type=="cash"){
+			
+		$PartReceived = $received ;
+		$TotalReceive = $received + $bonus + $vat_wav + $ait + $vat_pro;
+	
+	}
+	
+	
+	if ($pay_type=="online"){
+		$bankacc = $r->input('BankAcc1');//post input
+
+		$PartReceived = $received;
+		$TotalReceive = $received + $bonus + $vat_wav + $ait + $vat_pro;
+	
+		
+	}
+
+	if ($pay_type=="bkash"){
+		$bankacc = $r->input('BankAcc2');//post input
+		$card_charges_acc = $r->input('BankAcc22');//post input
+		
+		$PartReceived = $received;
+		$TotalReceive = $received + $bonus + $charge + $vat_wav + $ait + $vat_pro;
+
+		
+	}
+
+	if ($pay_type=="card"){
+		$bankacc = $r->input('BankAcc4');//post input
+		$card_charges_acc = $r->input('BankAcc44');//post input
+		
+		$PartReceived = $received;
+		$TotalReceive = $received + $bonus + $charge + $vat_wav + $ait + $vat_pro;
+	
+		
+	}
+	
+
+
+	$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+	foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+
+	$myRef= DB::select("SELECT max(id) as id FROM `pay` WHERE `customer_id` = '$customer_id' AND `received` ='$received'");
+	foreach($myRef as $item){$RefNo = $item->id;}
+	$Ref = 'COL-'.$RefNo;
+
+	//dd($Ref);
+	
+	$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}	
+
+
+		if ($pay_type == 'cash' or $pay_type=="online" ){
+			
+			if($pay_type == 'cash'){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Cash at Workshop' , $customer_nm, $PartReceived, '0', $customer_id, $job_no]);	
+			}
+
+			if($pay_type == 'online'){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $bankacc , $customer_nm, $PartReceived, '0', $customer_id, $job_no]);	
+			}
+			
+			
+
+			if ($bonus!=0){
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer', $customer_nm, $bonus, '0', $customer_id, $job_no]);
+			}
+			if ($vat_wav!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_wav, '0', $customer_id, $job_no]);
+				}
+			if ($ait!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
+				}
+			if ($vat_pro!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
+				}
+		
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc , $customer_nm, '0', $TotalReceive, $customer_id, $job_no]);	
+	
+			
+		}
+	
+		if ($pay_type=="bkash"  ){
+
+	
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $bankacc ,$customer_nm, $PartReceived, '0', $customer_id, $chequeNo, $chequeDt, $bank, $job_no]);
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $card_charges_acc  ,$customer_nm, $charge, '0', $customer_id, $chequeNo, $chequeDt, $bank, $job_no]);
+
+			if ($bonus!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer',$customer_nm, $bonus, '0', $customer_id, $job_no]);
+			}
+			if ($vat_wav!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat_wav, '0', $customer_id, $job_no]);
+			}
+			if ($ait!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
+				}	
+			if ($vat_pro!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
+				}
+		
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc ,$customer_nm, '0', $TotalReceive, $customer_id, $job_no]);	
+	
+	
+		}
+
+		if ( $pay_type=="card"  ){
+
+		
+	
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $bankacc ,$customer_nm, $PartReceived+$charge, '0', $customer_id, $chequeNo, $chequeDt, $bank, $job_no]);
+
+			if ($bonus!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer',$customer_nm, $bonus, '0', $customer_id, $job_no]);
+			}
+			if ($vat_wav!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat_wav, '0', $customer_id, $job_no]);
+			}
+			if ($ait!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
+				}	
+			if ($vat_pro!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
+				}
+		
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc ,$customer_nm, '0', $TotalReceive, $customer_id, $job_no]);	
+	
+	
+		}
+
+
+		if ($pay_type == 'cheque'){
+
+			$myRef= DB::select("SELECT max(id) as id FROM `pay`");
+			foreach($myRef as $item){$RefNo = $item->id;}
+			$Ref = 'COL-'.$RefNo;
+			
+			if ( $due01 < 0  ){
+				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro+$due01;
+			}else{
+				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro;
+			}
+			
+	
+		
+			if ($bonus!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer',$customer_nm, $bonus, '0', $customer_id, $job_no]);
+			}
+			if ($vat_wav!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat_wav, '0', $customer_id, $job_no]);
+			}
+			if ($ait!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
+				}	
+			if ($vat_pro!=0){
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
+				}
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc ,$customer_nm, '0', $TotalReceive, $customer_id, $job_no]);	
+		
+	
+		}
+		
+		// if ( $due01 < 0  ){
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, -$due01,'0', $customer_id, $job_no]);	
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer' ,$customer_nm, '0', -$due01, $customer_id, $job_no]);	
+	
+
+		// }
+		
+
+	//END HAPS Code---
+
+
+
 		if($due01!='0')
 			{
 				DB::table('bill_mas')->where('bill_no', $bill)
@@ -296,6 +923,11 @@ if($vat_pro!='0')
 	{
 		return view ('form06');	
 	}
+
+
+
+
+
 	public function pay02(Request $r)
 	{
 		$job_no=$r->input('job_no');//post input
@@ -335,6 +967,17 @@ if($vat_pro!='0')
 		}
 		if($pay_type=="cheque")
 		{
+			//HAPS Code
+
+			$find_Ch_No = DB::select("SELECT `chequeNo` FROM `pay` WHERE `chequeNo`='$chequeNo'");
+
+			if ( count($find_Ch_No) != 0){
+	
+				return redirect ('/chequeApproval')->with('danger', 'Duplicate Cheque Number!');
+				
+			}
+			//** End */
+
 				DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 				`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`trix`, `send`, `bank`, `chequeNo`, `chequeDt`, `merchant_bank`) 
 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
@@ -392,6 +1035,144 @@ if($vat_pro!='0')
 			,"", -round($received+$charge,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$card_bank,$card_no,$card_type,
 			$merchant_bank,$charge]);
 		}
+
+
+
+
+
+
+		
+		
+		//HAPS Code   --- Advance Received Pay02 --- by Job Number--30-08-24
+
+
+		if ($pay_type=="online"){
+			$bankacc = $r->input('BankAcc1');//post input
+		}
+
+		if ($pay_type=="bkash"){
+			$bankacc = $r->input('BankAcc2');//post input
+			$card_charges_acc = $r->input('BankAcc22');//post input
+		}
+
+		if ($pay_type=="card"){
+			$bankacc = $r->input('BankAcc4');//post input
+			$card_charges_acc = $r->input('BankAcc44');//post input
+		}
+		
+
+		$myRef= DB::select("SELECT max(id) as id FROM `pay`");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$vRef = 'ADV-'.$RefNo;
+
+		$myCustName = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+		foreach($myCustName as $item){$custName = $item->customer_nm;}
+
+		$custInfo = $customer_id.' '.$custName;
+
+	
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $vRef);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+
+		if ($received > 0) {
+
+
+			if ($pay_type == 'cash'  ){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Cash at Workshop',$custInfo, $received, '0', $customer_id, $job_no]);	
+			
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $received, $customer_id, $job_no]);
+
+			}
+
+			if ( $pay_type=="card" ){
+
+				if ($charge > 0){
+
+					$totalRec = $received+$charge;
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Receivable against Card',$custInfo, $totalRec,'0', $customer_id, $job_no]);	
+			
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $totalRec, $customer_id, $job_no]);	
+			
+
+				}
+
+				if ($charge == 0){
+
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Receivable against Card',$custInfo, '0', $received, $customer_id, $job_no]);	
+			
+	
+
+				}
+
+
+			}
+
+			if($pay_type=="online")
+			{
+				$charge= 0;
+			}
+
+
+			if ($pay_type=="bkash" or $pay_type=="online" ){
+
+				if ($charge > 0){
+
+					$totalRec = $received+$charge;
+
+					
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $card_charges_acc  ,$custInfo, $charge, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $totalRec, $customer_id, $job_no]);	
+			
+
+				}
+
+				if ($charge == 0){
+
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $received, $customer_id, $job_no]);	
+			
+	
+
+				}
+
+		
+			}
+
+			
+			
+
+		}
+
+		// End Code
+
+
 		
 		return redirect(route("payAdvance",['customer_id' => $customer_id]), 307);
 
@@ -444,6 +1225,17 @@ if($vat_pro!='0')
 		}
 		if($pay_type=="cheque")//need to developer
 		{	
+
+				//HAPS Code
+
+				$find_Ch_No = DB::select("SELECT `chequeNo` FROM `pay` WHERE `chequeNo`='$chequeNo'");
+
+				if ( count($find_Ch_No) != 0){
+		
+					return redirect ('/chequeApproval')->with('danger', 'Duplicate Cheque Number!');
+					
+				}
+	
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,
 		`due`, `dt`, `post_dt`, `user_id`,`pay_type`,`ref`,`note`,`bank`, `chequeNo`, `chequeDt`,`merchant_bank`) 
 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',["Advance",$job_no,$customer_id,'0',""
@@ -507,6 +1299,152 @@ if($vat_pro!='0')
 			,"", -round($received+$charge,2),$dt,$user_id,$pay_type,$ref,$note,$trix,$card_bank,$card_no,$card_type,
 			$merchant_bank,$charge]);
 		}
+
+
+
+
+		//HAPS Code   --- Advance Received Pay04--For Registration & Chasis Number--30-08-24
+
+
+		if ($pay_type=="online"){
+			$bankacc = $r->input('BankAcc1');//post input
+		}
+
+		if ($pay_type=="bkash"){
+			$bankacc = $r->input('BankAcc2');//post input
+			$card_charges_acc = $r->input('BankAcc22');//post input
+		}
+
+		if ($pay_type=="card"){
+			$bankacc = $r->input('BankAcc4');//post input
+			$card_charges_acc = $r->input('BankAcc44');//post input
+		}
+		
+
+		$myRef= DB::select("SELECT max(id) as id FROM `pay`");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$vRef = 'ADV-'.$RefNo;
+
+		$myCustName = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+		foreach($myCustName as $item){$custName = $item->customer_nm;}
+
+		$custInfo = $customer_id.' '.$custName;
+
+	
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $vRef);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+
+		if ($received > 0) {
+
+
+			if ($pay_type == 'cash'  ){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Cash at Workshop',$custInfo, $received, '0', $customer_id, $job_no]);	
+			
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $received, $customer_id, $job_no]);
+
+			}
+
+			if ( $pay_type=="card" ){
+
+				if ($charge > 0){
+
+					$totalRec = $received+$charge;
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Receivable against Card',$custInfo, $totalRec,'0', $customer_id, $job_no]);	
+			
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $totalRec, $customer_id, $job_no]);	
+			
+					
+					// DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					// VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $card_charges_acc  ,$custInfo, $charge, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					// DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					// VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					// DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					// VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Receivable against Card',$custInfo, '0', $totalRec, $customer_id, $job_no]);	
+			
+
+				}
+
+				if ($charge == 0){
+
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Receivable against Card',$custInfo, '0', $received, $customer_id, $job_no]);	
+			
+	
+
+				}
+
+
+			}
+
+			if($pay_type=="online")
+			{
+				$charge= 0;
+			}
+
+
+			if ($pay_type=="bkash" or $pay_type=="online" ){
+
+				if ($charge > 0){
+
+					$totalRec = $received+$charge;
+
+					
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $card_charges_acc  ,$custInfo, $charge, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $totalRec, $customer_id, $job_no]);	
+			
+
+				}
+
+				if ($charge == 0){
+
+
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, $bankacc ,$custInfo, $received, '0', $customer_id, $chequeNo, $chequeDt, $bankacc, $job_no]);
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?)',['Advance Receipt','0',$vRef, $dt, 'Advance from Customer',$custInfo, '0', $received, $customer_id, $job_no]);	
+			
+	
+
+				}
+
+		
+			}
+
+			
+			
+
+		}
+
+		// End Code
+
+
+
+
 		return redirect(route("payAdvance",['customer_id' => $customer_id]), 307);
 
 		//return view ('payAdvance',['customer_id' => $customer_id]);
@@ -661,6 +1599,10 @@ if($vat_pro!='0')
 	{
 		return view ('chequeConfirm');	
 	}
+
+
+
+
 	public function chequeApproval01(Request $r)
 	{
 		$job_no=$r->input('job_no');//post input
@@ -670,8 +1612,21 @@ if($vat_pro!='0')
 		$received=$r->input('received');//post input
 		$due=$r->input('due');//post input
 		$dt = date("Y-m-d");
+
+
 		if($job_no!='Advance')
 		{		
+			///HAPS Code
+			$my_bk_acc2 = $r->bank_02[0];
+			if ($my_bk_acc2 == null or $my_bk_acc2 == '--Select Bank A/C--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			$my_adj_type = $r->adj1[0];
+			if ($my_adj_type == null or $my_adj_type == '--Select Adjust Type--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			//End Code
+
 			$result = DB::table('pay')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
@@ -680,9 +1635,87 @@ if($vat_pro!='0')
 			->update(['received' => $received,'due' => $due,'dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);
+
+
+				
+			/// HAPS Code -- Cheque Received from Customer--02
+			
+			$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+			foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+		
+			$myRef= DB::select("SELECT id FROM `pay` WHERE `chequeNo` = '$chequeNo' AND `received` ='$received'");
+			foreach($myRef as $item){$RefNo = $item->id;}
+
+			//dd($RefNo );
+			$Ref = 'COL-'.$RefNo;
+
+			// $check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			// if ( $check_ref !== null){
+
+			// 	$check_ref->delete();
+		
+			// }	
+
+			
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+			foreach($my_Data as $item)
+			{	
+				$work = $item->work;
+
+			} 
+
+			
+			if ($work =='engineering'){
+
+				$myCustomerAcc = 'Workshop Customer';
+			}
+			if ($work =='intercompany'){
+
+				$myCustomerAcc = 'Intercompany Customer';
+			}
+			if ($work =='automobile'){
+
+				$myCustomerAcc = 'Automobile Customer';
+			}
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc2, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);	
+			
+			if($my_adj_type == 'Advance'){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+		
+			}else{
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+	
+			}
+			
+			/// End Code
+
+
+
 		}
 		if($job_no=='Advance')
 		{		
+
+			///HAPS Code
+			$my_bk_acc4 = $r->bank_04[0];
+			if ($my_bk_acc4 == null or $my_bk_acc4 == '--Select Bank A/C--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+
+			$my_adj_type = $r->adj1[0];
+			if ($my_adj_type == null or $my_adj_type == '--Select Adjust Type--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+		
+			//End Code
+
+
 			$result = DB::table('pay')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
@@ -692,9 +1725,74 @@ if($vat_pro!='0')
 			->update(['received' => $received,'due' => $due,'dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);
+
+		
+			/// HAPS Code -- Cheque Received from Customer -- 04
+			
+			$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+			foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+		
+			$myRef= DB::select("SELECT id FROM `pay` WHERE `chequeNo` = '$chequeNo' AND `received` ='$received'");
+			foreach($myRef as $item){$RefNo = $item->id;}
+			$Ref = 'ADV-'.$RefNo;
+
+			// $check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			// if ( $check_ref !== null){
+
+			// 	$check_ref->delete();
+		
+			// }	
+
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+			foreach($my_Data as $item)
+			{	
+				$work = $item->work;
+
+			} 
+
+			
+			if ($work =='engineering'){
+
+				$myCustomerAcc = 'Workshop Customer';
+			}
+			if ($work =='intercompany'){
+
+				$myCustomerAcc = 'Intercompany Customer';
+			}
+			if ($work =='automobile'){
+
+				$myCustomerAcc = 'Automobile Customer';
+			}
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc4, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);	
+			
+			if($my_adj_type == 'Advance'){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+		
+			}else{
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+	
+			}		
+			/// End Code
 		}
+
+
 		return redirect ('/chequeApproval')->with('alert', 'Cheque Approval Sucessfully!!!');
 	}
+
+
+
+
+
+
+
+
 	public function chequeApproval02(Request $r)
 	{
 		$job_no=$r->input('job_no');//post input
@@ -704,8 +1802,22 @@ if($vat_pro!='0')
 		$received=$r->input('received');//post input
 		$due=$r->input('due');//post input
 		$dt = date("Y-m-d");
+
+
 		if($job_no!='Advance')
 		{		
+			///HAPS Code
+			$my_bk_acc1 = $r->bank_01[0];
+			if ($my_bk_acc1 == null or $my_bk_acc1 == '--Select Bank A/C--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			
+			$my_adj_type = $r->adj1[0];
+			if ($my_adj_type == null or $my_adj_type == '--Select Adjust Type--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			//End Code
+
 			$result = DB::table('pay')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
@@ -714,9 +1826,78 @@ if($vat_pro!='0')
 			->update(['received' => $received,'due' => $due,'pay_type' => 'cash','dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);
+
+				/// HAPS Code -- Cheque Received from Customer---01
+		
+				$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+				foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+			
+				$myRef= DB::select("SELECT id FROM `pay` WHERE `chequeNo` = '$chequeNo' AND `received` ='$received'");
+				foreach($myRef as $item){$RefNo = $item->id;}
+				$Ref = 'COL-'.$RefNo;
+	
+				// $check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+	
+				// if ( $check_ref !== null){
+	
+				// 	$check_ref->delete();
+			
+				// }	
+	
+				
+				$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+				foreach($my_Data as $item)
+				{	
+					$work = $item->work;
+	
+				} 
+	
+				
+				if ($work =='engineering'){
+	
+					$myCustomerAcc = 'Workshop Customer';
+				}
+				if ($work =='intercompany'){
+	
+					$myCustomerAcc = 'Intercompany Customer';
+				}
+				if ($work =='automobile'){
+	
+					$myCustomerAcc = 'Automobile Customer';
+				}
+	
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc1, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);	
+				
+				if($my_adj_type == 'Advance'){
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+			
+				}else{
+	
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+		
+				}
+				/// End Code
+
 		}
+
+
 		if($job_no=='Advance')
 		{		
+			///HAPS Code
+			$my_bk_acc3 = $r->bank_03[0];
+			if ($my_bk_acc3 == null or $my_bk_acc3 == '--Select Bank A/C--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			$my_adj_type = $r->adj1[0];
+			if ($my_adj_type == null or $my_adj_type == '--Select Adjust Type--'){
+				return redirect ('/chequeApproval')->with('alert', 'Please select a bank acc and adj type!');
+			}
+			//End Code
+
 			$result = DB::table('pay')
 			->where('job_no', $job_no)
 			->where('chequeNo', $chequeNo)
@@ -726,15 +1907,81 @@ if($vat_pro!='0')
 			->update(['received' => $received,'due' => $due,'pay_type' => 'cash','dt' => $dt]);
 			$result = DB::table('cheque_pending')->where('id', $id)->where('flag', '0')
 			->update(['flag' => '1','confirm' => '0']);
+
+						
+			/// HAPS Code -- Cheque Received from Customer --03
+		
+			$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+			foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+		
+			$myRef= DB::select("SELECT id FROM `pay` WHERE `chequeNo` = '$chequeNo' AND `received` ='$received'");
+			foreach($myRef as $item){$RefNo = $item->id;}
+			$Ref = 'ADV-'.$RefNo;
+
+			// $check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			// if ( $check_ref !== null){
+
+			// 	$check_ref->delete();
+		
+			// }	
+
+			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+			foreach($my_Data as $item)
+			{	
+				$work = $item->work;
+
+			} 
+
+			
+			if ($work =='engineering'){
+
+				$myCustomerAcc = 'Workshop Customer';
+			}
+			if ($work =='intercompany'){
+
+				$myCustomerAcc = 'Intercompany Customer';
+			}
+			if ($work =='automobile'){
+
+				$myCustomerAcc = 'Automobile Customer';
+			}
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc3, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);	
+			
+			if($my_adj_type == 'Advance'){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+		
+			}else{
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);	
+	
+			}	
+			/// End Code
+
+
 		}
 		
 		return redirect ('/chequeApproval')->with('alert', 'Cheque Approval Sucessfully!!!');
-	}	
+	}
+	
+	
+
+
 	public function chequeApproval03(Request $r)
 	{
 		$id=$r->input('id');//post input
 		return view ('chequeApproval03',['id' => $id]);	
 	}
+
+
+
+
+
 	public function chequeApproval04(Request $r)
 	{
 		$id=$r->input('id');//post input
@@ -780,6 +2027,9 @@ if($vat_pro!='0')
 		$chequeNo=$r->input('chequeNo');//post input
 		return view ('chequeConfirm02',['id' => $id,'job_no' => $job_no,'chequeNo' => $chequeNo]);	
 	}
+
+
+
 	public function chequeConfirm03(Request $r)
 	{
 		$id=$r->input('id');//post input
@@ -805,10 +2055,56 @@ if($vat_pro!='0')
 
 		DB::insert('INSERT INTO `cheque_disorder`(`job_no`, `chequeNo`, `dt`, `user_id`) VALUES (?,?,?,?)',[$job_no,$chequeNo,$dt,$user_id]);
 
+		
+		/// HAPS Code -- Cheque Dishonoured Entry
+
+
+		$myRef= DB::select("SELECT id FROM `pay` WHERE `chequeNo` = '$chequeNo' ");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$Ref = 'DIS-'.$RefNo;
+
+		$dt = date("Y-m-d");
+		
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}	
+
+		$dt_tran_credit = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ch_no`='$chequeNo' AND `credit` > '0' ");
+
+		$dt_tran_debit = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ch_no`='$chequeNo' AND `debit` > '0' ");
+
+		foreach($dt_tran_credit as $itemCr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $itemCr->ahead, $itemCr->narration, $itemCr->credit, 0, $itemCr->others_id, $chequeNo, $job_no]);
+			
+		}
+
+		foreach($dt_tran_debit as $itemDr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $itemDr->ahead, $itemDr->narration, '0', $itemDr->debit, $itemDr->others_id, $chequeNo, $job_no]);
+			
+		}
+
+		
+
+
+
+		/// End Code
+
+
 		return redirect ('/chequeConfirm')->with('alert', 'Deny Image Upload Sucessfully!!!');
 	}
 	
 	
+
+
+
 	public function advanceReceipt()
 	{
 		return view ('advanceReceipt');	
@@ -907,8 +2203,20 @@ if($vat_pro!='0')
 		$customer_id=$r->input('customer_id');//post input
 		return view ('payAdvance',['customer_id' => $customer_id]);	
     }
+
+
+
+
 	public function refund(Request $r)
 	{
+
+		///HAPS Code
+		$my_bk_acc1 = $r->bank_01[0];
+		if ($my_bk_acc1 == null or $my_bk_acc1 == '--Select Bank A/C--'){
+			return redirect ('advanceReceipt')->with('alert', 'Please select a bank account!');
+		}
+
+
 		$id=$r->input('id');//post input
 		
 		$result = DB::select("
@@ -932,8 +2240,92 @@ if($vat_pro!='0')
 		$dt,$user_id]);					
 		
 		$result = DB::table('pay')->where('id', $id)->delete();
+
+
+		
+		/// HAPS Code for Refund
+
+
+		$my_Data = DB::select("SELECT *  FROM `bill_mas` where `customer_id` = '$customer_id'");
+		foreach($my_Data as $item)
+		{	
+			
+			$work = $item->work;
+			$parts = $item->parts;
+			$service= $item->service;
+			$total = $item->total;
+			$bill_dt = $item->bill_dt;
+			$customer_nm = $item->customer_nm;
+			
+			
+		} 
+
+		
+		if ($work =='engineering'){
+
+			$myCustomerAcc = 'Workshop Customer';
+		}
+		if ($work =='intercompany'){
+
+			$myCustomerAcc = 'Intercompany Customer';
+		}
+		if ($work =='automobile'){
+
+			$myCustomerAcc = 'Automobile Customer';
+		}
+
+
+		$dt_custInfo = DB::select("SELECT `customer_nm` FROM `customer_info` WHERE `customer_id` ='$customer_id'");
+		foreach($dt_custInfo as $item){	$customer_nm = $item->customer_nm;}
+
+		$dt_Ref_id = DB::select("SELECT * FROM `pay` WHERE `customer_id` ='$customer_id'");
+		foreach($dt_Ref_id as $item){	$myRef_id= $item->id;}
+
+		if ($job_no == 'Advance'){
+
+			$Ref = 'ADR-'.$myRef_id;
+		}else{
+			$Ref = 'ADR-'.$job_no;
+		}
+		
+
+
+	
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}	
+
+		$dt = date("Y-m-d");
+
+	
+
+		// ****** Reverse Entry
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer' , $customer_nm, $received, '0', $customer_id, $job_no]);	
+	
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc1 , $customer_nm, '0', $received, $customer_id, $job_no]);	
+
+		
+
+		//END HAPS Code---
+
+			
 		return view ('advanceReceipt');	
 	}
+
+
+
+
+
+
+
+
 	public function advanceRefund()
 	{
 		return view ('advanceRefund');	
@@ -1091,6 +2483,8 @@ $bank1,$chequeNo1,$chequeDt1]);
 		return view ('bankDeclinePaymentConfirm',['id' => $id]);	
 	}
 
+
+
 	public function bankDeclinePaymentSubmit(Request $r)
 	{
 		$id=$r->input('id');//post input
@@ -1129,6 +2523,80 @@ $bank1,$chequeNo1,$chequeDt1]);
 
 		$result = DB::table('pay')->where('id', $id)
 		->update(['received' => '0','bonus' => '0','vat_wav' => '0','vat_pro' => '0','ait' => '0','due' => '0','charge' => '0']);
+
+
+
+		
+		/// HAPS Code -- For reverse Entry POS
+
+		
+		$ref_col=$r->input('vch_no');//post input
+		
+		
+		$Ref = $ref_col.'R';
+
+		//dd($Ref);
+
+		// ************** Entry-1 *****************
+
+		$dt_tran_credit = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ref`='$ref_col' AND `credit` > '0' ");
+
+		$dt_tran_debit = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ref`='$ref_col' AND `debit` > '0' ");
+
+		foreach($dt_tran_credit as $itemCr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $itemCr->ahead, $itemCr->narration, $itemCr->credit, 0, $itemCr->others_id, $itemCr->ch_no, $itemCr->job_no]);
+			
+		}
+
+		foreach($dt_tran_debit as $itemDr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $itemDr->ahead, $itemDr->narration, '0', $itemDr->debit, $itemDr->others_id, $itemCr->ch_no, $itemCr->job_no]);
+			
+		}
+
+		// ************** Entry-2 *****************
+
+		$ref_col2=$r->input('vch_no2');//post input
+		
+		
+		$Ref2 = $ref_col2.'R';
+
+		//dd($Ref);
+
+	
+
+		$dt_tran_credit2 = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ref`='$ref_col2' AND `credit` > '0' ");
+
+		$dt_tran_debit2 = DB::select("SELECT * FROM `tbl_acc_details` WHERE `ref`='$ref_col2' AND `debit` > '0' ");
+
+		foreach($dt_tran_credit2 as $itemCr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref2, $dt, $itemCr->ahead, $itemCr->narration, $itemCr->credit, 0, $itemCr->others_id, $itemCr->ch_no, $itemCr->job_no]);
+			
+		}
+
+		foreach($dt_tran_debit2 as $itemDr){
+			
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref2, $dt, $itemDr->ahead, $itemDr->narration, '0', $itemDr->debit, $itemDr->others_id, $itemCr->ch_no, $itemCr->job_no]);
+			
+		}
+		
+
+
+
+		/// End Code
+
+
+
+
+
+
+
 
 		return redirect ('/bankDeclineForm')->with('alert', 'Bank Decline (POS) Image Upload Sucessfully!!!');
 	}

@@ -84,6 +84,40 @@ class bomController extends Controller
 		DB::table('purchase_mas')->where('purchase_id', $purchase_id)
 		->update(['amount' => $amount02, 'user_id' => session('user_id')]);
 
+
+		/// HAPS Code ---08-09-24
+		$Sup_id = $r->input('SupID');
+		$mySup= DB::select("SELECT `supplier_name` FROM `suppliers` WHERE `supplier_id`='$Sup_id'");
+		foreach($mySup as $item){$Sup_name = $item->supplier_name;}
+		
+		$sup_info = $Sup_id . ' - '.$Sup_name;
+
+	
+		
+		$Ref = 'PIN-'.$purchase_id;
+
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			if ( $check_ref !== null){
+
+				$check_ref->delete();
+		
+			}
+		
+		$myAmount = DB::select("SELECT sum(amount) as amount FROM `purchase_det` WHERE `purchase_id` = '$purchase_id'");
+		foreach($myAmount as $item){$tamount = $item->amount;}
+			
+		if ($tamount > 0 ){
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$sup_info, $tamount, '0', $Sup_id, $job_no]);	
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Invoice','0',$Ref, $dt, 'Supplier Accounts',$sup_info, '0', $tamount, $Sup_id, $job_no]);
+		}
+		
+
 		return back();
 	}
 	public function purchase04(Request $r)
@@ -158,13 +192,58 @@ class bomController extends Controller
 		//update
 		DB::table('purchase_mas')->where('purchase_id', $purchase_id)
 		->update(['amount' => $amount]);
+
+		/// HAPS Code -- 30-08-24
+		$Sup_id = $r->input('SupID2');
+		$mySup= DB::select("SELECT `supplier_name` FROM `suppliers` WHERE `supplier_id`='$Sup_id'");
+		foreach($mySup as $item){$Sup_name = $item->supplier_name;}
+		
+		$sup_info = $Sup_id . ' - '.$Sup_name;
+
+
+		$job_no=$r->input('job_no');//post input
+
+		$dt=date("Y-m-d");//post input
+
+		$Ref = 'PIN-'.$purchase_id;
+
+		//dd($purchase_id);
+
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			if ( $check_ref !== null){
+
+				$check_ref->delete();
+		
+			}
+		
+		$myAmount = DB::select("SELECT sum(amount) as amount FROM `purchase_det` WHERE `purchase_id` = '$purchase_id'");
+		foreach($myAmount as $item){$tamount = $item->amount;}
+			
+		if ($tamount > 0 ){
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$sup_info, $tamount, '0', $Sup_id, $job_no]);	
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Invoice','0',$Ref, $dt, 'Supplier Accounts',$sup_info, '0', $tamount, $Sup_id, $job_no]);
+		}
+		
+
 	    return back();
 	}
+
+
+
+
 
 	public function issue()
 	{
 		return view ('issue',['job_no'=>'']);
 	}
+
+
 	public function issue01(Request $r)
 	{
 		$prod=$r->input('prod');//post input
@@ -204,19 +283,94 @@ class bomController extends Controller
 			VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$prod_id,$prod_name,$qty,$job_no,$note, $user_id, $dt,
 			$avg_price*$qty, $avg_price, $req, 'GIN-'.$gin]);
 		}
+
+		/// HAPS Code 08-09-24
+
+		$Ref = 'ISU-'.$gin;
+
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+		$myAmount = DB::select("SELECT sum(`amount`) as amount FROM `issue` WHERE `job_no`='$job_no';");
+		foreach($myAmount as $item){$amount = $item->amount;}
+
+		
+		//dd($myID);
+		if ($amount > 0){
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-WIP-Spare Parts',$job_no, $amount, '0', '0', $job_no]);	
+	
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$job_no, '0', $amount, '0', $job_no]);	
+
+		}
+
+
+
 		return back()->with('job_no', $job_no)->with('dt', $dt01)->with('req', $req)->with('mess', $mess);
 	}
+
+
+
+
+
 	public function issueDel(Request $r)
 	{
 		$id=$r->input('id');//post input
 		$job_no=$r->input('job_no');//post input
 		$result = DB::table('issue')->delete($id);
+
+		/// HAPS Code -- 08-09-24
+
+		$Ref = 'ISU-'.$id;
+		$dt01=$r->input('dt');//post input
+		$dt=date("Y-m-d");//post input
+	
+
+		$check_ref = DB::table('tbl_acc_details')->where('job_no', $job_no)->where('ref', 'LIKE', '%' . 'ISU-' . '%');
+
+
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+		$myAmount = DB::select("SELECT sum(`amount`) as amount FROM `issue` WHERE `job_no`='$job_no';");
+		foreach($myAmount as $item){$amount = $item->amount;}
+
+		
+
+
+		if ($amount > 0) {
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no` )
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-WIP-Spare Parts',$job_no, $amount, '0', '0',$job_no]);	
+	
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$job_no, '0', $amount, '0', $job_no]);
+
+		}
+
 		return back()->with('job_no', $job_no);
 	}
+
+
 	public function purchaseReturn()
 	{
 		return view ('purchaseReturn');
 	}
+
+
+
 	public function purchaseReturn01(Request $r)
 	{
 		$supplier=$r->input('supplier');//post input
@@ -235,6 +389,9 @@ class bomController extends Controller
 		return view ('purchaseReturn03',['supplier_id'=>$supplier_id,'supplier_ref'=>$supplier_ref,
 		'id'=>$id]);
 	}
+
+
+
 	public function purchaseReturn04(Request $r)
 	{
 		$purchase_id=$r->input('purchase_id');//post input
@@ -275,9 +432,46 @@ class bomController extends Controller
 		//return back();
 		//return view ('purchaseReturn02',['supplier_id'=>$supplier_id,'supplier_ref'=>$supplier_ref]);
 
+		/// HAPS Code -- 08-09-24
+
+		$mySup= DB::select("SELECT `supplier_name` FROM `suppliers` WHERE `supplier_id`='$supplier_id'");
+		foreach($mySup as $item){$Sup_name = $item->supplier_name;}
+		
+		$sup_info = $supplier_id . ' - '.$Sup_name;
+
+
+		//$fileName = $name . $extenstion;
+
+		
+		$Ref = 'PRN-'.$purchase_id;
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+			if ( $check_ref !== null){
+
+				$check_ref->delete();
+		
+			}
+
+		$myAmount = DB::select("SELECT sum(amount) as amount FROM `purchase_det` WHERE `purchase_id` = '$purchase_id' and `amount` < 0");
+		foreach($myAmount as $item){$tamount = $item->amount;}
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no` )
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Return','0',$Ref, $dt, 'Supplier Accounts',$sup_info, ABS($tamount), '0', $supplier_id, $job_no]);	
+
+		DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		VALUES (?,?,?,?,?,?,?,?,?,?)',['Purchases Return','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$sup_info, '0', ABS($tamount), $supplier_id, $job_no]);	
+
+
+
+
 		return redirect('purchaseReturn')->with('alert', 'Purchase Return Done!!')
 		->with('supplier_id',$supplier_id)->with('supplier_ref',$supplier_ref);
 	}
+
+
+
+
 	public function grossProfit()
 	{
 		return view ('grossProfit');
@@ -326,12 +520,16 @@ class bomController extends Controller
 	}
 	public function issueReturn01(Request $r)
 	{
+
+		
 		$job_no =$r->input('job_no');//post input
 		return view ('issueReturn01',['job_no'=>$job_no]);
 
 	}
 	public function issueReturn02(Request $r)
 	{
+		
+
 		$id =$r->input('id');//post input
 		$job_no =$r->input('job_no');//post input
 		return view ('issueReturn02',['job_no'=>$job_no,'id'=>$id]);
@@ -363,9 +561,58 @@ class bomController extends Controller
 		//return view ('issueReturn01',['job_no'=>$job_no]);
 		//return redirect()->route('issueReturn01', ['job_no' => $job_no]);
 		//return redirect(route(('issueReturn01')));
+
+
+
+		/// HAPS Code 08-09-24
+
+		$Ref = 'ISR-'.$grn;
+
+
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $Ref);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+
+		}
+
+		// $myAmount = DB::select("SELECT sum(`amount`) as amount FROM `issue` WHERE `job_no`='$job_no';");
+		// foreach($myAmount as $item){$amount = $item->amount;}
+
+
+		//dd($myID);
+		if ($amount > 0){
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$job_no, $amount, '0', '0', $job_no]);	
+
+			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-WIP-Spare Parts',$job_no, '0', $amount,  '0', $job_no]);	
+
+		
+		}
+
+
+
+
+
+
+
+
+
+
+
+
 		return redirect('issueReturn')->with('alert', 'Issure Return Done!!')
 		->with('job',$job_no);;
 	}
+
+
+
+
+
+
 	public function issueModi(Request $r)
 	{
 		return view ('issueModi');

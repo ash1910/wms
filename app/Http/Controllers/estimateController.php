@@ -527,15 +527,12 @@ class estimateController extends Controller
 		$engineer=$r->input('engineer');//post input
 		$technician=$r->input('technician');//post input
 		$km=$r->input('km');//post input
-        $est_ref=$r->input('est_ref');//post input
-
 		return view ('changeCustomerEst',[
 		'est_no'=>$est_no,
 		'days'=>$days,
 		'engineer'=>$engineer,
 		'technician'=>$technician,
-		'km'=>$km,
-        'est_ref'=>$est_ref
+		'km'=>$km
 		]);
 	}
 	public function changeCustomerEst01(Request $r)
@@ -614,17 +611,6 @@ class estimateController extends Controller
 		$technician=$r->input('technician');//post input
 		DB::table('est_mas')->where('est_no', $est_no)
 		->update(['technician' => $technician]);
-
-		return redirect('/billMemoEst?est_no='.$est_no.'');
-
-	}
-
-    public function changeCustomerEst07(Request $r)
-	{
-		$est_no=$r->input('est_no');//post input
-		$est_ref=$r->input('est_ref');//post input
-		DB::table('est_mas')->where('est_no', $est_no)
-		->update(['est_ref' => $est_ref]);
 
 		return redirect('/billMemoEst?est_no='.$est_no.'');
 

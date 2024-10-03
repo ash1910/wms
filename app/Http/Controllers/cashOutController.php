@@ -45,6 +45,10 @@ class cashOutController extends Controller
 			'dt' => $dt,'supplier_id' => $supplier_id
 			]);			
 	}
+
+
+
+
     public function suppliersPayment03(Request $r)
 	{
 		 $supplier=$r->input('supplier');//post input
@@ -99,9 +103,77 @@ class cashOutController extends Controller
 				->whereIn('supplier_ref', $ids)
 				->update(['paid' => '2']);
 		}
+
+
+
+		//HAPS Code   --- Supllier Payment
+
+		$bankacc=$r->input('BankAcc');//post input
+
+
+		$myRef= DB::select("SELECT max(id) as id FROM `suppliers_payment`");
+		foreach($myRef as $item){$RefNo = $item->id;}
+		$vRef = 'SPY-'.$RefNo;
+	
+		$check_ref = DB::table('tbl_acc_details')->where('ref', $vRef);
+
+		if ( $check_ref !== null){
+
+			$check_ref->delete();
+	
+		}
+
+
+		if ($tamount > 0) {
+
+			$myTotal = $pAmount + $discount;
+
+
+			if ($pay_type == 'Cash'){
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`)
+				VALUES (?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, 'Supplier Accounts', $supplier, $myTotal, '0', $supplier_id]);	
+		
+				if ($discount > 0){
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`)
+					VALUES (?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, 'Discount from Supplier', $supplier, '0', $discount, $supplier_id]);
+				}
+				
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`)
+				VALUES (?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, 'Cash at Workshop', $supplier, '0', $pAmount, $supplier_id]);
+
+			}else{
+
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`)
+				VALUES (?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, 'Supplier Accounts', $supplier, $myTotal, '0', $supplier_id]);	
+		
+				if ($discount > 0){
+					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`)
+					VALUES (?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, 'Discount from Supplier', $supplier, '0', $discount, $supplier_id]);
+				}
+				
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`ch_date`,`b_name`)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',['Supplier Payment','0',$vRef, $pDt, $bankacc , $supplier, '0', $pAmount, $supplier_id, $chequeNo, $chequeDt, $bankacc]);
+
+
+
+			}
+			
+
+		}
+
+		
 		return redirect ('suppliersPayment')->with('alert', 'Suppliers Payment Successfully!');
 
 	}
+
+
+
+
+
+
+
+
 	
 	public function payments()
 	{

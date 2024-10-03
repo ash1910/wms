@@ -1,3 +1,13 @@
+
+<!-- HAPS Code -->
+<?php 
+
+$dt_BankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `child_name`='Cash in Hand' or `child_name`='Cash at Bank'");
+
+?>
+<!-- End Code -->
+
+
 <?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
@@ -60,13 +70,32 @@ $(document).ready(function () {
              <div class="card-header py-3">
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-6">
-                      <h5 class="mb-0">Cheque Approval</h5>
+                      <!-- <h5 class="mb-0">Cheque Approval</h5> -->
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
                       <a href="javascript:;" class="btn btn-sm btn-danger me-2"><i class="bi bi-file-earmark-pdf-fill"></i> Export as PDF</a>
                       <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-secondary"><i class="bi bi-printer-fill"></i> Print</a>
                     </div-->
                   </div>
+				  <!-- HAPS Code -->
+					
+						<select  onchange="myFunction()" id="BankAcc1" name="BankAcc1[]" style="width: 100%;" class="form-select" >
+							<option >--Select Bank A/C--</option>
+							@if(isset( $dt_BankAcc  ))
+								@foreach ( $dt_BankAcc as $acc)
+								<option  value="{{$acc->acc_name}}">{{$acc->acc_name}}</option>
+								@endforeach
+							@endif
+						</select>
+						
+						<select  onchange="myFunction2()" id="Adj_01" name="Adj_01[]" style="width: 100%;" class="form-select" >
+							<option >--Select Adjust Type--</option>
+							<option value="Advance">Adjust with Advance</option>
+							<option value="Customer">Adjust with Customer</option>
+						</select>
+						
+				
+					<!-- End Code -->
              </div>
 		
             <div class="card-body">
@@ -149,6 +178,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="chequeNo" value="{{$item->chequeNo}}">
 					<input type="hidden" name="received" value="{{$item->received}}">
 					<input type="hidden" name="due" value="{{$item->due}}">
+					<!-- HAPS Code -->
+					<input type="hidden"  id="bank_01" name="bank_01[]" value="">
+					<input type="hidden"  id="adj1" name="adj1[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Cash Cheque</button>
 					</form>	
@@ -159,6 +192,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="received" value="{{$item->received}}">
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
+					<!-- HAPS Code -->
+					<input type="hidden"  id="bank_02" name="bank_02[]" value="">
+					<input type="hidden"  id="adj1" name="adj1[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 A/C Payee</button>
 					</form>	
@@ -249,6 +286,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="chequeNo" value="{{$item->chequeNo}}">
 					<input type="hidden" name="received" value="{{$item->received}}">
 					<input type="hidden" name="due" value="{{$item->due}}">
+					<!-- HAPS Code -->
+					<input type="hidden"  id="bank_03" name="bank_03[]" value="">
+					<input type="hidden"  id="adj1" name="adj1[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Cash Cheque</button>
 					</form>	
@@ -259,6 +300,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="received" value="{{$item->received}}">
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
+					<!-- HAPS Code -->
+					<input type="hidden"  id="bank_04" name="bank_04[]" value="">
+					<input type="hidden"  id="adj1" name="adj1[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 A/C Payee</button>
 					</form>	
@@ -357,4 +402,75 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
   <script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
   <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
   <script src="assets/js/table-datatable.js"></script>
+
+
+  
+<script>
+
+function myFunction() {
+	
+	var x = document.getElementById("BankAcc1").value;
+	//document.getElementById("bank_01").value = x;
+
+	var bk_nm_1 =  document.getElementsByName("bank_01[]");
+
+	for (let index = 0; index < bk_nm_1.length; index++ ){
+
+		bk_nm_1[index].value = x;
+
+	}
+
+
+	var bk_nm_2 =  document.getElementsByName("bank_02[]");
+
+	for (let index = 0; index < bk_nm_2.length; index++ ){
+
+		bk_nm_2[index].value = x;
+
+	}
+
+	
+	var bk_nm_3 =  document.getElementsByName("bank_03[]");
+
+	for (let index = 0; index < bk_nm_3.length; index++ ){
+
+		bk_nm_3[index].value = x;
+
+	}
+
+	
+	var bk_nm_4 =  document.getElementsByName("bank_04[]");
+
+	for (let index = 0; index < bk_nm_4.length; index++ ){
+
+		bk_nm_4[index].value = x;
+
+	}
+
+
+}
+
+
+function myFunction2() {
+	
+	var x = document.getElementById("Adj_01").value;
+	//document.getElementById("bank_01").value = x;
+
+	var ck_nm_1 =  document.getElementsByName("adj1[]");
+
+	for (let index = 0; index < ck_nm_1.length; index++ ){
+
+		ck_nm_1[index].value = x;
+
+	}
+
+
+
+}
+
+
+
+</script>
+
+
  @endsection

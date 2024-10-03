@@ -99,6 +99,9 @@ $supplier_ref = $item->supplier_ref;$supplier_id = $item->supplier_id;}
                             
                             <div class="col-12">
                               <div class="d-grid">
+                                <!-- HAPS Code -->
+                                <input type = "hidden" id="SupID" name="SupID" type="text" value = "{{$supplier_id}}"  class="form-control">
+                                <!-- End -->
                                 <button class="btn btn-primary">Add Product</button>
                               </div>
                             </div>
@@ -175,6 +178,9 @@ if (session('role')=="Super Administrator")
 {
 ?>
 							<form style="display: inline;" action="purchaseDel" method="post">{{ csrf_field() }}
+              <!-- HAPS Code -->
+              <input type = "hidden" id="SupID2" name="SupID2" type="text" value = "{{$supplier_id}}"  class="form-control">
+              <!-- END -->
 							<input type="hidden" name="id" value="{{$item->id}}">
 							<button class="btn-danger" style="padding: 4px;" type="submit" name="" value=""><i class="fadeIn animated bx bx-trash"></i>&nbsp;</button> 
 							</form>

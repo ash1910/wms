@@ -1,7 +1,20 @@
-<?php
+<!-- HAPS Code -->
+<?php 
+
+$dt_BankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `type_id`='7' and `child_name`='Cash at Bank'");
+
+$dt_MFSAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `type_id`='7' and `child_name`='Cash at MFS'");
+
+$dt_CardCharges = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `acc_config`='Card Charges' and `grp_status`<>'GR';");
+
+?>
+<!-- End Code -->
+
+
+<?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');
+//return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');
 }
 else {
@@ -9,7 +22,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php
+<?php  
 }
 ?>
 
@@ -24,18 +37,18 @@ $result = DB::select("
 
 SELECT  c.`customer_id`, c.customer_nm, c.customer_mobile, c.customer_vehicle, c.customer_reg
 FROM customer_info c
-WHERE
+WHERE 
 c.customer_id = $customer_id
 ;
 ");
 foreach($result as $item)
-		{
+		{	
 			$customer_id = $item->customer_id;
 			$customer_nm = $item->customer_nm;
 			$customer_mobile = $item->customer_mobile;
 			$customer_reg = $item->customer_reg;
 			$customer_vehicle = $item->customer_vehicle;
-		}
+		}  
 ?>
 
 <main class="page-content">
@@ -52,7 +65,7 @@ foreach($result as $item)
                   </ol>
                 </nav>
               </div>
-
+              
             </div>
             <!--end breadcrumb-->
 
@@ -68,24 +81,24 @@ foreach($result as $item)
                     </div-->
                   </div>
              </div>
-
+		
             <div class="card-body">
-
+              
 					<div class="row row-cols-1 row-cols-xl-2 row-cols-xxl-3">
 
 
-
+                     
                       <div class="col-12 col-lg-4">
                         <div class="card border shadow-none bg-light radius-10">
                           <div class="card-body">
-						  <form action="pay02" method="post">{{ csrf_field() }}
+						  <form action="pay02" method="post">{{ csrf_field() }} 
                               <div class="d-flex align-items-center mb-4">
                                  <div>
                                     <h5 class="mb-0">Advance Money</h5>
                                  </div>
-
+                                 
                               </div>
-
+                               
                               <div class="d-flex align-items-center mb-3">
                                 <div>
                                   <p class="mb-0">Job No </p>
@@ -95,7 +108,7 @@ foreach($result as $item)
 								  <input type="hidden" name="job_no" value="{{$job_no}}">
 							  </div>
                               </div>
-
+                              
                               <div class="d-flex align-items-center mb-3">
                                 <div>
                                   <p class="mb-0">Received </p>
@@ -104,8 +117,8 @@ foreach($result as $item)
                                   Tk. <input id="id-1" name="received" type="text" required>
 
                               </div>
-                              </div>
-
+                              </div>                              
+                            
 							<div class="d-flex align-items-center mb-3" style="width: 100%;">
 								  <div style="width: 30%;">
 									<p class="mb-0">Note</p>
@@ -113,8 +126,8 @@ foreach($result as $item)
 								  <div style="width: 70%;">
 									<input type="text" name="note" style="width: 100%;"/>
 								  </div>
-							</div>
-
+							</div>                            
+								
 
 
 
@@ -128,15 +141,15 @@ foreach($result as $item)
         var Online = document.getElementById("Online");
         var dvOnline = document.getElementById("dvOnline");
         dvOnline.style.display = Online.checked ? "block" : "none";
-
+		
         var Bkash = document.getElementById("Bkash");
         var dvBkash = document.getElementById("dvBkash");
         dvBkash.style.display = Bkash.checked ? "block" : "none";
-
+		
         var Cheque = document.getElementById("Cheque");
         var dvCheque = document.getElementById("dvCheque");
         dvCheque.style.display = Cheque.checked ? "block" : "none";
-
+		
         var Card = document.getElementById("Card");
         var dvCard = document.getElementById("dvCard");
         dvCard.style.display = Card.checked ? "block" : "none";
@@ -166,7 +179,7 @@ foreach($result as $item)
 
 <hr />
 <div id="dvCash" style="display: none">
-
+	
 </div>
 <div id="dvOnline" style="display: none">
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -177,10 +190,28 @@ foreach($result as $item)
 		<select name="merchant_online" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-		</select>
-
+		</select>		
+		
 	  </div>
 	</div>
+
+	<!-- HAPS Code -->
+		<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Bank Acc</p>
+	  </div>
+	  <div style="width: 70%;">
+	  	 <select id="BankAcc1" name="BankAcc1" style="width: 100%;" class="form-select">
+			@if(isset( $dt_BankAcc ))
+				@foreach ( $dt_BankAcc as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
+		</select>
+	  </div>
+	</div>
+	<!-- End Code -->
+
 </div>
 
 <div id="dvBkash" style="display: none">
@@ -192,7 +223,7 @@ foreach($result as $item)
 		<select name="mer_bkash" class="form-select">
 			<option value='797'>bKash (01777781797)</option>
 			<option value='330'>bKash (01777781330)</option>
-		</select>
+		</select>		
 	  </div>
 	</div>
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -211,6 +242,37 @@ foreach($result as $item)
 		<input type="text" name="send" style="width: 100%;"/>
 	  </div>
 	</div>
+	<!-- HAPS Code -->
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Bank Acc</p>
+	  </div>
+	  <div style="width: 70%;">
+	  	 <select id="BankAcc2" name="BankAcc2" style="width: 100%;" class="form-select" >
+			@if(isset( $dt_MFSAcc ))
+				@foreach ( $dt_MFSAcc as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
+		</select>
+	  </div>
+	</div>
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Card Chg. Acc</p>
+	  </div>
+	  <div style="width: 70%;">
+	  	 <select id="BankAcc22" name="BankAcc22" style="width: 100%;" class="form-select" >
+			@if(isset( $dt_CardCharges  ))
+				@foreach ( $dt_CardCharges as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
+		</select>
+	  </div>
+	</div>
+	<!-- End Code -->
+	
 </div>
 
 
@@ -254,7 +316,6 @@ foreach($result as $item)
 			<option value='Modhumoti Bank Limited'>Modhumoti Bank Limited</option>
 			<option value='Mutual Trust Bank Limited'>Mutual Trust Bank Limited</option>
 			<option value='National Bank Limited'>National Bank Limited</option>
-            <option value='NCC Bank Limited'>NCC Bank Limited</option>
 			<option value='NRB Bank Limited'>NRB Bank Limited</option>
 			<option value='NRB Commercial Bank Ltd'>NRB Commercial Bank Ltd</option>
 			<option value='One Bank Limited'>One Bank Limited</option>
@@ -303,8 +364,8 @@ foreach($result as $item)
 		<select name="merchant_checque" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-		</select>
-
+		</select>		
+		
 	  </div>
 	</div>
 </div>
@@ -351,7 +412,6 @@ foreach($result as $item)
 			<option value='Modhumoti Bank Limited'>Modhumoti Bank Limited</option>
 			<option value='Mutual Trust Bank Limited'>Mutual Trust Bank Limited</option>
 			<option value='National Bank Limited'>National Bank Limited</option>
-            <option value='NCC Bank Limited'>NCC Bank Limited</option>
 			<option value='NRB Bank Limited'>NRB Bank Limited</option>
 			<option value='NRB Commercial Bank Ltd'>NRB Commercial Bank Ltd</option>
 			<option value='One Bank Limited'>One Bank Limited</option>
@@ -396,7 +456,7 @@ foreach($result as $item)
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
-
+		
 	  </div>
 	</div>
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -407,14 +467,46 @@ foreach($result as $item)
 	  	<select name="merchant" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+		</select>	
+	  </div>
+	</div>
+
+	<!-- HAPS Code -->
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Bank Acc</p>
+	  </div>
+	  <div style="width: 70%;">
+	  	 <select id="BankAcc4" name="BankAcc4" style="width: 100%;" class="form-select">
+			@if(isset( $dt_BankAcc  ))
+				@foreach ( $dt_BankAcc as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
 		</select>
 	  </div>
 	</div>
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Card Chg. Acc</p>
+	  </div>
+	  <div style="width: 70%;">
+	  	 <select id="BankAcc44" name="BankAcc44" style="width: 100%;" class="form-select" >
+			@if(isset( $dt_CardCharges  ))
+				@foreach ( $dt_CardCharges as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
+		</select>
+	  </div>
+	</div>
+	<!-- End Code -->
+
 </div>
 
 
-
-
+							
+ 
                             <div class="d-flex align-items-center mb-3">
                               <div>
                                 <p class="mb-0"></p>
@@ -423,9 +515,9 @@ foreach($result as $item)
                                 <input type="submit" name="submit" value="Submit" class="btn btn-outline-success px-3">
                             </div>
                           </div>
-
-						<input type="hidden" name="customer_id" value="{{$customer_id}}">
-
+						  
+						<input type="hidden" name="customer_id" value="{{$customer_id}}">  
+						  
 						</form>
                           </div>
                         </div>
@@ -434,7 +526,7 @@ foreach($result as $item)
 
 
                      </div>
-
+					 
                        <div class="col">
                          <div class="card border shadow-none radius-10">
                            <div class="card-body">
@@ -452,7 +544,7 @@ foreach($result as $item)
                            </div>
                            </div>
                          </div>
-
+                       					 
 					   <div class="card border shadow-none radius-10"style="margin-bottom: 0.5rem;">
                            <div class="card-body">
                             <div class="d-flex align-items-center gap-3">
@@ -494,37 +586,37 @@ foreach($result as $item)
                            </div>
                            </div>
                         </div>
-
+					 
 					 </div>
-
-
-
-
-
-
+					 
+					 
+					 
+					 
+					 
+					 
                   </div>
 
 
-
+			  
 
              <!--end row-->
 
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-
+            
            </div>
          <!-- end invoice-note -->
             </div>
+			
+			
 
-
-
-
+          
            </div>
 
 
-
-
+			
+			
 </main>
 
 <style>
@@ -539,8 +631,8 @@ foreach($result as $item)
 }
 </style>
 
-
-@endsection
+		  
+@endsection		 
 
 
 
@@ -551,9 +643,9 @@ foreach($result as $item)
   <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
   <script src="assets/js/table-datatable.js"></script>
  @endsection
-
-
-
+ 
+ 
+ 
 <script>
 $(function () {
   $("#id-1").keyup(function () {
@@ -568,8 +660,8 @@ $(function () {
 	$("#id-11-c").val((+$("#id-1").val()*.020 ));
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
   });
-
-
+  
+ 
   $("select[name='merchant']").on('change', function() {
 		//alert( this.value );
 		$("select[name='card_type']").val('');
@@ -578,7 +670,7 @@ $(function () {
 	});
 });
 </script>
-
+ 
 
 
 

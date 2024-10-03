@@ -1,3 +1,15 @@
+
+
+<!-- HAPS Code -->
+<?php 
+
+$dt_BankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE  `type_id`='7' and `grp_status`<>'GR';");
+
+$dt_CardCharges = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `acc_config`='Card Charges' and `grp_status`<>'GR';");
+
+?>
+<!-- End Code -->
+
 @extends("layouts.master")
 
 @section("content")
@@ -23,7 +35,7 @@
                   </ol>
                 </nav>
               </div>
-
+              
             </div>
             <!--end breadcrumb-->
 	<div class="card"  style="padding:20px">
@@ -33,7 +45,7 @@
 
 	<form class="row g-3" action="suppliersPayment03" method='post' name="myForm" onsubmit="return validateForm()">
 			{{ csrf_field() }}
-
+			
 				<table>
 					<tr><td><strong class="text-inverse">Supplier: </strong></td>
 						<td><input name="supplier" value="{{$supplier}}" type="text" disabled ></td></tr>
@@ -44,7 +56,7 @@
 					</tr>
 					<tr>
 						<td  style="text-align: left;word-wrap: anywhere;"><strong class="text-inverse">Ref: </strong></td>
-						<td style="text-align: left;word-wrap: anywhere;">
+						<td style="text-align: left;word-wrap: anywhere;">					
 <script language="JavaScript">
 function toggle(source) {
   checkboxes = document.getElementsByName('Ref 301-40000');
@@ -55,15 +67,15 @@ function toggle(source) {
 </script>
 
 <input type="checkbox" onClick="toggle(this)" value='' /> Toggle All<br/>
-<?php
+<?php 
 $data = DB::select("
 		SELECT supplier_ref,`amount`,paid
-		FROM `purchase_mas`
+		FROM `purchase_mas` 
 		WHERE `purchase_dt` like '$dt%' and supplier_id = '$supplier_id' and paid<>'1'
 		order by supplier_ref;
 		"); $count='0';
-		foreach($data as $item){
-		$supplier_ref = $item->supplier_ref;
+		foreach($data as $item){ 
+		$supplier_ref = $item->supplier_ref;  
 		$amount = $item->amount;
 		$paid = $item->paid;
 		if($paid=='0')
@@ -76,23 +88,23 @@ $data = DB::select("
 			if($count=='0')
 			{
 			$data01 = DB::select("
-				SELECT (`due`-(`paid_amount`+`discount`))due,`bill_numbers` FROM `suppliers_payment`
+				SELECT (`due`-(`paid_amount`+`discount`))due,`bill_numbers` FROM `suppliers_payment` 
 				WHERE `supplier_id` = '$supplier_id' AND `bill_numbers` like '%$supplier_ref%';
-				");
+				");	
 				foreach($data01 as $item01)
-				{
-				$amount = $item01->due;
-				$supplier_ref = $item01->bill_numbers;
-				}
+				{ 
+				$amount = $item01->due;  
+				$supplier_ref = $item01->bill_numbers;  
+				}	
 			 $count = '1';
 ?>
         <input type="checkbox" id="basic_single" name="Ref 301-40000" value="{{$supplier_ref}}---{{$amount}}"> {{$supplier_ref}} <font style="color: blue;">[TK.{{$amount}}]</font>
 <?php
 			}
 		}
-?>
-<?php
-		}
+?>		
+<?php		
+		}	
 ?>
 
 					<tr>
@@ -109,9 +121,9 @@ $('input:checkbox').change(function ()
 
       var total = 0;
       var total01 = 0;
-	  var selectedref = "";
+	  var selectedref = ""; 
       $('input:checkbox:checked').each(function(){
-
+	  
 		var string = $(this).val();
 		if(string){
 			var parts = string.split("---");
@@ -121,32 +133,32 @@ $('input:checkbox').change(function ()
 			total01 += isNaN(parseFloat(lastPart)) ? 0 : parseFloat(lastPart);
 			selectedref +=firstPart;
 		}
-      });
-
+      });   
+  
       $("#total").val(total);
       $("#total01").val(total01);
 	  $("#selected_ref").val(selectedref);
 
 });
-</script>
-</td></tr>
+</script>									
+</td></tr>					
+					
+					
+					
+					
 
-
-
-
-
-
-
+					
+					
 					<tr><td><strong class="text-inverse">Discount: </strong></td>
 						<td><input autofocus name="discount" type="text" required></td></tr>
 					<tr><td><strong class="text-inverse">Amount: </strong></td>
 						<td><input autofocus name="pAmount" type="text" required placeholder="Amount to be Paid"></td></tr>
-
+					
 					<tr><td><strong class="text-inverse">Date: </strong></td>
 						<td><input name="pDt" type="date" class="form-control" required=""></td></tr>
 					<tr>
 						<td colspan="2"><input autofocus name="note" type="text" placeholder="Note..."style="width: 100%;"></td>
-					</tr>
+					</tr>		
 					<tr>
 					<td><label for="Cash">
 							<input value="Cash" type="radio" id="Cash" name="pay_type" onclick="ShowHideDiv()" required/>
@@ -157,14 +169,14 @@ $('input:checkbox').change(function ()
 							Cheque
 						</label></td>
 					</tr>
-
-
-				</table>
-
-
-
+			
+					
+				</table>	
+				
+				
+	
 <script type="text/javascript">
-    function ShowHideDiv()
+    function ShowHideDiv() 
 	{
         var Cheque = document.getElementById("Cheque");
         var dvCheque = document.getElementById("dvCheque");
@@ -216,7 +228,6 @@ $('input:checkbox').change(function ()
 			<option value='Modhumoti Bank Limited'>Modhumoti Bank Limited</option>
 			<option value='Mutual Trust Bank Limited'>Mutual Trust Bank Limited</option>
 			<option value='National Bank Limited'>National Bank Limited</option>
-            <option value='NCC Bank Limited'>NCC Bank Limited</option>
 			<option value='NCC Bank'>NCC Bank</option>
 			<option value='NRB Bank Limited'>NRB Bank Limited</option>
 			<option value='NRB Commercial Bank Ltd'>NRB Commercial Bank Ltd</option>
@@ -258,30 +269,47 @@ $('input:checkbox').change(function ()
 		<input type="text" name="chequeDt" style="width: 100%;"/>
 	  </div>
 	</div>
+	
+	<!-- HAPS Code -->
+	<div class="d-flex align-items-center mb-3" style="width: 100%;">
+	  <div style="width: 30%;">
+		<p class="mb-0">Bank A/C</p>
+	  </div>
+	  <div style="width: 70%;">
+		<select id="BankAcc" name="BankAcc" style="width: 100%;" class="form-select">
+			@if(isset( $dt_BankAcc  ))
+				@foreach ( $dt_BankAcc as $item)
+				<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+				@endforeach
+			@endif
+		</select>
+	  </div>
+	</div>
+	<!-- End Code -->
 </div>
 
 
 <button class="btn btn-success" type="submit" name="next" value="next">
-					<i class="lni lni-chevron-right-circle"></i> Paid</button>
-
-
-<input type="hidden" name="supplier" value="{{$supplier}}">
-<input type="hidden" name="dt" value="{{$dt}}">
-
-
+					<i class="lni lni-chevron-right-circle"></i> Paid</button>				
+				
+				
+<input type="hidden" name="supplier" value="{{$supplier}}">				
+<input type="hidden" name="dt" value="{{$dt}}">				
+				
+				
 			</form>
 
 </div>
 	</div></div>
 </div>
-
-
+			
+			
 </main>
 
 
 
-
-@endsection
+		  
+@endsection		 
 
 
 
@@ -294,10 +322,10 @@ $('input:checkbox').change(function ()
   <script>
   $( function() {
     var availableTags = [
-
+ 
 <?php
 $parts_info = DB::table('suppliers')->get();
-foreach ($parts_info as $p)
+foreach ($parts_info as $p) 
 {
 echo '"'.$p->supplier_id.' - '.$p->supplier_name.'",';
 }
@@ -308,8 +336,8 @@ echo '"'.$p->supplier_id.' - '.$p->supplier_name.'",';
     });
   } );
   </script>
-
-
-
+  
+ 
+ 
 
  @endsection

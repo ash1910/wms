@@ -40,6 +40,18 @@
 						<td><button class="btn btn-success" type="submit" >
 						<i class="lni lni-chevron-right-circle"></i> Upload</button></td>
 					</tr>
+            <!-- HAPS Code -->
+            <tr>
+            <input  placeholder="Enter acc voucher no1.." name="vch_no" type="text" id="tags" required>;
+          </tr>
+          <!-- End HAPS code -->
+
+            <!-- HAPS Code -->
+            <tr>
+            <input  placeholder="Enter acc voucher no2.." name="vch_no2" type="text" id="tags" required>;
+          </tr>
+          <!-- End HAPS code -->
+
 				</table>	
 		<input type="hidden" name="id" value="{{$id}}">
 			</form>

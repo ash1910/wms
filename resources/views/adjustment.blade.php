@@ -1,3 +1,15 @@
+
+
+<!-- HAPS Code -->
+<?php 
+
+$dt_CashBankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE (`type_id`='6' or `type_id`='7') and `grp_status`<>'GR';");
+
+
+?>
+<!-- End Code -->
+
+
 <?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
@@ -176,6 +188,37 @@ foreach($result01 as $item01)
 									<input type="text" name="note" style="width: 100%;"/>
 								  </div>
 							</div>
+
+               <!-- HAPS Code --Advance refund-->
+
+               <div class="d-flex align-items-center mb-3" style="width: 100%;">
+                <div style="width: 30%;">
+                <p class="mb-0">Refund Type :</p>
+                </div>
+                <div style="width: 70%;">
+                  <select id="refund01" name="refund01" style="width: 100%;"  class="form-select form-select-sm">
+                    <option  value="Advance Refund"> Advance Refund </option>
+                    <option  value="Receivable Refund"> Receivable Refund</option>
+                    <option  value="Advance Transfer"> Advance Transfer</option>
+                </select>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mb-3" style="width: 100%;">
+                <div style="width: 30%;">
+                <p class="mb-0">Cash/Bank :</p>
+                </div>
+                <div style="width: 70%;">
+                  <select id="CashankAcc" name="CashankAcc" style="width: 100%;"  class="form-select form-select-sm">
+                  @if(isset( $dt_CashBankAcc  ))
+                    @foreach ( $dt_CashBankAcc as $item)
+                    <option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+                    @endforeach
+                  @endif
+                </select>
+                </div>
+              </div>
+              <!-- End Code -->
 
                             <div class="d-flex align-items-center mb-3">
                               <div>

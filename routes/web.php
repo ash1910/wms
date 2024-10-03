@@ -419,6 +419,78 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('dayEnd02','App\Http\Controllers\dayEndController@dayEnd02');
 
 
+	
+	// ACCOUNTS
+	Route::get('accounts02', function () {return view('accounts02');});
+	Route::get('acc_group_list', function () {return view('acc_group_list');});
+	Route::get('acc_group_add', function () {return view('acc_group_add');});
+	Route::Post('acc_group_add','App\Http\Controllers\AccountsController@store_acc_group');
+	Route::get('/acc_group_add','App\Http\Controllers\AccountsController@edit_acc_group');
+	Route::get('/acc_group_list','App\Http\Controllers\AccountsController@delete_acc_group');
+
+	
+	Route::get('acc_head_add', function () {return view('acc_head_add');});
+	Route::get('/acc_head_add','App\Http\Controllers\AccountsController@ck_acc_lock');
+	Route::Post('acc_head_add','App\Http\Controllers\AccountsController@store_acc_head');
+
+	Route::get('/acc_head_list', function () {return view('acc_head_list');});
+	Route::get('/acc_head_list','App\Http\Controllers\AccountsController@delete_acc_head');
+
+
+	Route::get('acc_voucher_entry', function () {return view('acc_voucher_entry');});
+	Route::Post('acc_voucher_entry','App\Http\Controllers\AccountsController@store_voucher_entry');
+	Route::get('/acc_voucher_entry','App\Http\Controllers\AccountsController@edit_voucher_entry');
+	
+	Route::get('acc_voucher_list', function () {return view('acc_voucher_list');});
+	Route::get('/acc_voucher_list','App\Http\Controllers\AccountsController@delete_acc_voucher');
+
+
+
+	Route::get('acc_report_voucher/{ref}', function () {return view('acc_report_voucher');});
+	Route::get('acc_report_voucher_pin/{ref}', function () {return view('acc_report_voucher_pin');});
+	Route::get('acc_report_voucher_pir/{ref}', function () {return view('acc_report_voucher_pir');});
+	Route::get('acc_report_voucher_isu/{ref}', function () {return view('acc_report_voucher_isu');});
+	
+
+	Route::get('acc_opening_bal', function () {return view('acc_opening_bal');});
+	Route::Post('acc_opening_bal','App\Http\Controllers\AccountsController@store_opening_balance');
+
+
+	Route::get('acc_opening_bal_list', function () {return view('acc_opening_bal_list');});
+	Route::get('/acc_opening_bal_list','App\Http\Controllers\AccountsController@delete_opening_bal');
+
+
+	Route::get('acc_auto_journal_list', function () {return view('acc_auto_journal_list');});
+	Route::get('/acc_auto_journal_list','App\Http\Controllers\AccountsController@delete_auto_voucher');
+	
+
+	Route::get('/acc_report_filter', function () {return view('acc_report_filter');});
+
+	Route::get('acc_report_menu', function () {return view('acc_report_menu');});
+
+	Route::get('acc_test', function () {return view('acc_test');});
+
+	Route::get('acc_report_journal', function () {return view('acc_report_journal');});
+
+	Route::get('acc_report_ledger', function () {return view('acc_report_ledger');});
+
+	Route::get('acc_report_cashbk', function () {return view('acc_report_cashbk');});
+
+	Route::get('acc_report_bankbk', function () {return view('acc_report_bankbk');});
+
+	Route::get('acc_report_receipt_pay', function () {return view('acc_report_receipt_pay');});
+
+	Route::get('acc_report_trial_bal','App\Http\Controllers\AccountsController@LoadTreeview');
+	Route::get('acc_report_pl','App\Http\Controllers\AccountsController@LoadTreeview_pl');
+	Route::get('acc_report_bs','App\Http\Controllers\AccountsController@LoadTreeview_bs');
+
+	Route::get('acc_report_cust_ledger', function () {return view('acc_report_cust_ledger');});
+	Route::get('acc_report_sup_ledger', function () {return view('acc_report_sup_ledger');});
+
+	//Route::get('/acc_report_pl', function () {return view('acc_report_pl');});
+	//Route::get('/acc_report_bs', function () {return view('acc_report_bs');});
+	
+	
 });
 
 

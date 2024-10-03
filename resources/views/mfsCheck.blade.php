@@ -1,7 +1,21 @@
-<?php
+
+
+
+<!-- HAPS Code -->
+<?php 
+
+$dt_BankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `type_id`='7' and `child_name`='Cash at Bank'");
+$dt_MFSAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `type_id`='7' and `child_name`='Cash at MFS'");
+
+
+?>
+<!-- End Code -->
+
+
+<?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');
+//return redirect ('home')->with('alert', 'Wrong URL!!!');	
 //echo session('role');
 }
 else {
@@ -9,7 +23,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php
+<?php  
 }
 ?>
 
@@ -21,24 +35,24 @@ else {
 
 
 <main class="page-content">
-<!---Alert message---->
+<!---Alert message----> 
 @if(session()->has('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-
+	
 <script type="text/javascript">
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove();
+        $(this).remove(); 
     });
 }, 5000);
  });
-</script>
-@endif
-<!---Alert message---->
+</script>	
+@endif	
+<!---Alert message---->  
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -52,7 +66,7 @@ $(document).ready(function () {
                   </ol>
                 </nav>
               </div>
-
+              
             </div>
             <!--end breadcrumb-->
 
@@ -67,11 +81,34 @@ $(document).ready(function () {
                       <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-secondary"><i class="bi bi-printer-fill"></i> Print</a>
                     </div-->
                   </div>
-             </div>
 
+				  <!-- HAPS Code -->
+				  <div style="width: 100%;">
+					<select  onchange="myFunction1()" id="BankAcc1" name="BankAcc1" style="width: 100%;" class="form-select" >
+							<option >--Select Bank A/C--</option>
+							@if(isset( $dt_BankAcc  ))
+								@foreach ( $dt_BankAcc as $acc)
+								<option  value="{{$acc->acc_name}}">{{$acc->acc_name}}</option>
+								@endforeach
+							@endif
+					</select>
+				</div>
+				  <div style="width: 100%;">
+					<select onchange="myFunction2()" id="BankAcc2" name="BankAcc2" style="width: 100%;" class="form-select">
+						<option >--Select MFS A/C--</option>
+						@if(isset( $dt_MFSAcc  ))
+							@foreach ( $dt_MFSAcc as $item)
+							<option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
+							@endforeach
+						@endif
+					</select>
+				</div>
+				<!-- End Code -->
+             </div>
+		
             <div class="card-body">
               <div class="table-responsive">
-
+                
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -89,21 +126,21 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody>				
 <?php
 
 $result = DB::select("
-SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm ,charge, `mer_bkash`,
+SELECT a.`id`, a.`pay_type`, a.`trix`, a.`send`, `received`, `due`, a.`job_no`, b.customer_nm, b.customer_id ,charge, `mer_bkash`,
 b.customer_reg,b.customer_vehicle, a.bill, a.dt, a.charge
 FROM `pay` a, customer_info b
 WHERE a.customer_id = b.customer_id
 AND a.`pay_check`='0' and a.`pay_type` = 'bkash'
 order by a.`id` desc;
 ");
-	$sl = '1'; 	$amount='0';
+	$sl = '1'; 	$amount='0';		
 foreach($result as $item)
-		{
-?>
+		{		
+?>				
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;"><a href="@if($item->bill != 'Advance')report02?bill={{$item->bill}}@endif">{{$item->job_no}}</a></td>
@@ -120,46 +157,60 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">
-<?php
+<?php 
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-?>
+?>					
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="date" class="form-control" name='approval_dt'>
+					<!-- HAPS Code -->
+					<input hidden type="text"  name="customer_id" value="{{$item->customer_id}}">
+					<input hidden  type="text"   name="job_no" value="{{$item->job_no}}">
+					<input hidden  type="text"   name="received" value="{{$item->received}}">
+					<input hidden  type="text" id="bank_01" name="bank_01[]" value="">
+					<input hidden  type="text" id="bank_02" name="bank_02[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Settlement</button>
-					</form>
-<?php } else {?>
+					</form>	
+<?php } else {?>	
 					<form style="display: inline;" action="mfsCheck01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
+					<!-- HAPS Code -->
+					<input hidden type="text"  name="customer_id" value="{{$item->customer_id}}">
+					<input hidden  type="text"   name="job_no" value="{{$item->job_no}}">
+					<input hidden  type="text"   name="received" value="{{$item->received}}">
+					<input hidden  type="text" id="bank_01" name="bank_01[]" value="">
+					<input hidden  type="text" id="bank_02" name="bank_02[]" value="">
+					<!-- End Code -->
 					<button class="btn btn-outline-secondary px-3" type="submit" name="" value="" disabled>
 					 Settlement</button>
-					</form>
-<?php } ?>
-					</td>
-
+					</form>	
+<?php } ?>						
+					</td>	
+						
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}
+		}  
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
-<br>
-
-
-
-
-
-
-
-
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
+<br>				
+			
+				
+				
+				
+				
+				
+				
+				
              </div>
 
              <!--end row-->
@@ -167,25 +218,25 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-
+            
            </div>
          <!-- end invoice-note -->
             </div>
+			
+			
 
-
-
-
+          
            </div>
 
 
-
-
+			
+			
 </main>
 
 
 
-
-@endsection
+		  
+@endsection		 
 
 
 
@@ -195,4 +246,42 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
   <script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
   <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
   <script src="assets/js/table-datatable.js"></script>
+
+
+  
+<script>
+
+	
+function myFunction1() {
+	
+	var x = document.getElementById("BankAcc1").value;
+
+	var bk_nm_1 =  document.getElementsByName("bank_01[]");
+
+	for (let index = 0; index < bk_nm_1.length; index++ ){
+
+		bk_nm_1[index].value = x;
+
+	}
+}
+
+
+function myFunction2() {
+	
+	var x = document.getElementById("BankAcc2").value;
+
+	var bk_nm_2 =  document.getElementsByName("bank_02[]");
+
+	for (let index = 0; index < bk_nm_2.length; index++ ){
+
+		bk_nm_2[index].value = x;
+
+	}
+}
+
+
+
+
+</script>
+
  @endsection

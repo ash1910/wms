@@ -52,7 +52,18 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 		<div class="menu-title">Accounts</div>
 	  </a>
 	</li>			
-<?php } ?>            
+<?php } ?>   
+
+
+<?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Executive")){ ?>
+	<li>
+	  <a href="/accounts02"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
+		<div class="menu-title">Accounts_2</div>
+	  </a>
+	</li>			
+<?php } ?>   
+
+
  
 <?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Service Engineer")||(session('role')=="PRO")||(session('role')=="Executive")){ ?>
 	<li>

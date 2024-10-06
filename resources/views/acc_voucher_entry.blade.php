@@ -9,7 +9,7 @@
 @section("content")
 
 
-<?php 
+<?php
 
 $myRef = request()->get('ref');
 
@@ -17,9 +17,9 @@ $myRef = request()->get('ref');
 if(isset($myRef)){
 
     //$dt_AccType_Edit = DB::table('tbl_acc_types')->select('id','type_head')->where('id', '=', $myID)->first();
-  
+
     $dt_vType_Edit = DB::table('tbl_acc_details')->select('vr_type')->where('ref', '=', $myRef)->first();
-  
+
   }
 
 
@@ -78,56 +78,56 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 @endif
 
 
-   
+
 @if(isset( $data_Voucher_ref_BP ))
 
 <script>
 
-    
+
     let myArray  = @json($data_Voucher_ref_BP)
-        
+
     let  arr = JSON.stringify(myArray);
-        
+
     //alert(arr);
 
-   
 
-        
+
+
 
 </script>
 
 
-@endif 
+@endif
 
 
 
       <div class="card" >
 				    <a class="btn btn-success" href="/acc_voucher_list"><i class="fadeIn animated bx bx-add-to-queue"></i> List of Voucher </a>
 	  <div class="card-body">
-		
-    
-    
-        
+
+
+
+
             <div class="container-md" id = "myID">
 
                     <form class="row g-3" action="{{url('acc_voucher_entry')}}" method="post">{{ csrf_field() }}
 
                             <div class="container-md" >
-                                
+
                                 <table  class="table table-success table-striped" id ="myTable_01">
-                                    
+
                                     <tbody>
 
                                         <tr >
                                             <td>Voucher</td>
                                             <td>
                                                 <div class="select">
-                                                    <select  autofocus name="vType" id="vType"  class="form-select form-select-sm"> 
+                                                    <select  autofocus name="vType" id="vType"  class="form-select form-select-sm">
 
-                                                        @if(isset(  $dt_vType_Edit )) 
-                                                                  
+                                                        @if(isset(  $dt_vType_Edit ))
+
                                                           <option >{{$dt_vType_Edit->vr_type}} </option>
-                                                                  
+
                                                         @else
                                                                 <option value ="Select">--Select--</option>
                                                                 @if(isset( $data_Voucher_ref ))
@@ -136,18 +136,18 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
                                                                     @endforeach
                                                                 @endif
                                                         @endif
-                                                    </select> 
+                                                    </select>
                                                 </div>
                                             </td>
 
                                             <td>Ref</td>
-                                            <td><input readonly type="Text" name="voucherRef" id="voucherRef" class="form-control form-control-sm" 
-                                            @if(isset( $editAccVoucher1 )) value="{{$editAccVoucher1->ref}}" @else value=""  @endif  
+                                            <td><input readonly type="Text" name="voucherRef" id="voucherRef" class="form-control form-control-sm"
+                                            @if(isset( $editAccVoucher1 )) value="{{$editAccVoucher1->ref}}" @else value=""  @endif
                                             required ></td>
 
                                             <td>Date</td>
-                                            <td><input type="Date" name="trnDate" id="trnDate"  class="form-control form-control-sm" 
-                                            @if(isset( $editAccVoucher1 )) value="{{$editAccVoucher1->tdate}}" @else value="<?= date('Y-m-d') ?>" @endif  
+                                            <td><input type="Date" name="trnDate" id="trnDate"  class="form-control form-control-sm"
+                                            @if(isset( $editAccVoucher1 )) value="{{$editAccVoucher1->tdate}}" @else value="<?= date('Y-m-d') ?>" @endif
                                             required ></td>
 
                                             <td><input type="Text" disabled name="t_Debit" id="t_Debit" value="0"  class="form-control form-control-sm"></td>
@@ -156,19 +156,19 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
                                         </tr>
 
-                                    
-                                        
-                                        
+
+
+
                                     </tbody>
                                 </table>
-                            
+
                             </div>
 
                             <div class="container-md" >
 
-                            
+
                                 <table  class="table table-sm" id="myTable_02">
-                                    
+
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th style="width: 20%" >Accounts</th>
@@ -191,25 +191,24 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
                                                             @foreach ( $data_AccHead  as $item)
                                                                 <option  value="{{$item->acc_name}}">{{$item->acc_name}}</option>
                                                             @endforeach
-                                                            
+
                                                         @endif
 
                                                     </select>
 
-                                                   </th>
+                                                </th>
 
                                                 <th><input  type="number" onblur="makeZeroCredit()"  value="0"  name="My_accDebit" id="My_accDebit" class="form-control form-control-sm" ></th>
                                                 <th><input  type="number" onblur="makeZeroDebit()"   value="0"  name="My_accCredit" id="My_accCredit" class="form-control form-control-sm" ></th>
-                                                <th><input  type="text"   name="My_accRemarks" id="My_accRemarks"  maxlength="50" class="form-control form-control-sm" > </th>
+                                                <th><input  type="text"   name="My_accRemarks" id="My_accRemarks"  maxlength="250" class="form-control form-control-sm" > </th>
                                                 <th><input  type="text" disabled  name="My_accChNo" id="My_accChNo" class="form-control form-control-sm" ></th>
                                                 <th><input  type="Date"  disabled name="My_accChDate" id="My_accChDate" class="form-control form-control-sm" ></th>
                                                 <th><input  type="text" disabled  name="My_accBank" id="My_accBank" class="form-control form-control-sm" ></th>
                                                 <th><input  type="text" disabled  name="My_CID" id="My_CID" class="form-control form-control-sm" style="width: 100px;" ></th>
                                                 <th colspan="2" id="myTHead_01" ><a href="javascript:;" class ="btn btn-info addRow" onclick="focusInput()">+</a></th>
                                                 <th></th>
-                                           
-                                                
-                                               
+
+
                                             </tr>
 
 
@@ -219,13 +218,13 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
                                         <tbody id="myTbody_02">
 
-                                    
+
 
                                         </tbody>
 
 
-                                        <tr> 
-                                        @if(isset(  $dt_vType_Edit ))  
+                                        <tr>
+                                        @if(isset(  $dt_vType_Edit ))
                                         <td> <button type="submit"  class="btn btn-primary" onclick="return DataVerification();"  >  Update  </button></td>
                                         @else
                                         <td> <button type="submit"  class="btn btn-success" onclick="return DataVerification();"  >  Create  </button></td>
@@ -237,7 +236,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
                                         <td> </td>
                                         <td> </td>
                                         <td> </td>
-                                       
+
                                         </tr>
 
                                 </table>
@@ -245,7 +244,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 
                             </div>
-                           
+
                     </form>
             </div>
 
@@ -254,11 +253,11 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 @if(isset(  $editAccVoucher2  ))
 
-        
+
 
     <script>
 
-        
+
 
         let users = @json($editAccVoucher2)
 
@@ -279,13 +278,13 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             <td><input  type="text" readonly  name="accCID[]" id="accCID" class="form-control form-control-sm" value= "${user.others_id}" > </td>
             <td><a href="javascritp:;" class="btn btn-warning editRow"><</a></td>
             <td><a href="javascritp:;" class="btn btn-danger deleteRow">-</a></td>`;
-            
+
 
             tr.innerHTML = content;
             tableBody.appendChild(tr)
 
-            
-        
+
+
 
             }
 
@@ -306,7 +305,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
                     var t_dr = amts[index].value;
 
-                    sum = + (sum) + +(t_dr) ; 
+                    sum = + (sum) + +(t_dr) ;
 
                     //alert(sum);
 
@@ -317,7 +316,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
             }
 
-   
+
             function getTotalCredit(){
 
                 var sum = 0;
@@ -327,7 +326,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
                     var t_dr = amts[index].value;
 
-                    sum = + (sum) + +(t_dr) ; 
+                    sum = + (sum) + +(t_dr) ;
 
                     //alert(sum);
 
@@ -340,29 +339,29 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 
 
-            
+
 
     </script>
 
-    
 
 
-                                    
+
+
 @endif
-  
+
 @if(isset( $data_AccType ))
 
     <script>
 
 
         let myArray  = @json($data_bankinfo)
-        
+
         let  arr = JSON.stringify(myArray);
-        
+
         //alert(arr);
-        
+
         let mySelect = document.querySelector('#My_accHead');
-       
+
         mySelect.addEventListener("change", arraycheck);
 
         function arraycheck () {
@@ -385,17 +384,17 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             }
         }
 
-   
+
         //***********Control ID Checking***** */
-       
+
         let myArray1  = @json($dt_control_acc)
-        
+
         let  arr1 = JSON.stringify(myArray1);
-        
+
         //alert(arr1);
-       
+
         let mySelect1 = document.querySelector('#My_accHead');
-       
+
         mySelect1.addEventListener("change", arraycheck1);
 
         function arraycheck1 () {
@@ -407,7 +406,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         else{
             document.getElementById("My_CID").disabled = true;
             document.getElementById("My_CID").value = '';
-          
+
             }
         }
 
@@ -416,15 +415,15 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
     </script>
 
-                                                                                                  
+
 @endif
 
- 
+
 @if(isset( $data_AccType ))
 
 <script>
 
-    
+
 </script>
 
 
@@ -442,14 +441,14 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         var numStr = str.replace(/\D/g,'');
         numStr = parseInt(numStr)+1;
 
-        var mySTR = numStr.toString().padStart(6, '0'); 
+        var mySTR = numStr.toString().padStart(6, '0');
 
         var stringPart = str.split(['-'],1);
 
         var myNmun = stringPart + "-"+ mySTR;
-        
+
         var finalRef = myNmun.split(['|']);
-        
+
         document.getElementById('voucherRef').value = finalRef[1] ;
         });
 
@@ -459,7 +458,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 <script>
 
-        
+
     function DataVerification(){
 
     var VrSelect = document.getElementById("vType").value;
@@ -469,7 +468,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
     var bal = parseFloat(document.getElementById("out_of_bal").value);
 
     if (VrSelect == 'Select'){
-    
+
     alert('Please select a voucher !');
     return false;
 
@@ -481,7 +480,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
     alert('Transactions not found can not save !');
     return false;
 
-    } 
+    }
 
     if (bal !== 0 ) {
 
@@ -489,7 +488,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         alert('Transactions out of Balance can not save !');
         return false;
 
-    } 
+    }
 
     }
 
@@ -497,9 +496,9 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 
 
- 
 
-</main>  
+
+</main>
 
 
 @endsection
@@ -512,18 +511,18 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
   <link rel="stylesheet" href="assets/js/jquery-ui.css">
   <script src="assets/js/jquery-3.6.0.js"></script>
   <script src="assets/js/jquery-ui.js"></script>
-  
-  
-  
+
+
+
   <script>
 
     $('#myTHead_01').on('click', function(){
-        
+
         if (document.getElementById("My_accDebit").value == 0 && document.getElementById("My_accCredit").value == 0) {
 
             alert('Please insert an amount in Debit or Credit box!');
             return;
-        } 
+        }
 
        var ckIndex = document.getElementById("myRowIndex").value;
 
@@ -532,7 +531,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         addRow();
 
        }else{
-        
+
         UpdateRow();
 
        }
@@ -540,25 +539,25 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         getTotalDebit();
 
         getTotalCredit();
-     
+
         makeReverseValue();
 
     });
 
 
-    
-  
-  
+
+
+
 
     function addRow(){
 
-            
+
             let myAccHead = {};
             myAccHead = JSON.stringify(document.getElementById("My_accHead").value);
 
             let myAccDebit = {};
             myAccDebit = JSON.stringify(document.getElementById("My_accDebit").value);
-           
+
             let myAccCredit = {};
             myAccCredit = JSON.stringify(document.getElementById("My_accCredit").value);
 
@@ -578,9 +577,9 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             myCID = JSON.stringify(document.getElementById("My_CID").value);
 
             var tr = '<tr>'+
-            
-            '<td><input type="text" readonly value='+ myAccHead +'  name="accHead[]" id="accHead"  class="form-control form-control-sm"> </td>'+ 
-            '<td><input type="text"  readonly value='+ myAccDebit +'  name="accDebit[]" id="accDebit"  class="form-control form-control-sm"> </td>'+ 
+
+            '<td><input type="text" readonly value='+ myAccHead +'  name="accHead[]" id="accHead"  class="form-control form-control-sm"> </td>'+
+            '<td><input type="text"  readonly value='+ myAccDebit +'  name="accDebit[]" id="accDebit"  class="form-control form-control-sm"> </td>'+
             '<td><input  type="number" readonly value='+ myAccCredit +' name="accCredit[]" id="accCredit"  class="form-control form-control-sm" > </td>'+
             '<td><input  type="text"  readonly value='+ myAccRemarks +' name="accRemarks[]" id="accRemarks" class="form-control form-control-sm" > </td>'+
             '<td><input  type="text"  readonly value='+  myAccChNo +' name="accChNo[]" id="accChNo" class="form-control form-control-sm" > </td>'+
@@ -588,7 +587,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             '<td><input  type="text"  readonly value='+ myAccBank +'  name="accBank[]" id="accBank" class="form-control form-control-sm" > </td>'+
             '<td><input  type="text"  readonly value='+ myCID +'  name="accCID[]" id="accCID" class="form-control form-control-sm" > </td>'+
             '<td><a href="javascritp:;" class="btn btn-warning editRow"><</a></td>'+
-            '<td><a href="javascritp:;" class="btn btn-danger deleteRow">-</a></td>'+ 
+            '<td><a href="javascritp:;" class="btn btn-danger deleteRow">-</a></td>'+
 
             '</tr>';
 
@@ -604,14 +603,14 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
        if (ckIndex == -1){
 
         $(this).parent().parent().remove();
-        
+
         getTotalDebit();
 
         getTotalCredit();
 
        }
 
-       
+
 
     });
 
@@ -640,7 +639,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             document.getElementById("My_accChDate").value = document.getElementsByName("accChDate[]")[index].value;
             document.getElementById("My_accBank").value = document.getElementsByName("accBank[]")[index].value;
             document.getElementById("My_CID").value = document.getElementsByName("accCID[]")[index].value;
-            
+
             // if (document.getElementsByName("accChNo[]")[index] !=null){
             //     alert ("Yes");
             //     //document.getElementById("My_accChNo").disabled=true;
@@ -662,13 +661,13 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
         }
 
-      
+
 
 
     });
 
 
- 
+
     function UpdateRow(){
 
         var index = document.getElementById("myRowIndex").value;
@@ -701,11 +700,11 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 
     function focusInput() {
-        
+
         document.getElementById("My_accHead").focus();
         //document.getElementById("My_accDebit").value = 0;
         //document.getElementById("My_accCredit").value = 0;
-    } 
+    }
 
     function makeReverseValue() {
 
@@ -713,8 +712,8 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             $('#My_accCredit').val($('#t_Debit').val());
             $('#My_accDebit').val(0);
         }
-        
-    } 
+
+    }
 
 
     function makeZeroCredit() {
@@ -731,7 +730,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
         }
 
     function makeZeroDebit() {
-        
+
         if ($('#My_accCredit').val() > 0) {
             $('#My_accDebit').val(0);
         }
@@ -740,7 +739,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
             $('#My_accCredit').val(0);
         }
 
-        
+
     }
 
 
@@ -754,7 +753,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
             var t_dr = amts[index].value;
 
-            sum = + (sum) + +(t_dr) ; 
+            sum = + (sum) + +(t_dr) ;
 
             //alert(sum);
 
@@ -775,7 +774,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
             var t_dr = amts[index].value;
 
-            sum = + (sum) + +(t_dr) ; 
+            sum = + (sum) + +(t_dr) ;
 
             //alert(sum);
 
@@ -790,9 +789,9 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
 
   </script>
-  
- 
 
 
- 
+
+
+
  @endsection

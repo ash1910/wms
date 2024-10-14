@@ -1,7 +1,7 @@
 
 
 <!-- HAPS Code -->
-<?php 
+<?php
 
 $dt_BankAcc = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `type_id`='7' and `child_name`='Cash at Bank'");
 
@@ -13,10 +13,10 @@ $dt_CardCharges = DB::select("SELECT `acc_name` FROM `tbl_acc_masters` WHERE `ac
 
 
 
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 //echo session('role');
 }
 else {
@@ -24,7 +24,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -39,7 +39,7 @@ else {
 
 <?php
 $result = DB::select("
-SELECT  a.`bill`, a.`job_no`, a.`customer_id`, 
+SELECT  a.`bill`, a.`job_no`, a.`customer_id`,
 sum(a.`due`) net_bill, sum(a.`received`) received, sum(a.`bonus`) bonus, sum(a.`due`) due,
 b.customer_nm, b.total total, (b.total-b.net_bill) vat, b.net_bill a_bill, b.bill_dt,
 c.customer_mobile, c.customer_vehicle, c.customer_reg, c.customer_chas
@@ -48,11 +48,11 @@ WHERE a.`bill` = '$bill_no'
 and a.bill = b.bill_no
 and a.customer_id = c.customer_id
 AND b.customer_id = c.customer_id
-group by a.`bill`, a.`job_no`, a.`customer_id`, b.customer_nm, c.customer_mobile, c.customer_vehicle, 
+group by a.`bill`, a.`job_no`, a.`customer_id`, b.customer_nm, c.customer_mobile, c.customer_vehicle,
 c.customer_reg, c.customer_chas, b.total, (b.total-b.net_bill), b.net_bill, b.bill_dt;
 ");
 foreach($result as $item)
-		{	
+		{
 			$job_no = $item->job_no;
 			$bill_dt = $item->bill_dt;
 			$customer_id = $item->customer_id;
@@ -66,18 +66,18 @@ foreach($result as $item)
 			$a_bill = number_format(round($item->a_bill,2), 2, '.', ',');
 			$total = number_format(round($item->total,2), 2, '.', ',');
 			$vat = number_format(round($item->vat,2), 2, '.', ',');
-		}  
+		}
 $result01 = DB::select("
-SELECT sum(`received`) advance FROM `pay` 
+SELECT sum(`received`) advance FROM `pay`
 WHERE `bill` = 'Advance'
 and `customer_id` = '$customer_id' and `job_no` = '$job_no';
 ");
 foreach($result01 as $item01)
-		{	
+		{
 			$advance = $item01->advance;
 		}
-		
-		
+
+
 ?>
 <main class="page-content">
             <!--breadcrumb-->
@@ -94,7 +94,7 @@ foreach($result01 as $item01)
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -106,33 +106,33 @@ foreach($result01 as $item01)
 					  <p class="mb-0">Bill No : #{{$bill_no}}</p>
                     </div>
                     <div class="col-12 col-lg-6 text-md-end">
-					  
+
 					<form style="display: inline;" action="adjustment" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-outline-danger px-3" type="submit" name="" value="">
 					 Sales Adjustment</button>
-					</form>						  
-					  
-					  
+					</form>
+
+
                     </div>
                   </div>
              </div>
-		
+
             <div class="card-body">
-              
+
 					<div class="row row-cols-1 row-cols-xl-2 row-cols-xxl-3">
 
 
-                     
+
                       <div class="col-12 col-lg-6">
                         <div class="card border shadow-none bg-light radius-10">
                           <div class="card-body">
-						  <form action="pay01" method="post">{{ csrf_field() }} 
+						  <form action="pay01" method="post">{{ csrf_field() }}
                               <div class="d-flex align-items-center mb-4">
                                  <div>
                                     <h5 class="mb-0">Received from Customer</h5>
                                  </div>
-                                 
+
                               </div>
                                 <div class="d-flex align-items-center mb-3">
                                   <div>
@@ -151,7 +151,7 @@ foreach($result01 as $item01)
                                   Tk. <input id="id-5" name="advance" type="text" value="{{$advance}}" readonly>
                               </div>
                               </div>
-<?php } ?>							  
+<?php } ?>
                               <div class="d-flex align-items-center mb-3">
                                 <div>
                                   <p class="mb-0">Received </p>
@@ -159,7 +159,7 @@ foreach($result01 as $item01)
                                 <div class="ms-auto">
                                   Tk. <input id="id-1" name="received" type="text" required>
                               </div>
-                              </div>							  
+                              </div>
                               <div class="d-flex align-items-center mb-3">
                                 <div>
                                   <p class="mb-0">Discount</p>
@@ -200,7 +200,7 @@ foreach($result01 as $item01)
                                 Tk. <input type="text" name="due" id="id-4" readonly />
 							  </div>
 							</div>
-							
+
 							<div class="d-flex align-items-center mb-3" style="width: 100%;">
 								  <div style="width: 30%;">
 									<p class="mb-0">Due Ref.</p>
@@ -208,8 +208,8 @@ foreach($result01 as $item01)
 								  <div style="width: 70%;">
 									<input type="text" name="ref" style="width: 100%;"/>
 								  </div>
-							</div>							
-                           
+							</div>
+
 							<div class="d-flex align-items-center mb-3" style="width: 100%;">
 								  <div style="width: 30%;">
 									<p class="mb-0">Note</p>
@@ -217,8 +217,8 @@ foreach($result01 as $item01)
 								  <div style="width: 70%;">
 									<input type="text" name="note" style="width: 100%;"/>
 								  </div>
-							</div>                            
-								
+							</div>
+
 
 
 
@@ -232,15 +232,15 @@ foreach($result01 as $item01)
         var Online = document.getElementById("Online");
         var dvOnline = document.getElementById("dvOnline");
         dvOnline.style.display = Online.checked ? "block" : "none";
-		
+
         var Bkash = document.getElementById("Bkash");
         var dvBkash = document.getElementById("dvBkash");
         dvBkash.style.display = Bkash.checked ? "block" : "none";
-		
+
         var Cheque = document.getElementById("Cheque");
         var dvCheque = document.getElementById("dvCheque");
         dvCheque.style.display = Cheque.checked ? "block" : "none";
-		
+
         var Card = document.getElementById("Card");
         var dvCard = document.getElementById("dvCard");
         dvCard.style.display = Card.checked ? "block" : "none";
@@ -274,7 +274,7 @@ foreach($result01 as $item01)
 
 <hr />
 <div id="dvCash" style="display: none">
-	
+
 </div>
 <div id="dvOnline" style="display: none">
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -285,8 +285,9 @@ foreach($result01 as $item01)
 		<select name="merchant_online" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-		</select>		
-		
+            <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+		</select>
+
 	  </div>
 	</div>
 	<!-- HAPS Code --- Online-->
@@ -317,7 +318,7 @@ foreach($result01 as $item01)
 		<select name="mer_bkash" class="form-select">
 			<option value='797'>bKash (01777781797)</option>
 			<option value='330'>bKash (01777781330)</option>
-		</select>		
+		</select>
 	  </div>
 	</div>
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -459,8 +460,9 @@ foreach($result01 as $item01)
 		<select name="merchant_checque" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-		</select>		
-		
+            <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+		</select>
+
 	  </div>
 	</div>
 </div>
@@ -553,7 +555,7 @@ foreach($result01 as $item01)
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
 		</select>
-		
+
 	  </div>
 	</div>
 	<div class="d-flex align-items-center mb-3" style="width: 100%;">
@@ -564,8 +566,8 @@ foreach($result01 as $item01)
 		<select name="merchant" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-		</select>		
-		
+		</select>
+
 	  </div>
 	</div>
 	<!-- HAPS Code -->
@@ -598,8 +600,8 @@ foreach($result01 as $item01)
 
 
 
-							
- 
+
+
                             <div class="d-flex align-items-center mb-3">
                               <div>
                                 <p class="mb-0"></p>
@@ -608,13 +610,13 @@ foreach($result01 as $item01)
                                 <input type="submit" name="submit" value="Submit" class="btn btn-outline-success px-3">
                             </div>
                           </div>
-						  
-						<input type="hidden" name="net_bill" value="{{$net_bill01}}">  
-						<input type="hidden" name="bill_no" value="{{$bill_no}}">  
-						<input type="hidden" name="job_no" value="{{$job_no}}">  
-						<input type="hidden" name="customer_id" value="{{$customer_id}}">  
-						<input type="hidden" name="bill_dt" value="{{$bill_dt}}">  
-						  
+
+						<input type="hidden" name="net_bill" value="{{$net_bill01}}">
+						<input type="hidden" name="bill_no" value="{{$bill_no}}">
+						<input type="hidden" name="job_no" value="{{$job_no}}">
+						<input type="hidden" name="customer_id" value="{{$customer_id}}">
+						<input type="hidden" name="bill_dt" value="{{$bill_dt}}">
+
 						</form>
                           </div>
                         </div>
@@ -623,7 +625,7 @@ foreach($result01 as $item01)
 
 
                      </div>
-					 
+
                        <div class="col-lg-6">
                          <div class="card border shadow-none radius-10"style="margin-bottom: 0.5rem;">
                            <div class="card-body">
@@ -657,7 +659,7 @@ foreach($result01 as $item01)
 							  </div>
                            </div>
                            </div>
-                         </div>						 
+                         </div>
 
                          <div class="card border shadow-none radius-10"style="margin-bottom: 0.5rem;">
                            <div class="card-body">
@@ -705,31 +707,31 @@ foreach($result01 as $item01)
 							  </div>
                            </div>
                            </div>
-                         </div>						 
+                         </div>
 
 
 
-                       </div>					 
+                       </div>
                   </div>
              <!--end row-->
 
              <hr>
-			 
+
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 <style>
@@ -744,8 +746,8 @@ foreach($result01 as $item01)
 }
 </style>
 
-		  
-@endsection		 
+
+@endsection
 
 
 
@@ -782,8 +784,8 @@ $(function () {
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
   });
 
-  
- 
+
+
   $("select[name='merchant']").on('change', function() {
 		//alert( this.value );
 		$("select[name='card_type']").val('');

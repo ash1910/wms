@@ -20,7 +20,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -36,10 +36,10 @@
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -64,7 +64,7 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">bank</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">chequeNo</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">chequeDt</th>
-							
+
 							<th scope="col" style="border: 1px solid black;text-align: center;">Card Bank</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Card No</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Card Type</th>
@@ -74,7 +74,7 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Receive By</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 	if( $pay_type == "has"){
@@ -91,15 +91,15 @@
 	SELECT `bill` bill_no, a.`job_no`, b.customer_nm, a.`bill_dt`, a.`net_bill`, `received`, `bonus`, `due`,`pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt, b.bill_dt,
 	a.id, c.user_name,charge,vat_wav,`card_bank`, `card_no`, `card_type`, `merchant_bank`, a.`ait`, a.note
 	FROM `pay` a, bill_mas b, user c
-	WHERE 
+	WHERE
 	a.bill = b.bill_no
 	AND a.dt between '$from_dt' and '$to_dt'
-	and a.user_id = c.user_id and a.pay_type<>'SYS' 
-	$where_pay_type 
+	and a.user_id = c.user_id and a.pay_type<>'SYS'
+	$where_pay_type
 	order by bill, a.bill_dt desc
 	;
 	");
-	$sl = '1'; 	$total02 = '0';		
+	$sl = '1'; 	$total02 = '0';
 	foreach($result as $item)
 	{		$total01 = '0';$net_bill = $item->net_bill; $vat= (int)$net_bill*.1;
 ?>					<tr>
@@ -124,12 +124,12 @@
 					<td style="border: 1px solid black;text-align: center;">{{$item->bank}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->chequeNo}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->chequeDt}}</td>
-					
+
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_bank}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_no}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_type}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->merchant_bank}}</td>
-					
+
 					<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->user_name}}</td>
 				</tr>
@@ -137,30 +137,30 @@
 	$sl = $sl+1;
 	$total01 = $item->received;
 	$total02 = $total01+$total02;
-	}  
+	}
 
 
 
 ////ADVANCE
 	$result = DB::select("
-	SELECT `bill` bill_no, a.`job_no`, a.`bill_dt`, a.`net_bill`, `received`, `bonus`, 
-	`due`,`pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt, 
+	SELECT `bill` bill_no, a.`job_no`, a.`bill_dt`, a.`net_bill`, `received`, `bonus`,
+	`due`,`pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt,
 	a.id, c.user_name,charge,vat_wav,`card_bank`, `card_no`, `card_type`, `merchant_bank`, a.`ait`, a.note
 	FROM `pay` a, user c
-	WHERE 
+	WHERE
 	a.dt between '$from_dt' and '$to_dt'
 	and a.user_id = c.user_id and a.pay_type<>'SYS'
 	and bill = 'Advance' and a.pay_type = '$pay_type'
 	order by bill, a.bill_dt desc;
 	;
 	");
-			
+
 	foreach($result as $item)
 	{		$total01 = '0';$net_bill = $item->net_bill; $vat= (int)$net_bill*.1;
 ?>					<tr>
 					<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 					<td style="border: 1px solid black;text-align: center;">{{$item->id}}</td>
-					<td style="border: 1px solid black;text-align: center;">{{date('d-M-y', strtotime($item->bill_dt))}}</td> 
+					<td style="border: 1px solid black;text-align: center;">{{date('d-M-y', strtotime($item->bill_dt))}}</td>
 					<td style="border: 1px solid black;text-align: center;"></td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->bill_no}}</a></td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>
@@ -179,12 +179,12 @@
 					<td style="border: 1px solid black;text-align: center;">{{$item->bank}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->chequeNo}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->chequeDt}}</td>
-					
+
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_bank}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_no}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->card_type}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->merchant_bank}}</td>
-					
+
 					<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
 					<td style="border: 1px solid black;text-align: center;">{{$item->user_name}}</td>
 				</tr>
@@ -192,7 +192,7 @@
 	$sl = $sl+1;
 	$total01 = $item->received;
 	$total02 = $total01+$total02;
-	}  
+	}
 
 
 
@@ -211,24 +211,24 @@
 							<td colspan="7"><strong>Total Draft Amount: Tk.</strong></td>
 							<td>{{$total02}}</td>
 						</tr--->
-						
+
 					</tbody>
 				</table>
-	
 
 
-	
+
+
 <strong>Total {{$pay_type}} Received Amount: Tk. {{number_format(($total02), 2, '.', ',')}}	</strong><br>
-<br><br><br>				
-				
-			
-				
-				
-				
-				
-				
-				
-				
+<br><br><br>
+
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -236,25 +236,25 @@
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

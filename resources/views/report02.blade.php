@@ -567,7 +567,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 <?php } ?>
 						</td>
 						<td>
-						@if($item->merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($item->merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+						@if($item->merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($item->merchant_bank == 'CBL') HAS-MTBL-7814 @elseif($item->merchant_bank == 'BRAC') HAS-BRAC-0001 @endif
 						@if($item->pay_type == 'bkash') bKash-01777781{{$item->mer_bkash}} @endif
 						</td>
 <?php if($item->pay_type=='bkash'){?>

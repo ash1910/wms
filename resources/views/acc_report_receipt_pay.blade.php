@@ -41,7 +41,7 @@ if (isset($myF_date ))
 			foreach($dt_opening as $data){DB::table('tbl_rep_rec_pay')->insert(['t_type'=>$data->op, 'acc_head'=>$data->head,'remarks'=>$data->rmk,'amount'=>$data->amt]);}
 
 		DB::table('tbl_rep_rec_pay_ref')->delete();
-		$dt_insert_debit_ref = DB::select("SELECT
+		$dt_insert_debit_ref = DB::select("SELECT DISTINCT 
 			tbl_acc_details.ref as ref
 			FROM tbl_acc_masters
 			INNER JOIN tbl_acc_details
@@ -65,7 +65,7 @@ if (isset($myF_date ))
 			foreach($dt_receipt as $data){DB::table('tbl_rep_rec_pay')->insert(['t_type'=>'Receipt', 'acc_head'=>$data->head, 'remarks'=>$data->ref,'amount'=>$data->amt]);}
 		
 		DB::table('tbl_rep_rec_pay_ref')->delete();
-		$dt_insert_credit_ref = DB::select("SELECT
+		$dt_insert_credit_ref = DB::select("SELECT DISTINCT 
 			tbl_acc_details.ref as ref
 			FROM tbl_acc_masters
 			INNER JOIN tbl_acc_details

@@ -124,7 +124,15 @@ if($job_no!=""){
                             <div class="col-12">
                               <div class="d-grid">
 								<a href="/issue" class="btn btn-danger">Exit</a> </div>
-                            </div>							
+                            </div>	
+                            
+                            <!-- HAPS Code -->
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="check1" name="check1">
+                              <label class="form-check-label">Issue to COGS</label>
+                            </div>
+                            <!-- END Code -->
+                            
                            </form>
                          </div>
                        </div>

@@ -308,11 +308,15 @@ class bomController extends Controller
 		//dd($myID);
 		if ($amount > 0){
 
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-WIP-Spare Parts',$job_no, $amount, '0', '0', $job_no]);
-
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-FG-Spare Parts',$job_no, '0', $amount, '0', $job_no]);
+			if( $r->has('check1') ) {
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Cost of Goods Sold',$job_no, $amount, '0', '0', $job_no]);	
+		
+			} else {
+				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`, `Job_no`)
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Issue Invoice','0',$Ref, $dt, 'Inventory-WIP-Spare Parts',$job_no, $amount, '0', '0', $job_no]);	
+		
+			}
 
 		}
 

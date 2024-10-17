@@ -91,6 +91,9 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Total</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Vat</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Net Bill</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Received</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Discount</th>
+							<th scope="col" style="border: 1px solid black;text-align: center;">Due</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Card Charge</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">MFS Charge</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">AIT</th>
@@ -105,10 +108,7 @@ elseif( $billtype == "intercompany_received"){
 							<th scope="col" style="border: 1px solid black;text-align: center;">Payable</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Ledger Refund</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Cash Refund</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Received</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Sales Return</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Discount</th>
-							<th scope="col" style="border: 1px solid black;text-align: center;">Due</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Due Ref</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Payment Status</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Work Type</th>
@@ -197,6 +197,9 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->net_bill}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$vat}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->total), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->bonus), 2, '.', ',')}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->due), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($card_charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($bkash_charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->ait), 2, '.', ',')}}</td>
@@ -215,10 +218,7 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 1) {{number_format((-$item->advance_refund), 2, '.', ',')}} @else 0.00 @endif</td>
 						<td style="border: 1px solid black;text-align: center;">@if($LedgerRefund == 0 && $item->advance_refund < 0) ({{number_format((-$item->advance_refund), 2, '.', ',')}}) @else 0.00 @endif</td>
 
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->sales_return), 2, '.', ',')}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->bonus), 2, '.', ',')}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->due), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">
 <?php
 if((number_format(($item->total-($item->received+$item->bonus+$item->vat_wav+$item->ait+$item->charge+$item->supplier_adj)), 2, '.', ','))!='0')

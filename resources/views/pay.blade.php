@@ -554,6 +554,8 @@ foreach($result01 as $item01)
 			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
+            <option value="Nexus" disabled class="CBL">DBBL-Nexus</option>
+            <option value="DBBLVisaMaster" disabled class="CBL">DBBL-VISA/Master/Other</option>
 		</select>
 
 	  </div>
@@ -702,6 +704,16 @@ foreach($result01 as $item01)
 											<td><center>1.7%</center></td>
 											<td>TK. <input type="text" id="id-12-c" disabled ></td>
 										</tr>
+                                        <tr>
+											<td><p class="mb-1"><b>DBBL-NEXUS: &nbsp;</b> TK. <input type="text" id="id-13" disabled></p></td>
+											<td><center>1.0%</center></td>
+											<td>TK. <input type="text" id="id-13-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>DBBL-VISA/Master: &nbsp;</b> TK. <input type="text" id="id-14" disabled></p></td>
+											<td><center>1.3%</center></td>
+											<td>TK. <input type="text" id="id-14-c" disabled ></td>
+										</tr>
 									</tboday>
 								</table>
 							  </div>
@@ -776,12 +788,16 @@ $(function () {
     $("#id-7").val((+$("#id-1").val()*.987 ));
 	$("#id-11").val((+$("#id-1").val()*.980 ));
 	$("#id-12").val((+$("#id-1").val()*.983 ));
+    $("#id-13").val((+$("#id-1").val()*.990 ));
+	$("#id-14").val((+$("#id-1").val()*.987 ));
 
 	$("#id-6-c").val((+$("#id-1").val()*.015 ));
 	$("#id-6-c-1").val((+$("#id-1").val()*.012 ));
     $("#id-7-c").val((+$("#id-1").val()*.013 ));
 	$("#id-11-c").val((+$("#id-1").val()*.020 ));
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
+    $("#id-13-c").val((+$("#id-1").val()*.010 ));
+	$("#id-14-c").val((+$("#id-1").val()*.013 ));
   });
 
 

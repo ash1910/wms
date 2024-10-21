@@ -222,8 +222,9 @@ if($flag!='0')
                        <strong class="text-inverse">Technician: </strong>{{$technician}}<br>
                        <strong class="text-inverse">Job No.:  </strong>{{$job_no}}<br>
                        <strong class="text-inverse">Bill Create By:  </strong>{{$user_name}}<br>
-					   <strong class="text-inverse">Cartridge No:  </strong>{{$cartridge}}<br>
+					   @if($cartridge)<strong class="text-inverse">Cartridge No:  </strong>{{$cartridge}}<br>@endif
 					   @if($est_no)<strong class="text-inverse">Estimate No:  </strong>{{$est_no}}<br>@endif
+                       <strong class="text-inverse">CID: </strong>{{$customer_id}}<br>
 					</table>
 					</address>
 				   </div>

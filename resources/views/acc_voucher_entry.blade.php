@@ -310,8 +310,8 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
                     //alert(sum);
 
                 }
-
-                document.getElementById("t_Debit").value = sum;
+                //console.log(sum);
+                document.getElementById("t_Debit").value = sum.toFixed(2);
                 document.getElementById("out_of_bal").value =  sum -  document.getElementById("t_Credit").value;
 
             }
@@ -759,7 +759,7 @@ $data_Voucher_ref = DB::select("SELECT vr_type, max(ref) as ref FROM `tbl_acc_de
 
         }
 
-        document.getElementById("t_Debit").value = sum;
+        document.getElementById("t_Debit").value = sum.toFixed(2);
         document.getElementById("out_of_bal").value =  sum -  document.getElementById("t_Credit").value;
 
     }

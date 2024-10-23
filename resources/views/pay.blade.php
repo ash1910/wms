@@ -554,8 +554,8 @@ foreach($result01 as $item01)
 			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
-            <option value="Nexus" disabled class="CBL">DBBL-Nexus</option>
-            <option value="DBBLVisaMaster" disabled class="CBL">DBBL-VISA/Master/Other</option>
+            <option value="Nexus" disabled class="DBBL">DBBL-Nexus</option>
+            <option value="DBBLVisaMaster" disabled class="DBBL">DBBL-VISA/Master/Other</option>
 		</select>
 
 	  </div>
@@ -568,6 +568,7 @@ foreach($result01 as $item01)
 		<select name="merchant" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>

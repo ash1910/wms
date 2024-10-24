@@ -24,11 +24,11 @@
   <link href="assets/css/semi-dark.css" rel="stylesheet" />
   <link href="assets/css/header-colors.css" rel="stylesheet" />
   <title>Workshop Management System</title>
-  
+
 <style>
-@media print 
+@media print
 {
-	.watermark 
+	.watermark
 	{
 	position: fixed !important;
 	top: 80px;
@@ -41,8 +41,8 @@
 	overflow: hidden;
 	}
 }
-</style>   
-  
+</style>
+
 </head>
 <!--body onload="window.print()"-->
 <script type="text/javascript">
@@ -79,14 +79,14 @@ function AmountInWords(float $amount)
       if ($amount) {
        $add_plural = (($counter = count($string)) && $amount > 9) ? 's' : null;
        $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
-       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.' 
-       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. ' 
+       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.'
+       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. '
        '.$here_digits[$counter].$add_plural.' '.$amt_hundred;
         }
    else $string[] = null;
    }
    $implode_to_Rupees = implode('', array_reverse($string));
-   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . " 
+   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . "
    " . $change_words[$amount_after_decimal % 10]) . ' Paise' : '';
    return ($implode_to_Rupees ? $implode_to_Rupees . 'Taka Only. ' : '') . $get_paise;
 }
@@ -101,18 +101,18 @@ function AmountInWords(float $amount)
 <b>Bill:{{$bill}}</b><br><br>
 </center>
 <?php
-$today=date("d-M-Y");		
+$today=date("d-M-Y");
 
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address,
-b.customer_vehicle, b.customer_chas, `engineer`, `technician`, `job_no`, `bill_dt`, `user_id`, `total` 
+b.customer_vehicle, b.customer_chas, `engineer`, `technician`, `job_no`, `bill_dt`, `user_id`, `total`
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`job_no` = '$job_no'
 AND a.customer_id = b.customer_id;
 ");
 $result01 = DB::select("
 SELECT `id`,`bill`, `job_no`, `customer_id`, `bill_dt`, `net_bill`, `received`, `pay_type`, due,
-`dt`, `user_id`,  `mer_bkash`, `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, `post_dt` 
+`dt`, `user_id`,  `mer_bkash`, `trix`, `send`, `bank`, `chequeNo`, `chequeDt`,`charge`,`card_bank`, `card_no`, `card_type`, `merchant_bank`, `post_dt`
 FROM `pay` WHERE id='$id'
 order by id
 ");
@@ -145,7 +145,7 @@ SELECT sum(due) due, sum(bonus) bonus, sum(vat_wav) vat_wav FROM `pay` WHERE `jo
 if($pay_type=="bkash")
 {
 	$received = $received+$post01->charge;
-}	
+}
 if($pay_type=="card")
 {
 	$received = $received+$post01->charge;
@@ -166,7 +166,7 @@ and `chequeNo` = '$chequeNo' and `chequeDt` = '$chequeDt'
 ");
 		foreach($result04 as $post04)
 			{
-			$received = $post04->received;	
+			$received = $post04->received;
 			}
 
 
@@ -176,7 +176,7 @@ and `chequeNo` = '$chequeNo' and `chequeDt` = '$chequeDt'
 				$mer_bkash = $post01->mer_bkash;
 				$trix = $post01->trix;
 				$send = $post01->send;
-				
+
 			    $card_bank = $post01->card_bank;
 				$card_no = $post01->card_no;
 				$card_type = $post01->card_type;
@@ -218,9 +218,9 @@ and `chequeNo` = '$chequeNo' and `chequeDt` = '$chequeDt'
 	<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paid ({{$pay_type}})</b>
 	: Tk.{{number_format(($received), 2, '.', ',')}}
 	<?php if($pay_type=="cheque")
-	{ 
+	{
 		$flag='';
-		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");	
+		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");
 		foreach($result03 as $post03){$flag = $post03->flag;}
 		if($flag=='0'){echo '(CIH)';}
 	}?>
@@ -286,7 +286,7 @@ if($pay_type=="card")
 			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
 		<?php } ?>
 		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
-			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @elseif($merchant_bank == 'BRAC') HAS-BRAC-0001 @elseif($merchant_bank == 'DBBL') HAS-DBBL-1152 @endif
 		<?php } ?>
 	</td>
 </tr>
@@ -336,8 +336,8 @@ if($pay_type=="card")
 	<td><b>Total Amount</b>: Tk.{{number_format(($total-$bonus-$vat_wav), 2, '.', ',')}}
 	<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paid ({{$pay_type}})</b>: Tk.{{number_format(($received), 2, '.', ',')}}
 	<?php if($pay_type=="cheque")
-	{ 
-		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");	
+	{
+		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");
 		foreach($result03 as $post03){$flag = $post03->flag;}
 		if($flag=='0'){echo '(CIH)';}
 	}?>
@@ -402,9 +402,9 @@ if($pay_type=="card")
 
 		<?php if($pay_type=="bkash"){ ?>
 			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
-		<?php } ?>	
+		<?php } ?>
 		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
-			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @elseif($merchant_bank == 'BRAC') HAS-BRAC-0001 @elseif($merchant_bank == 'DBBL') HAS-DBBL-1152 @endif
 		<?php } ?>
 	</td>
 </tr>

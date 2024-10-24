@@ -184,6 +184,7 @@ foreach($result as $item)
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
             <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>
@@ -361,6 +362,7 @@ foreach($result as $item)
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
             <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>
@@ -453,6 +455,8 @@ foreach($result as $item)
 			<option value="Visa" class="MTBL CBL">Visa Card</option>
 			<option value="Amex" disabled class="CBL">City-AMEX</option>
 			<option value="CityVMQU" disabled class="CBL">City-VISA/Master/Q-Cash/Union Pay</option>
+            <option value="Nexus" disabled class="DBBL">DBBL-Nexus</option>
+            <option value="DBBLVisaMaster" disabled class="DBBL">DBBL-VISA/Master/Other</option>
 		</select>
 
 	  </div>
@@ -465,6 +469,7 @@ foreach($result as $item)
 		<select name="merchant" class="form-select">
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 	  </div>
 	</div>
@@ -580,6 +585,14 @@ foreach($result as $item)
 											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
 											<td>TK. <input type="text" id="id-12-c" disabled ></td>
 										</tr>
+                                        <tr>
+											<td><p class="mb-1"><b>DBBL-NEXUS: &nbsp;</b> TK. <input type="text" id="id-13" disabled></p></td>
+											<td>TK. <input type="text" id="id-13-c" disabled ></td>
+										</tr>
+										<tr>
+											<td><p class="mb-1"><b>DBBL-VISA/Master: &nbsp;</b> TK. <input type="text" id="id-14" disabled></p></td>
+											<td>TK. <input type="text" id="id-14-c" disabled ></td>
+										</tr>
 									</tboday>
 								</table>
 							  </div>
@@ -655,12 +668,16 @@ $(function () {
     $("#id-7").val((+$("#id-1").val()*.987 ));
 	$("#id-11").val((+$("#id-1").val()*.980 ));
 	$("#id-12").val((+$("#id-1").val()*.983 ));
+    $("#id-13").val((+$("#id-1").val()*.990 ));
+	$("#id-14").val((+$("#id-1").val()*.987 ));
 
 	$("#id-6-c").val((+$("#id-1").val()*.015 ));
 	$("#id-6-c-1").val((+$("#id-1").val()*.012 ));
     $("#id-7-c").val((+$("#id-1").val()*.013 ));
 	$("#id-11-c").val((+$("#id-1").val()*.020 ));
 	$("#id-12-c").val((+$("#id-1").val()*.017 ));
+    $("#id-13-c").val((+$("#id-1").val()*.010 ));
+	$("#id-14-c").val((+$("#id-1").val()*.013 ));
   });
 
 

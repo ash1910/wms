@@ -25,19 +25,19 @@
   <link href="assets/css/header-colors.css" rel="stylesheet" />
   <title>Workshop Management System</title>
   <style>
-	@media print 
+	@media print
 	{
-	  div.divHeader 
+	  div.divHeader
 	  {
 		position: fixed;
 		top: 0;
 	  }
-	  div.divMid 
+	  div.divMid
 	  {
 	  position: relative;
-	  
+
 	  }
-	 @page {size: landscape} 
+	 @page {size: landscape}
 	}
   </style>
 </head>
@@ -49,13 +49,13 @@
 </div>
 <div>
 <center>
-<img src="assets/images/logo-icon2.png" class="logo-icon" style="width: 300px;"><br>
+<img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;"><br>
 275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, Fax: 88-02-8819297<br>
 </center>
 </div>
 
 <center><b>Card [Settlement Date: {{date('d-M-Y', strtotime($s_dt))}}]</b></center>
-<center><b>Debit A/C: @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif</b></center>
+<center><b>Debit A/C: @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @elseif($merchant_bank == 'DBBL') HAS-DBBL-1152 @endif</b></center>
 
 <div class="col-12 col-lg-12 d-flex">
 				<div class="table-responsive" >
@@ -70,19 +70,22 @@
 							<th scope="col" style="border: 1px solid black;text-align: center;">Trans. Amount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Charge</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement</th>
-							
-							
+
+
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No.</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Info</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement By</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $where_merchant_bank = "";
 if( $merchant_bank == "CBL"){
 	$where_merchant_bank = "a.merchant_bank = 'CBL'";
+}
+else if( $merchant_bank == "DBBL"){
+	$where_merchant_bank = "a.merchant_bank = 'DBBL'";
 }
 else{
   $where_merchant_bank = "( a.merchant_bank <> 'CBL' OR a.merchant_bank IS NULL )";
@@ -95,15 +98,15 @@ FROM `pay` a, customer_info b, bill_mas c, user d
 WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
-AND a.`pay_check`='1' and a.`pay_type` = 'card' 
-and a.approval_dt = '$s_dt' AND $where_merchant_bank 
+AND a.`pay_check`='1' and a.`pay_type` = 'card'
+and a.approval_dt = '$s_dt' AND $where_merchant_bank
 and a.check_approval = d.user_id
 order by a.`id`;
 ");
-	$sl = '1'; 	$amount='0';	$charge='0';	$amount1='0';		
+	$sl = '1'; 	$amount='0';	$charge='0';	$amount1='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
@@ -114,8 +117,8 @@ foreach($result as $item)
 						{{number_format(($item->received+$item->charge), 2, '.', ',')}}</td><td style="border: 1px solid black;text-align: center;">
 						{{number_format(($item->charge), 2, '.', ',')}}</td><td style="border: 1px solid black;text-align: center;">
 					    {{number_format(($item->received), 2, '.', ',')}}</td>
-						
-						
+
+
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->job_no}}</a></td>
 						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
@@ -126,7 +129,7 @@ foreach($result as $item)
 
 
 
-			<?php  
+			<?php
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
     $agent = $_SERVER['HTTP_USER_AGENT'];
 }if (strlen(strstr($agent, 'Firefox')) > 0) {
@@ -134,8 +137,8 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 }
 if (strlen(strstr($agent, 'Chrome')) > 0) {
     $browser = 'Chrome';
-}			
-			
+}
+
 			if($sl=='7')
 			{
 					echo '<tr><td colspan="5" style="text-align: center;">Page 1 </td></tr>';
@@ -146,13 +149,13 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 				}
 				if($browser=='firefox')
 				{
-					
+
 					echo '<tr><td style="height: 170px;"></td></tr>';
-				}			
+				}
 				?>
-						
-												
-					
+
+
+
 	<?php   } ?>
 
 
@@ -164,18 +167,18 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
         $amount=$amount+$item->received;
         $charge=$charge+$item->charge;
         $amount1=$amount1+($item->received+$item->charge);
-		}  
+		}
 ?>
 						<!--tr>
-							<td colspan="3"><strong>Total Amount: Tk.</strong></td> 
+							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
-						
-						
-						
-						
+
+
+
+
 					</tbody>
-				</table>				
-				
+				</table>
+
 
 
 Total Transaction Amount:	<b>TK. {{number_format(($amount1), 2, '.', ',')}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -185,12 +188,12 @@ Total Settlement Amount:	<b>TK. {{number_format(($amount), 2, '.', ',')}}</b>
 <br>
 <center>
 <font style="font-size: xx-small;">
-*This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations (TMC) 
+*This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations (TMC)
 </font>
 </center>
-<br></br>							
-<br></br>							
-<br></br>							
+<br></br>
+<br></br>
+<br></br>
                           </div>
-                         
+
                     </div>

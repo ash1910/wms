@@ -286,6 +286,7 @@ foreach($result01 as $item01)
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
             <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>
@@ -461,6 +462,7 @@ foreach($result01 as $item01)
 			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
             <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>

@@ -23,7 +23,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 	<div class="card"  style="padding:20px">
@@ -47,6 +47,7 @@
 			<select name="merchant_bank" class="form-select">
 				<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
 				<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+                <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 			</select>
 		</div>
 		<div class="col-12">
@@ -58,11 +59,11 @@
 </div>
 	</div></div>
 </div>
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection

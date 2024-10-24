@@ -629,11 +629,20 @@ if($pay_type=="card")
 			$received = round($received*0.980,2);
 		}
 	}
+    else if($merchant_bank=="DBBL"){
+		if($card_type=="Nexus"){
+			$charge=round($received-($received*0.990),2);
+			$received = round($received*0.990,2);
+		}
+        elseif($card_type=="DBBLVisaMaster"){
+			$charge=round($received-($received*0.987),2);
+			$received = round($received*0.987,2);
+		}
+	}
 	else{
 		$charge=round($received-($received*0.987),2);
 		$received = round($received*0.987,2);
 	}
-
 
 
 		DB::insert('INSERT INTO `pay`(`bill`, `job_no`, `customer_id`, `received`,`bonus`,`vat_wav`,`vat_pro`,`ait`,
@@ -1023,6 +1032,16 @@ if($vat_pro!='0')
 					$received = round($received*0.980,2);
 				}
 			}
+            else if($merchant_bank=="DBBL"){
+                if($card_type=="Nexus"){
+                    $charge=round($received-($received*0.990),2);
+                    $received = round($received*0.990,2);
+                }
+                elseif($card_type=="DBBLVisaMaster"){
+                    $charge=round($received-($received*0.987),2);
+                    $received = round($received*0.987,2);
+                }
+            }
 			else{
 				$charge=round($received-($received*0.987),2);
 				$received = round($received*0.987,2);
@@ -1287,6 +1306,16 @@ if($vat_pro!='0')
 					$received = round($received*0.980,2);
 				}
 			}
+            else if($merchant_bank=="DBBL"){
+                if($card_type=="Nexus"){
+                    $charge=round($received-($received*0.990),2);
+                    $received = round($received*0.990,2);
+                }
+                elseif($card_type=="DBBLVisaMaster"){
+                    $charge=round($received-($received*0.987),2);
+                    $received = round($received*0.987,2);
+                }
+            }
 			else{
 				$charge=round($received-($received*0.987),2);
 				$received = round($received*0.987,2);

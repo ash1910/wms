@@ -452,7 +452,7 @@ foreach($result as $item)
 ?>					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">
-						<a href='report031?segment={{$item->sales_segment}}&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}'>{{$item->sales_segment}}</a></td>
+						<a href='report031?segment={{$item->sales_segment}}&&from_dt={{$from_dt}}&&to_dt={{$to_dt}}'>@if($item->sales_segment == "Engineering")Auto Solutions @else {{$item->sales_segment}} @endif</a></td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->service), 2, '.', ',');}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->parts), 2, '.', ',');}}</td>

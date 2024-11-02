@@ -151,60 +151,60 @@ class approvalController extends Controller
 
 			/// HAPS Code  ---For Advance Adjustment
 
-			$today = date("Y-m-d");
+			// $today = date("Y-m-d");
 
-			$my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
+			// $my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
 
-			foreach($my_balance as $item)
-			{
-				$adv_balance = $item->Balance;
-			}
+			// foreach($my_balance as $item)
+			// {
+			// 	$adv_balance = $item->Balance;
+			// }
 
-			if( $adv_balance < 0){
+			// if( $adv_balance < 0){
 
-				$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-				foreach($my_Data as $item)
-				{
-					$work = $item->work;
-				}
+			// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+			// 	foreach($my_Data as $item)
+			// 	{
+			// 		$work = $item->work;
+			// 	}
 
-				if ($work =='engineering'){
+			// 	if ($work =='engineering'){
 
-					$myCustomerAcc = 'Workshop Customer';
-				}
-				if ($work =='intercompany'){
+			// 		$myCustomerAcc = 'Workshop Customer';
+			// 	}
+			// 	if ($work =='intercompany'){
 
-					$myCustomerAcc = 'Intercompany Customer';
-				}
-				if ($work =='automobile'){
+			// 		$myCustomerAcc = 'Intercompany Customer';
+			// 	}
+			// 	if ($work =='automobile'){
 
-					$myCustomerAcc = 'Automobile Customer';
-				}
-
-
-				$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-				foreach($my_Data as $item)
-				{
-					$customer_nm = $item->customer_nm;
-
-				}
+			// 		$myCustomerAcc = 'Automobile Customer';
+			// 	}
 
 
-				$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
-				foreach($myRef as $item){$RefNo = $item->id;}
-				$Ref = 'AAJ-'.$RefNo;
+			// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+			// 	foreach($my_Data as $item)
+			// 	{
+			// 		$customer_nm = $item->customer_nm;
 
-				$myNarration = $customer_id.'-'.$customer_nm;
-
-				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
-
-				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+			// 	}
 
 
+			// 	$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
+			// 	foreach($myRef as $item){$RefNo = $item->id;}
+			// 	$Ref = 'AAJ-'.$RefNo;
 
-			}
+			// 	$myNarration = $customer_id.'-'.$customer_nm;
+
+			// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
+
+			// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+			// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+
+
+
+			// }
 
 
 			//// End HAPS Code ---
@@ -514,60 +514,60 @@ class approvalController extends Controller
 
 		/// HAPS Code  ---For Advance Adjustment
 
-		$today = date("Y-m-d");
+		// $today = date("Y-m-d");
 
-		$my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
+		// $my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
 
-		foreach($my_balance as $item)
-		{
-			$adv_balance = $item->Balance;
-		}
+		// foreach($my_balance as $item)
+		// {
+		// 	$adv_balance = $item->Balance;
+		// }
 
-		if( $adv_balance < 0){
+		// if( $adv_balance < 0){
 
-			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-			foreach($my_Data as $item)
-			{
-				$work = $item->work;
-			}
+		// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		// 	foreach($my_Data as $item)
+		// 	{
+		// 		$work = $item->work;
+		// 	}
 
-			if ($work =='engineering'){
+		// 	if ($work =='engineering'){
 
-				$myCustomerAcc = 'Workshop Customer';
-			}
-			if ($work =='intercompany'){
+		// 		$myCustomerAcc = 'Workshop Customer';
+		// 	}
+		// 	if ($work =='intercompany'){
 
-				$myCustomerAcc = 'Intercompany Customer';
-			}
-			if ($work =='automobile'){
+		// 		$myCustomerAcc = 'Intercompany Customer';
+		// 	}
+		// 	if ($work =='automobile'){
 
-				$myCustomerAcc = 'Automobile Customer';
-			}
-
-
-			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-			foreach($my_Data as $item)
-			{
-				$customer_nm = $item->customer_nm;
-
-			}
+		// 		$myCustomerAcc = 'Automobile Customer';
+		// 	}
 
 
-			$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
-			foreach($myRef as $item){$RefNo = $item->id;}
-			$Ref = 'AAJ-'.$RefNo;
+		// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		// 	foreach($my_Data as $item)
+		// 	{
+		// 		$customer_nm = $item->customer_nm;
 
-			$myNarration = $customer_id.'-'.$customer_nm;
-
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
-
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+		// 	}
 
 
+		// 	$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
+		// 	foreach($myRef as $item){$RefNo = $item->id;}
+		// 	$Ref = 'AAJ-'.$RefNo;
 
-		}
+		// 	$myNarration = $customer_id.'-'.$customer_nm;
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+
+
+
+		// }
 
 
 		//// End HAPS Code ---
@@ -660,60 +660,60 @@ class approvalController extends Controller
 
 		/// HAPS Code  ---For Advance Adjustment
 
-		$today = date("Y-m-d");
+		// $today = date("Y-m-d");
 
-		$my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
+		// $my_balance = DB::select("SELECT SUM(debit-credit) as Balance FROM `tbl_acc_details` WHERE `others_id` = '$customer_id' AND `ahead` ='Advance from Customer';");
 
-		foreach($my_balance as $item)
-		{
-			$adv_balance = $item->Balance;
-		}
+		// foreach($my_balance as $item)
+		// {
+		// 	$adv_balance = $item->Balance;
+		// }
 
-		if( $adv_balance < 0){
+		// if( $adv_balance < 0){
 
-			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-			foreach($my_Data as $item)
-			{
-				$work = $item->work;
-			}
+		// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		// 	foreach($my_Data as $item)
+		// 	{
+		// 		$work = $item->work;
+		// 	}
 
-			if ($work =='engineering'){
+		// 	if ($work =='engineering'){
 
-				$myCustomerAcc = 'Workshop Customer';
-			}
-			if ($work =='intercompany'){
+		// 		$myCustomerAcc = 'Workshop Customer';
+		// 	}
+		// 	if ($work =='intercompany'){
 
-				$myCustomerAcc = 'Intercompany Customer';
-			}
-			if ($work =='automobile'){
+		// 		$myCustomerAcc = 'Intercompany Customer';
+		// 	}
+		// 	if ($work =='automobile'){
 
-				$myCustomerAcc = 'Automobile Customer';
-			}
-
-
-			$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
-			foreach($my_Data as $item)
-			{
-				$customer_nm = $item->customer_nm;
-
-			}
+		// 		$myCustomerAcc = 'Automobile Customer';
+		// 	}
 
 
-			$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
-			foreach($myRef as $item){$RefNo = $item->id;}
-			$Ref = 'AAJ-'.$RefNo;
+		// 	$my_Data = DB::select("SELECT *  FROM `bill_mas` where `job_no` = '$job_no'");
+		// 	foreach($my_Data as $item)
+		// 	{
+		// 		$customer_nm = $item->customer_nm;
 
-			$myNarration = $customer_id.'-'.$customer_nm;
-
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
-
-			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-			VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+		// 	}
 
 
+		// 	$myRef= DB::select("SELECT max(id) as id FROM `pay` Where customer_id ='$customer_id' and `job_no` ='$job_no';");
+		// 	foreach($myRef as $item){$RefNo = $item->id;}
+		// 	$Ref = 'AAJ-'.$RefNo;
 
-		}
+		// 	$myNarration = $customer_id.'-'.$customer_nm;
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, 'Advance from Customer', $myNarration, -$adv_balance, '0', $customer_id, $job_no]);
+
+		// 	DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
+		// 	VALUES (?,?,?,?,?,?,?,?,?,?)',['Sales Revenue','0',$Ref, $today, $myCustomerAcc, $myNarration, '0', -$adv_balance, $customer_id, $job_no]);
+
+
+
+		// }
 
 
 		//// End HAPS Code ---

@@ -1251,7 +1251,7 @@ if($vat_pro!='0')
 
 				if ( count($find_Ch_No) != 0){
 
-					return redirect ('/chequeApproval')->with('danger', 'Duplicate Cheque Number!');
+					//return redirect ('/chequeApproval')->with('danger', 'Duplicate Cheque Number!');
 
 				}
 
@@ -1307,15 +1307,15 @@ if($vat_pro!='0')
 				}
 			}
             else if($merchant_bank=="DBBL"){
-                if($card_type=="Nexus"){
-                    $charge=round($received-($received*0.990),2);
-                    $received = round($received*0.990,2);
-                }
-                elseif($card_type=="DBBLVisaMaster"){
-                    $charge=round($received-($received*0.987),2);
-                    $received = round($received*0.987,2);
-                }
-            }
+		if($card_type=="Nexus"){
+			$charge=round($received-($received*0.990),2);
+			$received = round($received*0.990,2);
+		}
+        elseif($card_type=="DBBLVisaMaster"){
+			$charge=round($received-($received*0.987),2);
+			$received = round($received*0.987,2);
+		}
+	}
 			else{
 				$charge=round($received-($received*0.987),2);
 				$received = round($received*0.987,2);

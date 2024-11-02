@@ -239,6 +239,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input  type="hidden"  id="ChargeAcc1" name="ChargeAcc1[]" value="">
 					<input  type="hidden" id="ChargeAmt1" name="ChargeAmt1[]" value="{{number_format(($item->charge), 2, '.', ',')}}">
 					<!-- End Code -->
+                    <input type="date" class="form-control" name='approval_dt'>
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Settlement</button>
 					</form>

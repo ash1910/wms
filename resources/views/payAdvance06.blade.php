@@ -24,11 +24,11 @@
   <link href="assets/css/semi-dark.css" rel="stylesheet" />
   <link href="assets/css/header-colors.css" rel="stylesheet" />
   <title>Workshop Management System</title>
-  
+
 <style>
-@media print 
+@media print
 {
-	.watermark 
+	.watermark
 	{
 	position: fixed !important;
 	top: 80px;
@@ -41,16 +41,16 @@
 	overflow: hidden;
 	}
 }
-</style>   
-  
+</style>
+
 </head>
 <!--body onload="window.print()"-->
 <script type="text/javascript">
-	
+
 	window.onload = function(){
 		var imageGet = '<?=isset($_GET['image']) ? $_GET['image'] : ""?>';
 		console.log(imageGet);
-		if(imageGet) 
+		if(imageGet)
 		setUpDownloadPageAsImage();
 		else
 		CreatePDFfromHTML();
@@ -95,14 +95,14 @@ function AmountInWords(float $amount)
       if ($amount) {
        $add_plural = (($counter = count($string)) && $amount > 9) ? 's' : null;
        $amt_hundred = ($counter == 1 && $string[0]) ? ' and ' : null;
-       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.' 
-       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. ' 
+       $string [] = ($amount < 21) ? $change_words[$amount].' '. $here_digits[$counter]. $add_plural.'
+       '.$amt_hundred:$change_words[floor($amount / 10) * 10].' '.$change_words[$amount % 10]. '
        '.$here_digits[$counter].$add_plural.' '.$amt_hundred;
         }
    else $string[] = null;
    }
    $implode_to_Rupees = implode('', array_reverse($string));
-   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . " 
+   $get_paise = ($amount_after_decimal > 0) ? "And " . ($change_words[$amount_after_decimal / 10] . "
    " . $change_words[$amount_after_decimal % 10]) . ' Paise' : '';
    return ($implode_to_Rupees ? $implode_to_Rupees . 'Taka Only. ' : '') . $get_paise;
 }
@@ -117,24 +117,24 @@ function AmountInWords(float $amount)
 <!--b>Bill:</b><br><br-->
 </center>
 <?php
-$today=date("d-M-Y");		
+$today=date("d-M-Y");
 
 /*
 $result = DB::select("
 SELECT `bill_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address,
-b.customer_vehicle, b.customer_chas, `engineer`, `technician`, `job_no`, `bill_dt`, `user_id`, `total` 
+b.customer_vehicle, b.customer_chas, `engineer`, `technician`, `job_no`, `bill_dt`, `user_id`, `total`
 FROM `bill_mas` a, `customer_info` b
 WHERE a.`bill_no` = $bill
 AND a.customer_id = b.customer_id;
 ");
 */
 $result01 = DB::select("
-SELECT a.`id`, a.`bill`, a.`job_no`, a.`customer_id`, a.`bill_dt`, a.`net_bill`, a.`received`, a.`pay_type`, 
+SELECT a.`id`, a.`bill`, a.`job_no`, a.`customer_id`, a.`bill_dt`, a.`net_bill`, a.`received`, a.`pay_type`,
 a.`dt`, a.`user_id`,  a.`trix`, a.`send`, a.`bank`, a.`chequeNo`, a.`chequeDt`, a.due,
-b.customer_nm, b.customer_mobile, b.customer_address, b.customer_reg, b.customer_chas,`charge`,`card_bank`, 
-`card_no`, `card_type`, `merchant_bank`, mer_bkash 
-FROM `pay` a, customer_info b 
-WHERE  a.customer_id='$customer_id' 
+b.customer_nm, b.customer_mobile, b.customer_address, b.customer_reg, b.customer_chas,`charge`,`card_bank`,
+`card_no`, `card_type`, `merchant_bank`, mer_bkash
+FROM `pay` a, customer_info b
+WHERE  a.customer_id='$customer_id'
 AND a.bill = 'Advance' and a.`id` = '$id'
 and a.customer_id = b.customer_id
 order by id;
@@ -153,7 +153,7 @@ order by id;
 if($pay_type=="bkash")
 {
 	$received = $received+$post01->charge;
-}	
+}
 if($pay_type=="card")
 {
 	$received = $received+$post01->charge;
@@ -167,13 +167,13 @@ if($pay_type=="cheque")
 				$bank = $post01->bank;
 				$chequeNo = $post01->chequeNo;
 				$chequeDt = $post01->chequeDt;
-				
+
 				$card_bank = $post01->card_bank;
 				$card_no = $post01->card_no;
 				$card_type = $post01->card_type;
 				$merchant_bank = $post01->merchant_bank;
 
-				
+
 				$customer_nm = $post01->customer_nm;
 				$customer_mobile = $post01->customer_mobile;
 				$customer_address = $post01->customer_address;
@@ -209,15 +209,15 @@ if($pay_type=="cheque")
 </tr>
 <tr>
 	<td><b>Advance Receipt Amount</b>: Tk.{{number_format(intval($received), 2, '.', ',')}}
-	
+
 	<?php if($pay_type=="cheque")
-	{ 
+	{
 		$flag='';
-		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");	
+		$result03 = DB::select("SELECT `flag` FROM `cheque_pending` WHERE `job_no` = '$job_no'");
 		foreach($result03 as $post03){$flag = $post03->flag;}
 		if($flag=='0'){echo '(CIH)';}
 	}?>
-	
+
 	</td>
 </tr>
 <?php
@@ -264,14 +264,14 @@ if($pay_type=="card")
 
 
 <tr>
-	<td> 
+	<td>
 		<b>In words Tk:&nbsp;</b><?php echo AmountInWords(round($received)); ?>
-		
+
 		<?php if($pay_type=="bkash"){ ?>
 			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> 01777781{{$mer_bkash}}
-		<?php } ?>	
+		<?php } ?>
 		<?php if($pay_type=="cheque" || $pay_type=="card" || $pay_type=="online"){ ?>
-			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @endif
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debit A/C:</b> @if($merchant_bank == 'MTBL') ESL-MTBL-4676 @elseif($merchant_bank == 'CBL') HAS-MTBL-7814 @elseif($merchant_bank == 'BRAC') HAS-BRAC-0001 @elseif($merchant_bank == 'DBBL') HAS-DBBL-1152 @endif
 		<?php } ?>
 	</td>
 </tr>
@@ -319,7 +319,7 @@ function CreatePDFfromHTML() {
 		pdf.setFillColor(204, 204,204,0);
 		pdf.rect(10, 10, 150, 160, "F");
         pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-        for (var i = 1; i <= totalPDFPages; i++) { 
+        for (var i = 1; i <= totalPDFPages; i++) {
             pdf.addPage(PDF_Width, PDF_Height);
             pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
         }

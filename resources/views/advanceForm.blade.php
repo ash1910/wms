@@ -559,42 +559,48 @@ foreach($result as $item)
                                 <i class="fadeIn animated bx bx-money"></i>
                               </div>
                               <div class="info">
-							  	<table class="SettlementAmount">
+                                <table class="SettlementAmount">
 									<thead>
 										<tr>
 											<td><h6 class="mb-2">Settlement Amount</h6></td>
+											<td><h6 class="mb-2">Charge Rate</h6></td>
 											<td><h6 class="mb-2">Charge Amount</h6></td>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											<td><p class="mb-1"><b>Bkash-797:</b> TK. <input type="text" id="id-6" disabled ></p></td>
+											<td><center>1.5%</center></td>
 											<td>TK. <input type="text" id="id-6-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>Bkash-330:</b> TK. <input type="text" id="id-6-1" disabled ></p></td>
+											<td><center>1.2%</center></td>
 											<td>TK. <input type="text" id="id-6-c-1" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>Card-Visa/Master: &nbsp;</b> TK. <input type="text" id="id-7" disabled></p></td>
+											<td><center>1.3%</center></td>
 											<td>TK. <input type="text" id="id-7-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-AMEX: &nbsp;</b> TK. <input type="text" id="id-11" disabled></p></td>
+											<td><center>2.0%</center></td>
 											<td>TK. <input type="text" id="id-11-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>City-VISA/Master/<br>Q-Cash/Union Pay: &nbsp;</b> TK. <input type="text" id="id-12" disabled></p></td>
+											<td><center>1.7%</center></td>
 											<td>TK. <input type="text" id="id-12-c" disabled ></td>
 										</tr>
                                         <tr>
 											<td><p class="mb-1"><b>DBBL-NEXUS: &nbsp;</b> TK. <input type="text" id="id-13" disabled></p></td>
-
+											<td><center>1.0%</center></td>
 											<td>TK. <input type="text" id="id-13-c" disabled ></td>
 										</tr>
 										<tr>
 											<td><p class="mb-1"><b>DBBL-VISA/Master: &nbsp;</b> TK. <input type="text" id="id-14" disabled></p></td>
-
+											<td><center>1.3%</center></td>
 											<td>TK. <input type="text" id="id-14-c" disabled ></td>
 										</tr>
 									</tboday>

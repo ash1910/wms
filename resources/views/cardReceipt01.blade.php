@@ -94,7 +94,7 @@ else if( $merchant_bank == "DBBL"){
 	$where_merchant_bank = "a.merchant_bank = 'DBBL'";
 }
 else{
-  $where_merchant_bank = "( a.merchant_bank <> 'CBL' OR a.merchant_bank IS NULL )";
+  $where_merchant_bank = "( (a.merchant_bank <> 'CBL' AND a.merchant_bank <> 'DBBL') OR a.merchant_bank IS NULL )";
 }
 
 $result = DB::select("

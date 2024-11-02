@@ -50,7 +50,7 @@
 
 $suppliers_list = []; $supplier_payments_list = []; $supplier_purchases_list = []; $supplier_final_list = [];
 
-$suppliers = DB::select("SELECT supplier_id, supplier_name FROM suppliers;");
+$suppliers = DB::select("SELECT supplier_id, supplier_name FROM suppliers WHERE supplier_name <> 'Opening Balance';");
 
 $supplier_payments = DB::select("SELECT SUM(paid_amount+discount) AS debit, supplier_id FROM `suppliers_payment` GROUP BY supplier_id;");
 

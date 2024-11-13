@@ -867,35 +867,52 @@ if($vat_pro!='0')
 			$Ref = 'COL-'.$RefNo;
 
 			if ( $due01 < 0  ){
+
+				//dd($due01);
+				//$myDue = abs($due01);
+
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro+$due01;
 			}else{
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro;
 			}
 
 
-
 			if ($bonus!=0){
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer',$customer_nm, $bonus, '0', $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Discount Allowed to Customer',$customer_nm, $bonus, '0', $customer_id, $job_no]);
 			}
+
 			if ($vat_wav!=0){
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat_wav, '0', $customer_id, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C',$customer_nm, $vat_wav, '0', $customer_id, $job_no]);
 			}
+
+
 			if ($ait!=0){
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
-				}
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance Income Tax', $customer_nm, $ait, '0', $customer_id, $job_no]);
+			}
+
+
 			if ($vat_pro!=0){
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
-				}
+				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'VAT Current A/C', $customer_nm, $vat_pro, '0', $customer_id, $job_no]);
+			}
+
+			if ($TotalReceive!=0){
 
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`job_no`)
 				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc ,$customer_nm, '0', $TotalReceive, $customer_id, $job_no]);
 
+			}
+
+
+
+
 
 		}
+
+
 
 		// if ( $due01 < 0  ){
 

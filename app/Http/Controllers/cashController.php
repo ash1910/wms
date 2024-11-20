@@ -868,9 +868,6 @@ if($vat_pro!='0')
 
 			if ( $due01 < 0  ){
 
-				//dd($due01);
-				//$myDue = abs($due01);
-
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro+$due01;
 			}else{
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro;
@@ -905,6 +902,7 @@ if($vat_pro!='0')
 				VALUES (?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc ,$customer_nm, '0', $TotalReceive, $customer_id, $job_no]);
 
 			}
+
 
 
 

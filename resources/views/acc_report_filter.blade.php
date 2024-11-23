@@ -91,6 +91,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
                                         <option value="8">Balance Sheet</option>
                                         <option value="9">Customer Ledger</option>
                                         <option value="10">Supplier Ledger</option>
+                                        <option value="11">Customer Position</option>
                                     </select>
                                 </div>
                                 <br>
@@ -234,6 +235,18 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
                                     </select>						
 						
                                 </div>
+
+                                <div style='display:none;' id="CustomerPosition" class="col-12">
+                                    <label class="form-label">Options</label>
+
+                                    <select name="myCustomerPosition" id="myCustomerPosition" class="form-select">
+                                            <option value="Workshop Customer">Workshop Customer</option>
+                                            <option value="Intercompany Customer">Intercompany Customer</option>
+                                            <option value="Automobile Customer">Automobile Customer</option>
+                                    </select>						
+						
+                                </div>
+
                                <br>
                                 <div class="col-12">
                                     <div class="d-grid">
@@ -347,6 +360,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('t_bal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     }
 
     if(select.value== '2'){
@@ -361,6 +375,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('t_bal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '3'){
@@ -375,6 +390,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('t_bal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     
@@ -390,6 +406,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('t_bal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '5'){
@@ -404,6 +421,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('t_bal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '6'){
@@ -418,6 +436,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('journal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '7'){
@@ -432,6 +451,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('journal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '8'){
@@ -446,6 +466,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('journal').style.display = "none";
         document.getElementById('Customer').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '9'){
@@ -460,6 +481,7 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('ledger').style.display = "none";
         document.getElementById('journal').style.display = "none";
         document.getElementById('Supplier').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
     if(select.value== '10'){
@@ -474,8 +496,23 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         document.getElementById('CashBook').style.display = "none";
         document.getElementById('ledger').style.display = "none";
         document.getElementById('journal').style.display = "none";
+        document.getElementById('CustomerPosition').style.display = "none";
     } 
 
+    if(select.value== '11'){
+        //alert(2);
+        document.getElementById('CustomerPosition').style.display = "block";
+        document.getElementById('Supplier').style.display = "none";
+        document.getElementById('Customer').style.display = "none";
+        document.getElementById('BS').style.display = "none";
+        document.getElementById('PL').style.display = "none";
+        document.getElementById('t_bal').style.display = "none";
+        document.getElementById('Rec_Pay').style.display = "none";
+        document.getElementById('BankBook').style.display = "none";
+        document.getElementById('CashBook').style.display = "none";
+        document.getElementById('ledger').style.display = "none";
+        document.getElementById('journal').style.display = "none";
+    } 
 
 
     } 
@@ -609,6 +646,20 @@ $data_ComInfo = DB::table('tbl_company')->select('com_name','com_address','fy_op
         var myAccount =  document.getElementById('mySupplier').value
 
         var page = 'acc_report_sup_ledger?f_date='+ myFr_Date +'& t_date='+ myTo_Date +'& acc='+ myAccount;
+		
+        var myWindow = window.open(page, "_self");
+
+        
+    } 
+
+    if(myValue== '11'){
+        //alert(2);
+
+        var myFr_Date =  document.getElementById('f_date').value
+        var myTo_Date =  document.getElementById('t_date').value
+        var myOption =  document.getElementById('myCustomerPosition').value
+
+        var page = 'acc_rep_cust_position?f_date='+ myFr_Date +'& t_date='+ myTo_Date +'& option='+ myOption;
 		
         var myWindow = window.open(page, "_self");
 

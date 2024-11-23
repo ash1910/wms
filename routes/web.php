@@ -419,7 +419,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('dayEnd02','App\Http\Controllers\dayEndController@dayEnd02');
 
 
-	
+
 	// ACCOUNTS
 	Route::get('accounts02', function () {return view('accounts02');});
 	Route::get('acc_group_list', function () {return view('acc_group_list');});
@@ -428,7 +428,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('/acc_group_add','App\Http\Controllers\AccountsController@edit_acc_group');
 	Route::get('/acc_group_list','App\Http\Controllers\AccountsController@delete_acc_group');
 
-	
+
 	Route::get('acc_head_add', function () {return view('acc_head_add');});
 	Route::get('/acc_head_add','App\Http\Controllers\AccountsController@ck_acc_lock');
 	Route::Post('acc_head_add','App\Http\Controllers\AccountsController@store_acc_head');
@@ -440,7 +440,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('acc_voucher_entry', function () {return view('acc_voucher_entry');});
 	Route::Post('acc_voucher_entry','App\Http\Controllers\AccountsController@store_voucher_entry');
 	Route::get('/acc_voucher_entry','App\Http\Controllers\AccountsController@edit_voucher_entry');
-	
+
 	Route::get('acc_voucher_list', function () {return view('acc_voucher_list');});
 	Route::get('/acc_voucher_list','App\Http\Controllers\AccountsController@delete_acc_voucher');
 
@@ -450,7 +450,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('acc_report_voucher_pin/{ref}', function () {return view('acc_report_voucher_pin');});
 	Route::get('acc_report_voucher_pir/{ref}', function () {return view('acc_report_voucher_pir');});
 	Route::get('acc_report_voucher_isu/{ref}', function () {return view('acc_report_voucher_isu');});
-	
+
 
 	Route::get('acc_opening_bal', function () {return view('acc_opening_bal');});
 	Route::Post('acc_opening_bal','App\Http\Controllers\AccountsController@store_opening_balance');
@@ -462,7 +462,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 
 	Route::get('acc_auto_journal_list', function () {return view('acc_auto_journal_list');});
 	Route::get('/acc_auto_journal_list','App\Http\Controllers\AccountsController@delete_auto_voucher');
-	
+
 
 	Route::get('/acc_report_filter', function () {return view('acc_report_filter');});
 
@@ -487,10 +487,12 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('acc_report_cust_ledger', function () {return view('acc_report_cust_ledger');});
 	Route::get('acc_report_sup_ledger', function () {return view('acc_report_sup_ledger');});
 
+    Route::get('acc_rep_cust_position', function () {return view('acc_rep_cust_position');});
+
 	//Route::get('/acc_report_pl', function () {return view('acc_report_pl');});
 	//Route::get('/acc_report_bs', function () {return view('acc_report_bs');});
-	
-	
+
+
 });
 
 

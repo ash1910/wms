@@ -868,6 +868,9 @@ if($vat_pro!='0')
 
 			if ( $due01 < 0  ){
 
+				//dd($due01);
+				//$myDue = abs($due01);
+
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro+$due01;
 			}else{
 				$TotalReceive = $bonus+$vat_wav+$ait+$vat_pro;
@@ -907,8 +910,10 @@ if($vat_pro!='0')
 
 
 
-
 		}
+
+
+
 
 
 
@@ -925,7 +930,6 @@ if($vat_pro!='0')
 
 
 	//END HAPS Code---
-
 
 
 		if($due01!='0')
@@ -1725,17 +1729,17 @@ if($vat_pro!='0')
 			}
 
 			DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc2, $customer_nm, $received, '0', NULL, $chequeNo, $job_no]);
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc2, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);
 
 			if($my_adj_type == 'Advance'){
 
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, NULL, $chequeNo, $job_no]);
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);
 
 			}else{
 
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, NULL, $chequeNo, $job_no]);
+				VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);
 
 			}
 
@@ -1912,17 +1916,17 @@ if($vat_pro!='0')
 				}
 
 				DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc1, $customer_nm, $received, '0', NULL, $chequeNo, $job_no]);
+						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $my_bk_acc1, $customer_nm, $received, '0', $customer_id, $chequeNo, $job_no]);
 
 				if($my_adj_type == 'Advance'){
 
 					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, NULL, $chequeNo, $job_no]);
+						VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, 'Advance from Customer', $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);
 
 				}else{
 
 					DB::insert('INSERT INTO `tbl_acc_details`( `vr_type`,`vr_sl`,`ref`,`tdate`,`ahead`,`narration`,`debit`,`credit`,`others_id`,`ch_no`,`job_no`)
-					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, NULL, $chequeNo, $job_no]);
+					VALUES (?,?,?,?,?,?,?,?,?,?,?)',['Collection','0',$Ref, $dt, $myCustomerAcc, $customer_nm, '0', $received, $customer_id, $chequeNo, $job_no]);
 
 				}
 				/// End Code

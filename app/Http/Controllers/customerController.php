@@ -17,10 +17,10 @@ class customerController extends Controller
 						'customer_info' => $customer_info,
 						'company' => $company,
 						'sister_companies' => $sister_companies
-						
-						]);	
-	}	
-	
+
+						]);
+	}
+
 	public function customerCreate(Request $r)
 	{
 		$customer_nm =request('customer_nm');//post input
@@ -77,7 +77,7 @@ class customerController extends Controller
 		$contact4_desig=request('contact4_desig');
 		$contact4_purpose=request('contact4_purpose');
 
-		DB::insert('INSERT INTO `customer_info`( `customer_reg`, `customer_nm`, `customer_mobile`,`email`, `customer_eng`, `car_user`, `car_colour`,  
+		DB::insert('INSERT INTO `customer_info`( `customer_reg`, `customer_nm`, `customer_mobile`,`email`, `customer_eng`, `car_user`, `car_colour`,
 		`customer_address`, `customer_vehicle`, `flag`, `customer_chas`,`year`,`driver_mobile`,`company`,`customer_group`,`sister_companies`,`contact_person`,`ac_name`,`ac_no`,`bank_name`,
 		`branch_name`,`routing_no`,`swift_code`,`ac_name02`,`ac_no02`,`bank_name02`,
 		`branch_name02`,`routing_no02`,`swift_code02`,`bin`,
@@ -85,8 +85,8 @@ class customerController extends Controller
 		`contact2_name`,`contact2_mobile`,`contact2_desig`,`contact2_purpose`,
 		`contact3_name`,`contact3_mobile`,`contact3_desig`,`contact3_purpose`,
 		`contact4_name`,`contact4_mobile`,`contact4_desig`,`contact4_purpose`
-		) 
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_reg,$customer_nm,$customer_mobile,$email,$customer_eng,$car_user, $car_colour 
+		)
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_reg,$customer_nm,$customer_mobile,$email,$customer_eng,$car_user, $car_colour
 		,$customer_address,$customer_vehicle,'1',$customer_chas,$year,$driver_mobile,$company,$customer_group,$sister_companies,$contact_person,$ac_name,$ac_no,$bank_name,$branch_name,
 		$routing_no,$swift_code,$ac_name02,$ac_no02,$bank_name02,$branch_name02,
 		$routing_no02,$swift_code02,$bin, $contact1_name, $contact1_mobile, $contact1_desig, $contact1_purpose,  $contact2_name, $contact2_mobile, $contact2_desig, $contact2_purpose, $contact3_name, $contact3_mobile, $contact3_desig, $contact3_purpose, $contact4_name, $contact4_mobile, $contact4_desig, $contact4_purpose]);
@@ -128,7 +128,7 @@ class customerController extends Controller
 		->get();
 		return view('customerEditOne',['data'=>$data,'company' => $company,
 						'sister_companies' => $sister_companies]);
-	}	
+	}
 	public function getCustomerDataById(Request $r)
 	{
 		$id = request('id');
@@ -192,6 +192,30 @@ class customerController extends Controller
 		$contact4_mobile=request('contact4_mobile');
 		$contact4_desig=request('contact4_desig');
 		$contact4_purpose=request('contact4_purpose');
+
+        // Delete this Customer and update Chas & Merge to Customer ID
+        $customer_id_merge=request('customer_id_merge');
+        $customer_id_merge= (int)$customer_id_merge;
+
+        if( !empty($customer_id_merge) && ($customer_id_merge > 0)  ){
+
+            DB::table('bill_mas')->where('customer_id', $customer_id)->update(['customer_id' => $customer_id_merge]);
+            DB::table('est_mas')->where('customer_id', $customer_id)->update(['customer_id' => $customer_id_merge]);
+            DB::table('pay')->where('customer_id', $customer_id)->update(['customer_id' => $customer_id_merge]);
+
+            DB::table('tbl_acc_details')->where('others_id', $customer_id)->update(['others_id' => $customer_id_merge]);
+            DB::table('tbl_rep_cust_position')->where('cust_id', $customer_id)->update(['cust_id' => $customer_id_merge]);
+
+            DB::table('customer_info')->where('customer_id', $customer_id)->delete();
+
+            DB::table('customer_info')->where('customer_id', $customer_id_merge)->update(['customer_chas' => $customer_chas]);
+
+        }
+
+
+
+
+
 
 		$data = DB::table('customer_info')
 		->where('customer_id', $customer_id)
@@ -266,11 +290,11 @@ class customerController extends Controller
 		->where('user_id', $user_id)
 		->update(['password' => md5($password)]);
 		return redirect ('changePassword')->with('sucess', 'Thanks For Subscribe!');
-	
-		
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 }

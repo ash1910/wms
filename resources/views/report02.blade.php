@@ -142,6 +142,23 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
 					</form>
 
+                    <?php
+if ((session('role')=="Super Administrator"))
+{
+	if($flag!='0')
+		{
+	?>
+                    <form style="display: inline;" action="moveToDraft" method="post">{{ csrf_field() }}
+                        <input type="hidden" name="job_no" value="{{$job_no}}">
+                        <input type="hidden" name="bill_no" value="{{$bill_no}}">
+                        <button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+                        <i class="fadeIn animated bx bx-printer"></i> Move to Draft</button>
+					</form>
+
+<?php }
+}
+?>
+
 					<!-- <form  target="_blank" style="display: inline;" action="billPDF_as" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">

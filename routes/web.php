@@ -164,6 +164,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('report_estimate','App\Http\Controllers\billController@report_estimate');
 
     Route::post('moveToDraft','App\Http\Controllers\billController@moveToDraft');
+    Route::post('updateBillWork','App\Http\Controllers\billController@updateBillWork');
 	// cash in
 	Route::get('cashIn','App\Http\Controllers\cashController@cashIn');
 	Route::get('form06','App\Http\Controllers\cashController@form06');

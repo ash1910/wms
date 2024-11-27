@@ -1043,4 +1043,37 @@ if($register=='register01')
 	}
 
 
+	public function updateBillWork(Request $r)
+	{
+		$bill_no=$r->input('bill_no');//post input
+		$work=$r->input('work');//post input
+
+		$user_id = session('user_id');
+		$result = DB::select("SELECT * FROM `bill_mas` WHERE bill_no= '$bill_no' and `flag` = '0'");
+		foreach($result as $item)
+		{
+			$bill_no = $item->bill_no;
+			$net_bill = $item->net_bill;
+		}
+		if($work=='intercompany')
+		{
+			$total = $net_bill;
+		}
+		if($work=='automobile')
+		{
+			$total = $net_bill;
+		}
+        if($work=='engineering')
+		{
+			$total = $net_bill * 1.1;
+		}
+
+
+		$result = DB::table('bill_mas')->where('bill_no', $bill_no)->update(['total' => $total, 'work' => $work]);
+
+
+		return back();
+	}
+
+
 }

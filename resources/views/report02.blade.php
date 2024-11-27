@@ -142,11 +142,10 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
 					</form>
 
-                    <?php
+<?php
 if ((session('role')=="Super Administrator"))
 {
-	if($flag!='0')
-		{
+	if($flag!='0'){
 	?>
                     <form style="display: inline;" action="moveToDraft" method="post">{{ csrf_field() }}
                         <input type="hidden" name="job_no" value="{{$job_no}}">
@@ -156,6 +155,7 @@ if ((session('role')=="Super Administrator"))
 					</form>
 
 <?php }
+
 }
 ?>
 
@@ -169,8 +169,37 @@ if ((session('role')=="Super Administrator"))
 					</li>
                   </ol>
                 </nav>
+
               </div>
               <div class="ms-auto">
+
+              <?php
+if ((session('role')=="Super Administrator")){
+if($flag=='0'){
+?>
+                <form style="display: flex;gap: 10px;" action="updateBillWork" method="post">{{ csrf_field() }}
+				   <input type="hidden" name="bill_no" value="{{$bill_no}}">
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="engineering">
+                    <label class="form-check-label" for="flexRadioDefault1">Engineering&nbsp;&nbsp;&nbsp;</label>
+                  </div>
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="intercompany">
+                    <label class="form-check-label" for="flexRadioDefault1">Intercompany</label>
+                  </div>
+                  <div class="form-check">
+                    <input required class="form-check-input" type="radio" name="work" value="automobile">
+                    <label class="form-check-label" for="flexRadioDefault1">Automobile</label>
+                  </div>
+                  <div class="form-check">
+                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update</button>
+                  </div>
+                </form>
+
+<?php
+    }
+}
+?>
                 <div class="btn-group">
 
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>

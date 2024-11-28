@@ -86,6 +86,9 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::get('ModifyBillDt','App\Http\Controllers\billController@ModifyBillDt');
 	Route::post('ModifyBillDt01','App\Http\Controllers\billController@ModifyBillDt01');
 
+    Route::post('changeBillDetail','App\Http\Controllers\billController@changeBillDetail');
+    Route::post('changeBillDetail01','App\Http\Controllers\billController@changeBillDetail01');
+
 
 
 	// Estimate

@@ -154,6 +154,13 @@ if ((session('role')=="Super Administrator"))
                         <i class="fadeIn animated bx bx-printer"></i> Move to Draft</button>
 					</form>
 
+                    <form style="display: inline;" action="changeBillDetail" method="post">{{ csrf_field() }}
+                        <input type="hidden" name="bill_no" value="{{$bill_no}}">
+                        <input type="hidden" name="job_no" value="{{$job_no}}">
+                        <button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
+                        <i class="fadeIn animated lni lni-reload"></i> Change Bill Date</button>
+					</form>
+
 <?php }
 
 }

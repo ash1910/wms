@@ -734,6 +734,35 @@ if($register=='register01')
 		return redirect('/billMemo?bill='.$bill_no.'');
 
 	}
+
+	public function changeBillDetail(Request $r)
+	{
+		$bill=$r->input('bill_no');//post input
+		$job_no=$r->input('job_no');//post input
+		return view ('changeBillDetail',[
+		'bill_no'=>$bill,
+		'job_no'=>$job_no
+		]);
+	}
+
+    public function changeBillDetail01(Request $r)
+	{
+		$bill_no=$r->input('bill_no');//post input
+        $job_no=$r->input('job_no');//post input
+		$change_dt=$r->input('change_dt');//post input
+
+		DB::table('bill_mas')->where('bill_no', $bill_no)->update(['bill_dt' => $change_dt]);
+
+        DB::table('pay')->where('bill', $bill_no)->where('pay_type', 'SYS')->update(['dt' => $change_dt]);
+
+        DB::table('tbl_acc_details')->where('job_no', $job_no)->where('ref', 'like', '%SRE-%')->update(['tdate' => $change_dt]);
+
+		return redirect('/report02?bill='.$bill_no.'');
+	}
+
+
+
+
 	public function reports()
 	{
 		return view ('reports');

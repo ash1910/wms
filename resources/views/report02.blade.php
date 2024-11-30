@@ -582,7 +582,16 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 
 
 						</td>
-						<td style="text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
+						<td style="text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}
+
+<?php if ((session('role')=="Super Administrator")){?>
+    <form style="display: inline;" action="changePaymentDate" method="post">{{ csrf_field() }}
+        <input type="hidden" name="id" value="{{$item->id}}">
+        <input type="date" class="form-control" name='change_dt'>
+        <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+    </form>
+<?php } ?>
+                        </td>
 						<td style="text-align: right;">{{number_format(($item->received+$item->charge), 2, '.', ',');}}</td>
 						<td style="text-align: right;">{{number_format(($item->received), 2, '.', ',');}}</td>
 						<td style="text-align: center;">{{$item->pay_type}}

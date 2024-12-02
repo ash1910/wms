@@ -772,6 +772,17 @@ if($register=='register01')
 		return back();
 	}
 
+    public function removePayment(Request $r)
+	{
+		$id=$r->input('id');//post input
+
+        DB::table('pay')->where('id', $id)->delete();
+
+        DB::table('tbl_acc_details')->where('ref', 'COL-' . $id )->delete();
+
+		return back();
+	}
+
 
 
 	public function reports()

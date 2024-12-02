@@ -147,7 +147,7 @@ if ((session('role')=="Super Administrator"))
 {
 	if($flag!='0'){
 	?>
-                    <form style="display: inline;" action="moveToDraft" method="post">{{ csrf_field() }}
+                    <form style="display: inline;" action="moveToDraft" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
                         <input type="hidden" name="job_no" value="{{$job_no}}">
                         <input type="hidden" name="bill_no" value="{{$bill_no}}">
                         <button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
@@ -184,7 +184,7 @@ if ((session('role')=="Super Administrator"))
 if ((session('role')=="Super Administrator")){
 if($flag=='0'){
 ?>
-                <form style="display: flex;gap: 10px;" action="updateBillWork" method="post">{{ csrf_field() }}
+                <form style="display: flex;gap: 10px;" action="updateBillWork" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
 				   <input type="hidden" name="bill_no" value="{{$bill_no}}">
                   <div class="form-check">
                     <input required class="form-check-input" type="radio" name="work" value="engineering">
@@ -580,12 +580,28 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 		</div>
 	</form>
 
+<?php if ((session('role')=="Super Administrator")){?>
+    <br>
+    <a class="btn btn-sm btn-success" target="_blank" href="/acc_report_voucher/COL-{{$item->id}}"><i class="fadeIn animated bx bx-file"></i> Collection</a>
+
+    <br><br>
+	<form class="row g-3" action="removePayment" method='post' target="_blank" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+		<div class="col-12">
+		<input type="hidden" name="id" value="{{$item->id}}">
+		<input type="hidden" name="bill" value="{{$bill_no}}">
+		<input type="hidden" name="job_no" value="{{$job_no}}">
+			<button class="btn btn-sm btn-danger me-2" type="submit" name="" value="">
+				<i class="fadeIn animated bx bx-trash"></i> Delete Payment</button>
+		</div>
+	</form>
+<?php } ?>
+
 
 						</td>
 						<td style="text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}
 
 <?php if ((session('role')=="Super Administrator")){?>
-    <form style="display: inline;" action="changePaymentDate" method="post">{{ csrf_field() }}
+    <form style="display: inline;" action="changePaymentDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
         <input type="hidden" name="id" value="{{$item->id}}">
         <input type="date" class="form-control" name='change_dt'>
         <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>

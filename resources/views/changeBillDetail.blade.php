@@ -30,8 +30,8 @@
 		<div class="col-6">
 		<div class="card shadow-none border radius-15">
 		<div class="card-body">
-	<form class="row g-3" action="changeBillDetail01" method='post'>
-	{{ csrf_field() }}
+	<form class="row g-3" action="changeBillDetail01" method='post' onsubmit="return confirm('Do you really want to submit the form?');">
+	        {{ csrf_field() }}
 	        <input type="hidden" name="bill_no" value="{{$bill_no}}">
             <input type="hidden" name="job_no" value="{{$job_no}}">
 			<div class="col-md-12">

@@ -139,7 +139,7 @@ SELECT sum(due) due, sum(bonus) bonus, sum(vat_wav) vat_wav FROM `pay` WHERE `jo
 
 $result03 = DB::select("
 SELECT `chequeNo`, `job_no`, `customer_id`, received
-FROM `cheque_pending` WHERE `job_no` = '$job_no' and `flag` = '0'
+FROM `cheque_pending` WHERE `job_no` = '$job_no' and `flag` = '1'
 ");
 		foreach($result03 as $post03)
 			{

@@ -1,7 +1,7 @@
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts")||(session('role')=="Administrator"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 //echo session('role');
 }
 else {
@@ -9,7 +9,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -21,24 +21,24 @@ else {
 
 
 <main class="page-content">
-<!---Alert message----> 
+<!---Alert message---->
 @if(session()->has('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-	
+
 <script type="text/javascript">
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
-</script>	
-@endif	
-<!---Alert message---->  
+</script>
+@endif
+<!---Alert message---->
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -52,7 +52,7 @@ $(document).ready(function () {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -68,10 +68,10 @@ $(document).ready(function () {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -87,7 +87,7 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Approval</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 
 $result = DB::select("
@@ -100,10 +100,10 @@ and c.job_no = a.job_no
 AND a.confirm='0'
 AND d.job_no = a.job_no AND d.bank = a.bank AND a.chequeNo = d.chequeNo;
 ");
-	$sl = '1'; 	$amount='0';		
+	$sl = '1'; 	$amount='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->job_no}}</a></td>
@@ -116,31 +116,31 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->chequeDt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
-						
-						
+
+
 						<td style="border: 1px solid black;text-align: center;">
-						
-	<form class="row g-3" action="moneyReceipt03" method='post' target="_blank">{{ csrf_field() }}
+
+	<form class="row g-3" action="moneyReceipt08" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col-12">
 		<input type="hidden" name="id" value="{{$item->id}}">
 		<input type="hidden" name="job_no" value="{{$item->job_no}}">
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 		</div>
-	</form>						
-					</td>	
-						
-						
-						
-						
-						
+	</form>
+					</td>
+
+
+
+
+
 						<td style="border: 1px solid black;text-align: center;">
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-?>					
-					
-	
+?>
+
+
 					<form style="display: inline;" action="chequeConfirm01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
@@ -150,7 +150,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Confirm</button>
-					</form>	
+					</form>
 					<form style="display: inline;" action="chequeConfirm02" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
@@ -159,8 +159,8 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<button class="btn btn-danger px-3" type="submit" name="" value="">
 					 Dishonor</button>
-					</form>	
-<?php } else {?>						
+					</form>
+<?php } else {?>
 					<form style="display: inline;" action="chequeApproval01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
 					<input type="hidden" name="chequeNo" value="{{$item->chequeNo}}">
@@ -168,21 +168,21 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<button class="btn btn-outline-secondary px-3" type="submit" name="" value="" disabled>
 					 Confirm</button>
-					</form>	
-<?php } ?>						
-					
-					</td>	
-						
+					</form>
+<?php } ?>
+
+					</td>
+
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}  
+		}
 
 
 
-		
-		
+
+
 $result = DB::select("
 SELECT a.`id`, a.`bank`, a.`chequeNo`, a.`chequeDt`, a.`received`, a.`due`, a.`job_no`, b.customer_nm ,
 b.customer_reg,b.customer_vehicle,a.customer_id, d.dt, d.id pay_id
@@ -193,11 +193,11 @@ AND a.confirm='0'
 AND d.job_no = a.job_no AND d.bank = a.bank AND a.chequeNo = d.chequeNo;
 ");
 
-// replaced AND a.flag='0' by AND a.confirm='0' 
-			
+// replaced AND a.flag='0' by AND a.confirm='0'
+
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
 						<td style="border: 1px solid black;text-align: center;">{{$item->job_no}}</td>
@@ -210,30 +210,30 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{$item->chequeDt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
-						
-						
+
+
 						<td style="border: 1px solid black;text-align: center;">
-						
+
 	<form class="row g-3" action="payAdvance" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col-12">
 		<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 		</div>
-	</form>						
-					</td>	
-						
-						
-						
-						
-						
+	</form>
+					</td>
+
+
+
+
+
 						<td style="border: 1px solid black;text-align: center;">
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-?>					
-					
-	
+?>
+
+
 					<form style="display: inline;" action="chequeConfirm01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
@@ -243,7 +243,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="customer_id" value="{{$item->customer_id}}">
 					<button class="btn btn-outline-success px-3" type="submit" name="" value="">
 					 Confirm</button>
-					</form>	
+					</form>
 					<form style="display: inline;" action="chequeConfirm02" method="post">{{ csrf_field() }}
 					<input type="hidden" name="id" value="{{$item->id}}">
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
@@ -252,8 +252,8 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<button class="btn btn-danger px-3" type="submit" name="" value="">
 					 Dishonor</button>
-					</form>	
-<?php } else {?>						
+					</form>
+<?php } else {?>
 					<form style="display: inline;" action="chequeApproval01" method="post">{{ csrf_field() }}
 					<input type="hidden" name="job_no" value="{{$item->job_no}}">
 					<input type="hidden" name="chequeNo" value="{{$item->chequeNo}}">
@@ -261,48 +261,48 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<input type="hidden" name="due" value="{{$item->due}}">
 					<button class="btn btn-outline-secondary px-3" type="submit" name="" value="" disabled>
 					 Confirm</button>
-					</form>	
-<?php } ?>							
-					
-					</td>	
-						
+					</form>
+<?php } ?>
+
+					</td>
+
 					</tr>
 		<?php
 		$sl = $sl+1;
         $amount=$amount+$item->received;
-		}  		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
-<br>				
-			
-				
-				
-				
-				
-				
-				
-				
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
+<br>
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -310,25 +310,25 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

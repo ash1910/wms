@@ -306,6 +306,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('moneyReceipt05','App\Http\Controllers\cashController@moneyReceipt05');
 	Route::post('moneyReceipt06','App\Http\Controllers\cashController@moneyReceipt06');
 	Route::post('moneyReceipt07','App\Http\Controllers\cashController@moneyReceipt07');
+    Route::post('moneyReceipt08','App\Http\Controllers\cashController@moneyReceipt08');
 
 	Route::get('chequeApproval','App\Http\Controllers\cashController@chequeApproval');
 	Route::get('chequeConfirm','App\Http\Controllers\cashController@chequeConfirm');

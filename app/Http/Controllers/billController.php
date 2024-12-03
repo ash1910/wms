@@ -779,7 +779,7 @@ if($register=='register01')
 
         DB::table('pay')->where('id', $id)->update(['approval_dt' => $change_dt]);
 
-        //DB::table('tbl_acc_details')->where('ref', 'COL-' . $id )->update(['tdate' => $change_dt]);
+        DB::table('tbl_acc_details')->where('ref', 'CNF-' . $id )->update(['tdate' => $change_dt]);
 
 		return back();
 	}

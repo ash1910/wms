@@ -131,8 +131,27 @@ foreach($result as $item)
 ?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->approval_dt))}}</td>
+                        <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
+
+                        <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->approval_dt))}}
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentApprovalDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
 						<td style="border: 1px solid black;text-align: center;">****{{$item->card_no}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->card_type}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received+$item->charge), 2, '.', ',')}}</td>
@@ -174,8 +193,27 @@ foreach($result as $item)
 ?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}</td>
-						<td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->approval_dt))}}</td>
+                        <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->dt))}}
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
+
+                        <td style="border: 1px solid black;text-align: center;">{{date('d-M-Y', strtotime($item->approval_dt))}}
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentApprovalDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
 						<td style="border: 1px solid black;text-align: center;">****{{$item->card_no}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->card_type}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received+$item->charge), 2, '.', ',')}}</td>

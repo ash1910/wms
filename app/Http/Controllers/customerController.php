@@ -197,7 +197,7 @@ class customerController extends Controller
         $customer_id_merge=request('customer_id_merge');
         $customer_id_merge= (int)$customer_id_merge;
 
-        if( !empty($customer_id_merge) && ($customer_id_merge > 0)  ){
+        if( !empty($customer_id_merge) && ($customer_id_merge > 0) && !empty($customer_chas)  ){
 
             DB::table('bill_mas')->where('customer_id', $customer_id)->update(['customer_id' => $customer_id_merge]);
             DB::table('est_mas')->where('customer_id', $customer_id)->update(['customer_id' => $customer_id_merge]);

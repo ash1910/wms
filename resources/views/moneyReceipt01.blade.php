@@ -20,7 +20,7 @@
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -36,11 +36,11 @@
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-4">
-                
-					
+
+
 <?php
 
 $result = DB::select("
@@ -48,23 +48,23 @@ SELECT `bill` bill_no, a.`job_no`, b.customer_nm, a.`bill_dt`, a.`net_bill`, `re
 `pay_type`, `ref`, `dt`, a.`user_id` , trix,send,bank,chequeNo,chequeDt, b.bill_dt,a.id, c.user_name,
 a.`bonus`, a.`vat_wav`, a.`ait`
 FROM `pay` a, bill_mas b, user c
-WHERE 
+WHERE
 a.job_no = b.job_no
 AND a.`job_no` = '$job_no'
 and a.user_id = c.user_id and a.pay_type<>'SYS'
 order by id,bill, a.bill_dt desc
 ;
 ");
-	$sl = '1'; 	$total02 = '0';		
+	$sl = '1'; 	$total02 = '0';
 foreach($result as $item)
 		{		;
-?>					
+?>
               <div class="col">
-<?php 
+<?php
 		$deny='0';
 		$result02 = DB::select("SELECT * FROM `cheque_pending` WHERE `job_no` = '$item->job_no' AND `chequeNo` = '$item->chequeNo' AND `bank`='$item->bank' AND `chequeDt`='$item->chequeDt' and `confirm` = '2'");
 		foreach($result02 as $item02)
-			{		
+			{
 				$deny = '1';
 			}
 if($deny=='0')
@@ -75,11 +75,11 @@ if($deny=='1')
 {
 	echo '<div class="card border shadow-none bg-Warning radius-10">';
 }
-?>			  
-                
-				
+?>
+
+
                   <div class="card-body text-left">
-                    
+
                      <p class="mb-0"><b>Customer: {{$item->customer_nm}}</b></p>
                      <p class="mb-0"><b><a href="report02?bill={{$item->bill_no}}">Bill No: {{$item->bill_no}}</b></a></p>
                      <p class="mb-0"><b>Receive No:</b> {{$item->id}}</p>
@@ -91,8 +91,8 @@ if($deny=='1')
                      <p class="mb-0"><b>Vat Waiver:</b> {{$item->vat_wav}}</p>
                      <p class="mb-0"><b>AIT Deduction:</b> {{$item->ait}}</p>
                      <p class="mb-0"><b>Receive By:</b> {{$item->user_name}}</p>
-		
-<div class="row row-cols-1 row-cols-3">		
+
+<div class="row row-cols-4">
 	<form class="row g-3" action="moneyReceipt02" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col">
 		<input type="hidden" name="id" value="{{$item->id}}">
@@ -101,7 +101,7 @@ if($deny=='1')
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 		</div>
-	</form>		
+	</form>
 
   <form class="row g-3" action="moneyReceipt06" method='post' target="_blank">{{ csrf_field() }}
 		<div class="col">
@@ -123,28 +123,41 @@ if($deny=='1')
 		</div>
 	</form>
 
+
+    <?php if ((session('role')=="Super Administrator")){?>
+        <form class="row g-3" action="removePayment" method='post' target="_blank" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+            <div class="col">
+            <input type="hidden" name="id" value="{{$item->id}}">
+            <input type="hidden" name="bill" value="{{$item->bill_no}}">
+            <input type="hidden" name="job_no" value="{{$item->job_no}}">
+                <button class="btn btn-sm btn-danger me-2" type="submit" name="" value="">
+                    <i class="fadeIn animated bx bx-trash"></i> Delete Payment</button>
+            </div>
+        </form>
+    <?php } ?>
+
 </div>
 
-		
+
 				  </div>
                 </div>
               </div>
-		
-		
+
+
 <?php } ?>
 
-						
-				
-<br><br><br>				
-				
-			
-				
-				
-				
-				
-				
-				
-				
+
+
+<br><br><br>
+
+
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -152,25 +165,25 @@ if($deny=='1')
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

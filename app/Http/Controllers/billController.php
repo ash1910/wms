@@ -772,6 +772,18 @@ if($register=='register01')
 		return back();
 	}
 
+    public function changePaymentApprovalDate(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$change_dt=$r->input('change_dt');//post input
+
+        DB::table('pay')->where('id', $id)->update(['approval_dt' => $change_dt]);
+
+        //DB::table('tbl_acc_details')->where('ref', 'COL-' . $id )->update(['tdate' => $change_dt]);
+
+		return back();
+	}
+
     public function removePayment(Request $r)
 	{
 		$id=$r->input('id');//post input

@@ -582,18 +582,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 
 <?php if ((session('role')=="Super Administrator")){?>
     <br>
-    <a class="btn btn-sm btn-success" target="_blank" href="/acc_report_voucher/COL-{{$item->id}}"><i class="fadeIn animated bx bx-file"></i> Collection</a>
-
-    <br><br>
-	<form class="row g-3" action="removePayment" method='post' target="_blank" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
-		<div class="col-12">
-		<input type="hidden" name="id" value="{{$item->id}}">
-		<input type="hidden" name="bill" value="{{$bill_no}}">
-		<input type="hidden" name="job_no" value="{{$job_no}}">
-			<button class="btn btn-sm btn-danger me-2" type="submit" name="" value="">
-				<i class="fadeIn animated bx bx-trash"></i> Delete Payment</button>
-		</div>
-	</form>
+    <a class="btn btn-sm btn-success" target="_blank" href="/acc_report_voucher/COL-{{$item->id}}"><i class="fadeIn animated bx bx-file"></i> View Journal</a>
 <?php } ?>
 
 

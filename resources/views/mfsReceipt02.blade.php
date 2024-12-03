@@ -143,7 +143,16 @@ foreach($result as $item)
 
 
 
-						<td style="border: 1px solid black;text-align: center;">{{$item->approval_dt}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->approval_dt}}
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentApprovalDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->trix}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->send}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->pay_type}}</td>

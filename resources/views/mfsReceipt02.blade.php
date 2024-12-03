@@ -1,7 +1,7 @@
-<?php 
+<?php
 if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 {
-//return redirect ('home')->with('alert', 'Wrong URL!!!');	
+//return redirect ('home')->with('alert', 'Wrong URL!!!');
 //echo session('role');
 }
 else {
@@ -9,7 +9,7 @@ else {
   <script>
     window.location = "/logout";
   </script>
-<?php  
+<?php
 }
 ?>
 
@@ -21,24 +21,24 @@ else {
 
 
 <main class="page-content">
-<!---Alert message----> 
+<!---Alert message---->
 @if(session()->has('alert'))
 <script src="assets/js/jquery-1.12.4.min.js"></script>
     <div class="alert alert-success">
         {{ session()->get('alert') }}
     </div>
-	
+
 <script type="text/javascript">
 $(document).ready(function () {
  window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+        $(this).remove();
     });
 }, 5000);
  });
-</script>	
-@endif	
-<!---Alert message---->  
+</script>
+@endif
+<!---Alert message---->
 
  <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -54,7 +54,7 @@ $(document).ready(function () {
                   </ol>
                 </nav>
               </div>
-              
+
             </div>
             <!--end breadcrumb-->
 
@@ -63,14 +63,14 @@ $(document).ready(function () {
                   <div class="row align-items-center g-3">
                     <div class="col-12 col-lg-12">
                       <h5 class="mb-0">Mobile Financial Services [Settlement Date: {{date('d-M-Y', strtotime($to_dt))}}] <br><b>bKash-01777781{{$mer_bkash}}</b>
-					  
+
 					<form  target="_blank" style="display: inline;" action="mfsReceiptPrint" method="post">{{ csrf_field() }}
 					<input type="hidden" name="to_dt" value="{{$to_dt}}">
           <input type="hidden" name="mer_bkash" value="{{$mer_bkash}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
 					<i class="fadeIn animated bx bx-printer"></i> Print</button>
 					</form>
-					
+
 					</h5>
                     </div>
                     <!--div class="col-12 col-lg-6 text-md-end">
@@ -79,10 +79,10 @@ $(document).ready(function () {
                     </div-->
                   </div>
              </div>
-		
+
             <div class="card-body">
               <div class="table-responsive">
-                
+
 				<table id="example2" class="table table-bordered mb-0">
 					<thead>
 						<tr>
@@ -95,14 +95,14 @@ $(document).ready(function () {
 							<th scope="col" style="border: 1px solid black;text-align: center;">Transaction Amount</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Charge</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement Amount</th>
-							
-							
+
+
 							<th scope="col" style="border: 1px solid black;text-align: center;">Job No.</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Customer Info</th>
 							<th scope="col" style="border: 1px solid black;text-align: center;">Settlement By</th>
 						</tr>
 					</thead>
-					<tbody>				
+					<tbody>
 <?php
 $where_mer_bkash = "";
 if( $mer_bkash == "330"){
@@ -119,17 +119,30 @@ FROM `pay` a, customer_info b, bill_mas c, user d
 WHERE a.customer_id = b.customer_id
 and b.customer_id= c.customer_id
 and c.job_no = a.job_no
-AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt' AND $where_mer_bkash 
+AND a.`pay_check`='1' and a.`pay_type` = 'bkash' and a.approval_dt = '$to_dt' AND $where_mer_bkash
 and a.check_approval = d.user_id
 order by a.`id`;
 ");
 	$sl = '1'; 	$amount='0';		$charge='0';	$amount1='0';
 foreach($result as $item)
-		{		
-?>				
+		{
+?>
 					<tr>
 						<th scope="row" style="border: 1px solid black;text-align: center;">{{$sl}}</th>
-						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}</td>
+						<td style="border: 1px solid black;text-align: center;">{{$item->dt}}
+
+
+                            <?php if ((session('role')=="Super Administrator")){?>
+                                <form style="display: inline;" action="changePaymentDate" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="date" class="form-control" name='change_dt'>
+                                    <button class="btn btn-outline-success px-3" type="submit" name="" value="">Update Date</button>
+                                </form>
+                            <?php } ?>
+                        </td>
+
+
+
 						<td style="border: 1px solid black;text-align: center;">{{$item->approval_dt}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->trix}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{$item->send}}</td>
@@ -137,8 +150,8 @@ foreach($result as $item)
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received+$item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->charge), 2, '.', ',')}}</td>
 						<td style="border: 1px solid black;text-align: center;">{{number_format(($item->received), 2, '.', ',')}}</td>
-						
-						
+
+
 						<td style="border: 1px solid black;text-align: center;"><a href="report02?bill={{$item->bill_no}}">{{$item->job_no}}</a></td>
 						<td style="border: 1px solid black;text-align: left;"><b>C/N:</b> {{$item->customer_nm}}
 						<br><b>Car Reg.:</b> {{$item->customer_reg}}
@@ -151,27 +164,27 @@ foreach($result as $item)
         $amount=$amount+$item->received;
         $charge=$charge+$item->charge;
         $amount1=$amount1+($item->received+$item->charge);
-		}  
+		}
 ?>
 						<!--tr>
 							<td colspan="3"><strong>Total Amount: Tk.</strong></td>
 						</tr-->
 					</tbody>
 				</table>
-<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>				
-<br>				
-<br>				
+<strong>Total Amount	TK. {{number_format(($amount), 2, '.', ',')}}</strong>
+<br>
+<br>
 
 Total Transaction Amount:	<b>TK. {{number_format(($amount1), 2, '.', ',')}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
 Total Charge Amount:	<b>TK. {{number_format(($charge), 2, '.', ',')}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
 Total Settlement Amount:	<b>TK. {{number_format(($amount), 2, '.', ',')}}</b>
-				
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
+
              </div>
 
              <!--end row-->
@@ -179,25 +192,25 @@ Total Settlement Amount:	<b>TK. {{number_format(($amount), 2, '.', ',')}}</b>
              <hr>
            <!-- begin invoice-note -->
            <div class="my-3">
-            
+
            </div>
          <!-- end invoice-note -->
             </div>
-			
-			
 
-          
+
+
+
            </div>
 
 
-			
-			
+
+
 </main>
 
 
 
-		  
-@endsection		 
+
+@endsection
 
 
 

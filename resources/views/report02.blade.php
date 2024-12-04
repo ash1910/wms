@@ -933,7 +933,7 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
   <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
   <script src="assets/js/table-datatable.js"></script>
   <link rel="stylesheet" href="assets/js/jquery-ui.css">
-  <script src="assets/js/jquery-3.6.0.js"></script>
+
   <script src="assets/js/jquery-ui.js"></script>
 
   <script>

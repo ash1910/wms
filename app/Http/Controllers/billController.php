@@ -799,7 +799,7 @@ if($register=='register01')
 	{
 		$id=$r->input('id');//post input
 		$prod=$r->input('prod');//post input
-        $prod = explode("-", $prod);
+        $prod = explode("-", $prod, 2);
 
         DB::table('bill_det')->where('id', $id)->update(['prod_id' => $prod[0], 'prod_name' => $prod[1]]);
 

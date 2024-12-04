@@ -91,6 +91,7 @@ Route::group(['middleware'=>['UserAuth']],function()
     Route::post('changePaymentDate','App\Http\Controllers\billController@changePaymentDate');
     Route::post('changePaymentApprovalDate','App\Http\Controllers\billController@changePaymentApprovalDate');
     Route::post('removePayment','App\Http\Controllers\billController@removePayment');
+    Route::post('UpdateParts','App\Http\Controllers\billController@UpdateParts');
 
 
 

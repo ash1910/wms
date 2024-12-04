@@ -729,14 +729,18 @@ else { echo "<td></td>";}?>
 
 <?php
 	$stock = DB::select("
-	SELECT `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
+	SELECT `id`, `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
 	FROM `bill_det` WHERE type = '1' and `bill_no`=$bill_no;");
 	$sl="1";
 	foreach($stock as $item)
 		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;">{{$sl}}</th>
-						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}</td>
+						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}
+                        <?php if ((session('role')=="Super Administrator")){ ?>
+                            <button class="btn btn-sm btn-sucess me-2 updateProduct" data-bs-toggle="modal" data-bs-target="#UpdateParts" style="float: right;" data-id="{{$item->id}}"><i class="lni lni-pencil-alt"></i></button>
+                        <?php } ?>
+                        </td>
 						<td style="text-align: center;">{{$item->qty}}</td>
 						<td style="text-align: right;">{{number_format(($item->unit_rate), 2, '.', ',');}}</td>
 						<td style="text-align: right;">{{number_format(($item->amount), 2, '.', ',');}}</td>
@@ -754,14 +758,18 @@ else { echo "<td></td>";}?>
 </tr>
 <?php
 	$stock = DB::select("
-	SELECT `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
+	SELECT `id`, `bill_no`, `prod_id`, `prod_name`, `qty`, `unit_rate`, `amount`
 	FROM `bill_det` WHERE type = '2' and `bill_no`=$bill_no;");
 	$sl="1";
 	foreach($stock as $item)
 		{
 ?>					<tr>
 						<th scope="row" style="text-align: center;">{{$sl}}</th>
-						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}</td>
+						<td style="text-align: left;">{{$item->prod_id}} - {{$item->prod_name}}
+                        <?php if ((session('role')=="Super Administrator")){ ?>
+                            <button class="btn btn-sm btn-sucess me-2 updateProduct" data-bs-toggle="modal" data-bs-target="#UpdateService" style="float: right;" data-id="{{$item->id}}"><i class="lni lni-pencil-alt"></i></button>
+                        <?php } ?>
+                        </td>
 						<td style="text-align: center;">{{$item->qty}}</td>
 						<td style="text-align: right;">{{number_format(($item->unit_rate), 2, '.', ',');}}</td>
 						<td style="text-align: right;">{{number_format(($item->amount), 2, '.', ',');}}</td>
@@ -859,8 +867,53 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
 
         </main>
 
+<div class="modal" tabindex="-1" id="UpdateParts">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form style="display: inline;" action="UpdateParts" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+      <div class="modal-header">
+        <h5 class="modal-title">Update Parts</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <input type="hidden" name="id" value="" id="productID">
+            <input autofocus required id="tags" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success">Update</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="UpdateService">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form style="display: inline;" action="UpdateParts" method="post" onsubmit="return confirm('Do you really want to submit the form?');">{{ csrf_field() }}
+      <div class="modal-header">
+        <h5 class="modal-title">Update Service</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <input type="hidden" name="id" id="productID" value="">
+            <input autofocus required id="tags01" name="prod" type="text" class="form-control" placeholder="e.g.- Engine Hood">
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success">Update</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
+
+<style>
+    .ui-widget.ui-widget-content {
+        z-index: 10000;
+    }
+</style>
 
 @endsection
 
@@ -879,4 +932,49 @@ Gross Profit: Tk {{number_format(($net_bill-$purchase), 2, '.', ',');}}
   <script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
   <script src="assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
   <script src="assets/js/table-datatable.js"></script>
+  <link rel="stylesheet" href="assets/js/jquery-ui.css">
+  <script src="assets/js/jquery-3.6.0.js"></script>
+  <script src="assets/js/jquery-ui.js"></script>
+
+  <script>
+    $(document).on("click", ".updateProduct", function () {
+        var myId = $(this).data('id');
+        $(".modal-body #productID").val( myId );
+    });
+</script>
+<script>
+  $( function() {
+    var availableTags = [
+
+  <?php
+$parts_info = DB::table('parts_info')->get();
+$service_info = DB::table('service_info')->get();
+foreach ($parts_info as $p)
+{
+echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
+}
+					   ?>
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+
+  <script>
+  $( function() {
+    var availableTags01 = [
+
+  <?php
+foreach ($service_info as $p)
+{
+echo '"'.$p->service_id.' - '.$p->service_name.'",';
+}
+					   ?>
+    ];
+    $( "#tags01" ).autocomplete({
+      source: availableTags01
+    });
+  } );
+  </script>
  @endsection

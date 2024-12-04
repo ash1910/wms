@@ -795,6 +795,17 @@ if($register=='register01')
 		return back();
 	}
 
+    public function UpdateParts(Request $r)
+	{
+		$id=$r->input('id');//post input
+		$prod=$r->input('prod');//post input
+        $prod = explode("-", $prod);
+
+        DB::table('bill_det')->where('id', $id)->update(['prod_id' => $prod[0], 'prod_name' => $prod[1]]);
+
+		return back();
+	}
+
 
 
 	public function reports()

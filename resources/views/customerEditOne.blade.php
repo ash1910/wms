@@ -247,16 +247,11 @@
 
                   <div class="col-12">
 
-                  <?php
-if ((session('role')=="Super Administrator"))
-{
-	?>
+<?php if ((session('role')=="Super Administrator")){ ?>
     <label class="form-label">Delete this Customer and Update Chasis & Merge All Bill to Other Customer ID (Left blank when only update customer details)</label>
     <input value="" placeholder="Enter Customer ID" type="text" class="form-control" name="customer_id_merge"><br>
 
-<?php
-}
-?>
+<?php } ?>
 
 
                     <div class="d-grid">

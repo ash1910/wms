@@ -103,7 +103,7 @@ foreach($result as $item)
 		<?php
 		$sl = $sl+1;
 		$total01 = $item->total;
-		$total02 = $total01+$total02;
+		$total02 = (float)$total01+(float)$total02;
 		}
 ?>
 						<!---tr>

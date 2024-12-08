@@ -32,7 +32,7 @@ foreach($result as $post)
               </div>
               <div class="ms-auto">
                 <div class="btn-group">
-                 
+
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	<a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -93,16 +93,16 @@ foreach($result as $post)
                     </address>
                    </div>
                 </div>
-                			
-                
+
+
                </div>
              </div>
-			 
-			 
-			 
+
+
+
 			<div class="card">
 				<div class="card-body">
-					<div class="col-4">
+					<div class="col-6">
 					  <div class="">
 						<!--small>to</small-->
 						<address class="m-t-5 m-b-5">
@@ -118,17 +118,9 @@ foreach($result as $post)
 						   <tr><td><strong class="text-inverse">Technician: </strong></td><td><input name="technician" type="text"></td></tr>
 						   <tr><td><strong class="text-inverse">KM: </strong></td><td><input name="km" type="text" ></td></tr>
 						   <tr><td><strong class="text-inverse">Time Required: </strong></td><td><input name="days" type="text" maxlength="20" minlength="0"> Working Days</td></tr>
-						   <!-- <tr><td><div class="form-check">
-									<input required class="form-check-input" type="radio" name="work" value="engineering">
-									<label class="form-check-label" for="flexRadioDefault1">Engineering&nbsp;&nbsp;&nbsp;</label>
-								</div></td><td><div class="form-check">
-									<input required class="form-check-input" type="radio" name="work" value="intercompany">
-									<label class="form-check-label" for="flexRadioDefault1">Intercompany</label>
-								</div></td><td><div class="form-check">
-									<input required class="form-check-input" type="radio" name="work" value="automobile">
-									<label class="form-check-label" for="flexRadioDefault1">Automobile</label>
-								</div></td></tr> -->
-						<tr><td>					
+                           <tr><td><strong class="text-inverse">Validity: </strong></td><td><input name="validity" type="text" maxlength="20" minlength="0"> Days</td></tr>
+                           <tr><td><strong class="text-inverse">Note: </strong></td><td><input name="note" type="text" maxlength="100"> </td></tr>
+						<tr><td>
 						<button class="btn btn-success" type="submit" name="register" value="register01">
 						<i class="lni lni-chevron-right-circle"></i> Next</button>
 						</td></tr>
@@ -138,30 +130,30 @@ foreach($result as $post)
 						</form>
 						</address>
 					   </div>
-					</div>								
+					</div>
 				</div>
-			</div>	
+			</div>
 
 
-						
-			 
-			 
-		 
-			 
-			 
-			
-            
-			
-			
 
-           
+
+
+
+
+
+
+
+
+
+
+
            </div>
 
           </main>
 
 
 
- 
+
 @endsection
 
 
@@ -185,9 +177,9 @@ foreach($result as $post)
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($parts_info as $p) 
+foreach ($parts_info as $p)
 {
 echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
 }
@@ -198,13 +190,13 @@ echo '"'.$p->parts_id.' - '.$p->parts_name.'",';
     });
   } );
   </script>
-  
+
   <script>
   $( function() {
     var availableTags = [
- 
+
   <?php
-foreach ($service_info as $p) 
+foreach ($service_info as $p)
 {
 echo '"'.$p->service_id.' - '.$p->service_name.'",';
 }
@@ -215,7 +207,6 @@ echo '"'.$p->service_id.' - '.$p->service_name.'",';
     });
   } );
   </script>
-  
+
  @endsection
- 
-  
+

@@ -133,6 +133,8 @@ class estimateController extends Controller
 		$technician=$r->input('technician');//post input
 		$km=$r->input('km');//post input
 		$days=$r->input('days');//post input
+        $validity=$r->input('validity');//post input
+        $note=$r->input('note');//post input
 		$work=$r->input('work');//post input
 		$est_dt = date("Y-m-d");
 		//$est_no = date("ymdHis");
@@ -143,8 +145,8 @@ class estimateController extends Controller
 
 		if($register=="register01")
 		{
-			DB::insert('INSERT INTO `est_mas`(`customer_id`, `engineer`, `technician`, `days`,
-			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?)',[$customer_id,$engineer,$technician,$days,$est_dt,
+			DB::insert('INSERT INTO `est_mas`(`customer_id`, `engineer`, `technician`, `days`, `validity`, `note`,
+			`est_dt`, `user_id`,`net_bill`,`work`,`km`, `customer_nm`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',[$customer_id,$engineer,$technician,$days,$validity,$note,$est_dt,
 			$user_id,'',$work, $km,$customer_nm]);
 			$est_no = DB::getPdo()->lastInsertId();
 			$est_no = str_pad($est_no, 5, '0', STR_PAD_LEFT);
@@ -524,12 +526,16 @@ class estimateController extends Controller
 	{
 		$est_no=$r->input('est_no');//post input
 		$days=$r->input('days');//post input
+        $validity=$r->input('validity');//post input
+        $note=$r->input('note');//post input
 		$engineer=$r->input('engineer');//post input
 		$technician=$r->input('technician');//post input
 		$km=$r->input('km');//post input
 		return view ('changeCustomerEst',[
 		'est_no'=>$est_no,
 		'days'=>$days,
+        'validity'=>$validity,
+        'note'=>$note,
 		'engineer'=>$engineer,
 		'technician'=>$technician,
 		'km'=>$km
@@ -613,7 +619,24 @@ class estimateController extends Controller
 		->update(['technician' => $technician]);
 
 		return redirect('/billMemoEst?est_no='.$est_no.'');
+	}
+    public function changeCustomerEst07(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$validity=$r->input('validity');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['validity' => $validity]);
 
+		return redirect('/billMemoEst?est_no='.$est_no.'');
+	}
+    public function changeCustomerEst08(Request $r)
+	{
+		$est_no=$r->input('est_no');//post input
+		$note=$r->input('note');//post input
+		DB::table('est_mas')->where('est_no', $est_no)
+		->update(['note' => $note]);
+
+		return redirect('/billMemoEst?est_no='.$est_no.'');
 	}
 
 }

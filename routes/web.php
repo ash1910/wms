@@ -117,6 +117,7 @@ Route::group(['middleware'=>['UserAuth']],function()
 	Route::post('changeCustomerEst05','App\Http\Controllers\estimateController@changeCustomerEst05');
 	Route::post('changeCustomerEst06','App\Http\Controllers\estimateController@changeCustomerEst06');
 	Route::post('changeCustomerEst07','App\Http\Controllers\estimateController@changeCustomerEst07');
+    Route::post('changeCustomerEst08','App\Http\Controllers\estimateController@changeCustomerEst08');
     Route::post('cloneEst','App\Http\Controllers\estimateController@cloneEst');
 
 	// Bill report

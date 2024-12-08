@@ -138,7 +138,7 @@ $today=date("d-M-Y");
 
 $result = DB::select("
 SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour
+b.customer_chas, `engineer`, `technician`, `days`, `validity`, `note`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
@@ -159,6 +159,8 @@ AND a.customer_id = b.customer_id;
 				 $engineer = $post->engineer;
 				 $technician = $post->technician;
 				 $days = $post->days;
+                 $validity = $post->validity;
+                 $note = $post->note;
 				 $km = $post->km;
 				 $est_dt = $post->est_dt;
 				 $bill_dt = $post->bill_dt;
@@ -217,8 +219,8 @@ SELECT `full_name` FROM `user` WHERE user_id = $user_id
                     <table style="font-size: 11px;">
                        @if($engineer)<tr><td><strong class="text-inverse" style="font-family: Arial;">Engineer</strong></td><td style="font-style: MS Gothic;"> : {{$engineer}}</td></tr> @endif
                        @if($technician)<tr><td><strong class="text-inverse" style="font-family: Arial;">Technician </strong></td><td style="font-style: MS Gothic;width: 180px;word-wrap: anywhere;">:{{$technician}}</td></tr> @endif
-                       @if($days)<tr><td><strong class="text-inverse" style="font-family: Arial;">Time Required </strong></td><td style="font-style: MS Gothic;">: {{$days}} Working Days</td></tr> @endif
-                       @if($est_dt)<tr><td><strong class="text-inverse" style="font-family: Arial;">Estimate Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($est_dt))}}</td></tr> @endif
+                       @if($days)<tr><td><strong class="text-inverse" style="font-family: Arial;">Time </strong></td><td style="font-style: MS Gothic;">: {{$days}} Working Days</td></tr> @endif
+                       @if($validity)<tr><td><strong class="text-inverse" style="font-family: Arial;">Validity </strong></td><td style="font-style: MS Gothic;">: {{$validity}} Days</td></tr> @endif
                        @if($customer_vehicle)<tr><td><strong class="text-inverse" style="font-family: Arial;">Model </strong></td><td style="font-style: MS Gothic;line-height: 0.8;">: {{$customer_vehicle}}</td></tr> @endif
 					   @if($year)<tr><td><strong class="text-inverse" style="font-family: Arial;">Year</strong></td><td style="font-style: MS Gothic;">: {{$year}}</td></tr> @endif
 					   @if($car_colour)<tr><td><strong class="text-inverse" style="font-family: Arial;">Colour</strong></td><td style="font-style: MS Gothic;">: {{$car_colour}}</td></tr> @endif
@@ -529,6 +531,7 @@ foreach($stock as $item){ $subtotal=$subtotal+$item->amount; $total += $item->am
     <center>
     <div class="watermark" style="text-align: center;"><b>ESTIMATE</b></div>
     <font style="font-size: xx-small;">
+    @if($note) Note: {{$note}} <br>@endif
     *This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations LTD (TMC)
     </font>
     </center>

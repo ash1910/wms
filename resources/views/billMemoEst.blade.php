@@ -9,7 +9,7 @@ $est_no = $_GET["est_no"];
 
 $result = DB::select("
 SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle, year, car_colour,
-b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `user_id`, `net_bill` ,`km`, a.flag
+b.customer_chas, `engineer`, `technician`, `days`, `validity`, `note`, `est_dt`, `user_id`, `net_bill` ,`km`, a.flag
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
@@ -33,6 +33,8 @@ AND a.customer_id = b.customer_id;
 				 $user_id = $post->user_id;
 				 $flag = $post->flag;
 				 $days = $post->days;
+                 $validity = $post->validity;
+                 $note = $post->note;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
 			}
@@ -85,6 +87,8 @@ if($flag!='0')
 					<form style="display: inline;" action="changeCustomerEst" method="post">{{ csrf_field() }}
 					<input type="hidden" name="est_no" value="{{$est_no}}">
 					<input type="hidden" name="days" value="{{$days}}">
+                    <input type="hidden" name="validity" value="{{$validity}}">
+                    <input type="hidden" name="note" value="{{$note}}">
 					<input type="hidden" name="km" value="{{$km}}">
 					<input type="hidden" name="engineer" value="{{$engineer}}">
 					<input type="hidden" name="technician" value="{{$technician}}">
@@ -151,6 +155,8 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")||(se
                        <strong class="text-inverse">Technician: </strong>{{$technician}}<br>
                        <strong class="text-inverse">KM:  </strong>{{$km}}<br>
                        <strong class="text-inverse">Time Required:  </strong>{{$days}} Working Days<br>
+                       <strong class="text-inverse">Validity: </strong>{{$validity}} Days<br>
+                       <strong class="text-inverse">Note:  </strong>{{$note}}<br>
 					</table>
 					</address>
 				   </div>

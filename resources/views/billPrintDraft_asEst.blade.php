@@ -157,7 +157,7 @@ $today=date("d-M-Y");
 
 $result = DB::select("
 SELECT `est_no`, b.customer_id, b.customer_nm, b.customer_reg, b.customer_mobile, b.customer_address, b.customer_vehicle,
-b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour
+b.customer_chas, `engineer`, `technician`, `days`, `est_dt`, `bill_dt`, `user_id`, `net_bill` , driver_mobile, km, email, year, car_colour, validity, note
 FROM `est_mas` a, `customer_info` b
 WHERE a.`est_no` = $est_no
 AND a.customer_id = b.customer_id;
@@ -184,6 +184,8 @@ AND a.customer_id = b.customer_id;
 				 $user_id = $post->user_id;
 				 $year = $post->year;
 				 $car_colour = $post->car_colour;
+                 $validity = $post->validity;
+                 $note = $post->note;
 			}
 
 $result01 = DB::select("
@@ -249,6 +251,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Engineer</strong></td><td style="font-style: MS Gothic;"> : {{$engineer}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Technician </strong></td><td style="font-style: MS Gothic;width: 180px;word-wrap: anywhere;">:{{$technician}}</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Time Required </strong></td><td style="font-style: MS Gothic;">: {{$days}} Working Days</td></tr>
+                       <tr><td><strong class="text-inverse" style="font-family: Arial;">Validity </strong></td><td style="font-style: MS Gothic;">: {{$validity}} Days</td></tr>
                        <tr><td><strong class="text-inverse" style="font-family: Arial;">Estimate Date</strong></td><td style="font-style: MS Gothic;">: {{date('d-M-Y', strtotime($est_dt))}}</td></tr>
 					</table>
                    </address>
@@ -409,7 +412,7 @@ if (strlen(strstr($agent, 'Chrome')) > 0) {
 						<tr><td colspan="3" style="max-width: 200px;font-size: smaller;">IN WORDS: <?php
 						 $total = $subtotal+$subtotal01;
 						 $vat= $total/10;
-						echo AmountInWords($total+$vat)?></td>
+						echo AmountInWords($total+$vat)?> @if($note) <br>Note: {{$note}} <br>@endif</td>
 							<td colspan="1"><strong>Total TK:</strong></td><td style="text-align: right;"><strong>
 							<?php echo number_format(($total), 2, '.', ','); ?>
 							</strong></td>

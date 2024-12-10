@@ -470,7 +470,10 @@ foreach($stock as $item){ $subtotal=$subtotal+$item->amount; $total += $item->am
 						<tr><td colspan="5" style="max-width: 200px;font-size: smaller;">IN WORDS: <?php
                          $total_gross += $total;
 						 $vat= $total_gross/10;
-						echo AmountInWords($total_gross+$vat)?></td>
+						echo AmountInWords($total_gross+$vat)?>
+
+                            @if($note) <br>Note: {{$note}} <br>@endif
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4" style=" text-align: right; padding-right: 50px; font-size: 16px;"><strong>TOTAL PARTS</strong></td>
@@ -531,7 +534,6 @@ foreach($stock as $item){ $subtotal=$subtotal+$item->amount; $total += $item->am
     <center>
     <div class="watermark" style="text-align: center;"><b>ESTIMATE</b></div>
     <font style="font-size: xx-small;">
-    @if($note) Note: {{$note}} <br>@endif
     *This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations LTD (TMC)
     </font>
     </center>

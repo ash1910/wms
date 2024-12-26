@@ -78,7 +78,7 @@ function AmountInWords(float $amount)
 <div>
 <center>
 <img src="assets/images/logo-icon2.png" class="logo-icon" style="width: 300px;"><br>
-&emsp;&emsp;275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, Fax: 88-02-8819297<br>
+&emsp;&emsp;132 My Street, Kingston, New York 12401 Phone: +1(123)456-789103<br>
 </center>
 </div>
 

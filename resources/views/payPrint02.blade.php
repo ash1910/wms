@@ -90,7 +90,7 @@ FROM `pay` WHERE bill='$bill';
 
 <center>
 <img src="assets/images/logo-icon4.png" class="logo-icon" style="width: 300px;"><br> 
-275, Tejgaon Industrial Area, Dhaka-1208, Phone: 8870818,8870820, Fax: 88-02-8819297<br>
+132 My Street, Kingston, New York 12401 Phone: +1(123)456-789103<br>
 <br><br>
 <h3><b>GATEPASS</b></h3><b>Job No.: {{$job_no}}</b>
 <br>

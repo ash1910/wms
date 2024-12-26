@@ -139,7 +139,7 @@ if ((session('role')=="Super Administrator")||(session('role')=="Accounts"))
 					<form  target="_blank" style="display: inline;" action="billPrint" method="post">{{ csrf_field() }}
 					<input type="hidden" name="bill_no" value="{{$bill_no}}">
 					<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
-					<i class="fadeIn animated bx bx-printer"></i> HNS Engineering</button>
+					<i class="fadeIn animated bx bx-printer"></i> ASH Engineering</button>
 					</form>
 
 <?php
@@ -576,7 +576,7 @@ if ((session('role')=="Accounts")||(session('role')=="Super Administrator")
 		<input type="hidden" name="bill" value="{{$bill_no}}">
 		<input type="hidden" name="job_no" value="{{$job_no}}">
 			<button class="btn btn-sm btn-success me-2" type="submit" name="" value="">
-					<i class="fadeIn animated bx bx-printer"></i> HNS Auto Solutions</button>
+					<i class="fadeIn animated bx bx-printer"></i> ASH Auto Solutions</button>
 		</div>
 	</form>
 

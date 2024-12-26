@@ -78,7 +78,7 @@
 
                   <div class="col-12">
                     <label class="form-label">Company</label>
-                    <input id="tags02" placeholder="e.g: HNS Group" type="text" class="form-control" name="company" value="{{$item->company}}">
+                    <input id="tags02" placeholder="e.g: ASH Group" type="text" class="form-control" name="company" value="{{$item->company}}">
                   </div>
                   <div class="col-12">
                     <label class="form-label">Sister Companies</label>
@@ -316,7 +316,7 @@ echo '"'.$p->sister_companies.'",';
 <script>
   $( function() {
     $( "#tags04" ).autocomplete({
-      source: ["Individual Customer","HNS Automobiles","Inter-Company"]
+      source: ["Individual Customer","ASH Automobiles","Inter-Company"]
     });
   } );
   </script>

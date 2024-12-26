@@ -45,9 +45,9 @@
 		</div>
 		<div class="col-md-12">
 			<select name="merchant_bank" class="form-select">
-				<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
-				<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-                <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
+				<option value='MTBL'>ASH Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+				<option value='CBL'>ASH Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+                <option value='DBBL'>ASH Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 			</select>
 		</div>
 		<div class="col-12">

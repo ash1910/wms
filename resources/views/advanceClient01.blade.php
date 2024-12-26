@@ -181,10 +181,10 @@ foreach($result as $item)
 	  </div>
 	  <div style="width: 70%;">
 		<select name="merchant_online" class="form-select">
-			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
-			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-            <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
-            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
+			<option value='MTBL'>ASH Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>ASH Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+            <option value='BRAC'>ASH Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>ASH Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>
@@ -359,10 +359,10 @@ foreach($result as $item)
 	  </div>
 	  <div style="width: 70%;">
 		<select name="merchant_checque" class="form-select">
-			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
-			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-            <option value='BRAC'>HNS Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
-            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
+			<option value='MTBL'>ASH Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>ASH Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+            <option value='BRAC'>ASH Auto Solutions & A/C No.:#(BRAC-20671-69090001)</option>
+            <option value='DBBL'>ASH Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 
 	  </div>
@@ -467,9 +467,9 @@ foreach($result as $item)
 	  </div>
 	  <div style="width: 70%;">
 		<select name="merchant" class="form-select">
-			<option value='MTBL'>HNS Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
-			<option value='CBL'>HNS Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
-            <option value='DBBL'>HNS Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
+			<option value='MTBL'>ASH Engineering & Services Ltd & A/C No.:#(MTBL-0022-0210004676)</option>
+			<option value='CBL'>ASH Auto Solutions & A/C No.:#(MTBL-01301-000217814)</option>
+            <option value='DBBL'>ASH Auto Solutions & A/C No.:#(DBBL-2271100021152)</option>
 		</select>
 	  </div>
 	</div>

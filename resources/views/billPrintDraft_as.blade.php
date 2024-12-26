@@ -149,7 +149,7 @@ function AmountInWords(float $amount)
 
 	<div style="float: right;width: 170px;font-size:8px;border: 2px solid #000000;padding: 3px; margin-top: -40px;">
 		<table>
-			<tr><td style="width: 65px;">A/C Name</td><td>: HNS Auto Solutions</td></tr>
+			<tr><td style="width: 65px;">A/C Name</td><td>: ASH Auto Solutions</td></tr>
 			<tr><td>A/C No.</td><td>: 01301000217814</td></tr>
 			<tr><td>Routing No.</td><td>: 145264480</td></tr>
 			<tr><td>Swift Code</td><td>: MTBL BD DH GUL</td></tr>

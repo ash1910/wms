@@ -206,8 +206,8 @@ class estimateController extends Controller
 				$data = DB::select("
 				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 				from
-				(SELECT nvl(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '1')A,
-				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '2')b;
+				(SELECT COALESCE(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '1')A,
+				(SELECT COALESCE(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = '$est_no' AND `type` = '2')b;
 				");
 				foreach($data as $item)
 				{
@@ -274,8 +274,8 @@ class estimateController extends Controller
 				$data = DB::select("
 				SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 				from
-				(SELECT nvl(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
-				(SELECT nvl(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
+				(SELECT COALESCE(sum(`amount`),0) parts FROM `est_det` WHERE `est_no` = $est_no AND `type` = '1')A,
+				(SELECT COALESCE(sum(`amount`),0) service FROM `est_det` WHERE `est_no` = $est_no AND `type` = '2')b;
 				");
 				foreach($data as $item)
 				{

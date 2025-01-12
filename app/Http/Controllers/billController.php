@@ -180,7 +180,7 @@ if($register=="register01")
 		{
 		$result = DB::table('customer_info')
 		->where('customer_id', $customer_id)
-		->update(['company' => 'HNS Automobiles','sister_companies' => 'HNS Automobiles']);
+		->update(['company' => 'ASH Automobiles','sister_companies' => 'ASH Automobiles']);
 		}
 
 		return redirect('/billMemo?bill='.$bill_no.'');
@@ -201,7 +201,7 @@ if($register=="register02")
 		{
 		$result = DB::table('customer_info')
 		->where('customer_id', $customer_id)
-		->update(['company' => 'HNS Automobiles','sister_companies' => 'HNS Automobiles']);
+		->update(['company' => 'ASH Automobiles','sister_companies' => 'ASH Automobiles']);
 		}
 		return redirect('/home');
 	}
@@ -303,8 +303,8 @@ if($check == '')
 		$data = DB::select("
 		SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 		from
-		(SELECT nvl(sum(`amount`),0) parts FROM `bill_det` WHERE `bill_no` = '$bill_no' AND `type` = '1')A,
-		(SELECT nvl(sum(`amount`),0) service FROM `bill_det` WHERE `bill_no` = '$bill_no' AND `type` = '2')b;
+		(SELECT COALESCE(sum(`amount`),0) parts FROM `bill_det` WHERE `bill_no` = '$bill_no' AND `type` = '1')A,
+		(SELECT COALESCE(sum(`amount`),0) service FROM `bill_det` WHERE `bill_no` = '$bill_no' AND `type` = '2')b;
 		");
 		foreach($data as $item)
 		{
@@ -371,8 +371,8 @@ if($check == '')
 		$data = DB::select("
 		SELECT parts,service, (parts+service) net_bill, (parts+service)+((parts+service)*.10) total
 		from
-		(SELECT nvl(sum(`amount`),0) parts FROM `bill_det` WHERE `bill_no` = $bill_no AND `type` = '1')A,
-		(SELECT nvl(sum(`amount`),0) service FROM `bill_det` WHERE `bill_no` = $bill_no AND `type` = '2')b;
+		(SELECT COALESCE(sum(`amount`),0) parts FROM `bill_det` WHERE `bill_no` = $bill_no AND `type` = '1')A,
+		(SELECT COALESCE(sum(`amount`),0) service FROM `bill_det` WHERE `bill_no` = $bill_no AND `type` = '2')b;
 		");
 		foreach($data as $item)
 		{

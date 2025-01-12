@@ -1,7 +1,0 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule ^(.*)$ public/$1 [L]
-</IfModule>
-
-
-# git remote set-url origin https://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@github.com/ash1910/wms

@@ -82,7 +82,7 @@
                   </div>
                   <div class="col-12">
                     <label class="form-label">Sister Companies</label>
-                    <input id="tags03" value="{{$item->sister_companies}}" placeholder="e.g: Techno Mole Creations" type="text" class="form-control" name="sister_companies" >
+                    <input id="tags03" value="{{$item->sister_companies}}" placeholder="e.g: Alven System" type="text" class="form-control" name="sister_companies" >
                   </div>
                   <div class="col-12">
                     <label class="form-label">BIN</label>

@@ -805,7 +805,7 @@ Approved By <br>
 <br>
 <center>
 <font style="font-size: xx-small;">
-*This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations (TMC)
+*This is a computer-generated Bill / Cash Memo. Design & Developed by Alven System
 </font>
 </center>
 

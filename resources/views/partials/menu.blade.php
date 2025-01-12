@@ -49,7 +49,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 <?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/account"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
-		<div class="menu-title">Accounts</div>
+		<div class="menu-title">Receivable</div>
 	  </a>
 	</li>			
 <?php } ?>   
@@ -58,7 +58,7 @@ if ((session('role')=="Accounts")||(session('role')=="Store")||(session('role')=
 <?php if ((session('role')=="Accounts")||(session('role')=="Administrator")||(session('role')=="Super Administrator")||(session('role')=="Executive")){ ?>
 	<li>
 	  <a href="/accounts02"><div class="parent-icon"><i class="fadeIn animated bx bx-user"></i></div>
-		<div class="menu-title">Accounts_2</div>
+		<div class="menu-title">Accounts</div>
 	  </a>
 	</li>			
 <?php } ?>   

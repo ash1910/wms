@@ -272,7 +272,7 @@ class bomController extends Controller
 		");
 		foreach($data01 as $item){$gin = $item->gin;}
 		$pieces = explode("GIN-", $gin);
-		$gin = $pieces[1];
+		$gin = @$pieces[1];
 		$gin=$gin+1;
 
 
@@ -286,6 +286,9 @@ class bomController extends Controller
 			`dt`,`amount`,`avg_price`,`req`,`gin`)
 			VALUES (?,?,?,?,?,?,?,?,?,?,?)',[$prod_id,$prod_name,$qty,$job_no,$note, $user_id, $dt,
 			$avg_price*$qty, $avg_price, $req, 'GIN-'.$gin]);
+
+			DB::table('bom_prod')->where('parts_id', $prod_id)->update(['stock_qty' => $stock_qty - $qty]);
+
 		}
 
 		/// HAPS Code 08-09-24

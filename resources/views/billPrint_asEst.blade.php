@@ -534,7 +534,7 @@ foreach($stock as $item){ $subtotal=$subtotal+$item->amount; $total += $item->am
     <center>
     <div class="watermark" style="text-align: center;"><b>ESTIMATE</b></div>
     <font style="font-size: xx-small;">
-    *This is a computer-generated Bill / Cash Memo. Design & Developed by Techno Mole Creations LTD (TMC)
+    *This is a computer-generated Bill / Cash Memo. Design & Developed by Alven System LTD (TMC)
     </font>
     </center>
 </div>

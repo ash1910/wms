@@ -58,6 +58,9 @@
                           <div class="col-12">
                             <div class="d-grid">
                               <button type="submit" class="btn btn-primary radius-30">Sign In</button>
+                              <br><br>
+                              <p><strong>User:</strong> SysUsr</p>
+                              <p><strong>Password:</strong> 12345678</p>
                             </div>
                           </div>
                           {{session('error')}}
